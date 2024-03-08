@@ -7,22 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4168FFCF2B9B7F42005EC9A4 /* LauchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4168FFCE2B9B7F42005EC9A4 /* LauchViewController.swift */; };
 		41F1C4222B9A4B1100F7BC62 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F1C4212B9A4B1100F7BC62 /* AppDelegate.swift */; };
 		41F1C4242B9A4B1100F7BC62 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F1C4232B9A4B1100F7BC62 /* SceneDelegate.swift */; };
-		41F1C4262B9A4B1100F7BC62 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F1C4252B9A4B1100F7BC62 /* ViewController.swift */; };
 		41F1C4292B9A4B1100F7BC62 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 41F1C4282B9A4B1100F7BC62 /* Base */; };
 		41F1C42B2B9A4B1200F7BC62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41F1C42A2B9A4B1200F7BC62 /* Assets.xcassets */; };
-		41F1C42E2B9A4B1200F7BC62 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 41F1C42D2B9A4B1200F7BC62 /* Base */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4168FFCE2B9B7F42005EC9A4 /* LauchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LauchViewController.swift; sourceTree = "<group>"; };
 		41F1C41E2B9A4B1100F7BC62 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		41F1C4212B9A4B1100F7BC62 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		41F1C4232B9A4B1100F7BC62 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		41F1C4252B9A4B1100F7BC62 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		41F1C4282B9A4B1100F7BC62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		41F1C42A2B9A4B1200F7BC62 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		41F1C42D2B9A4B1200F7BC62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		41F1C42F2B9A4B1200F7BC62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -37,6 +35,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4168FFCD2B9B7F04005EC9A4 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				4168FFCE2B9B7F42005EC9A4 /* LauchViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
 		41F1C4152B9A4B1100F7BC62 = {
 			isa = PBXGroup;
 			children = (
@@ -56,12 +62,11 @@
 		41F1C4202B9A4B1100F7BC62 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				4168FFCD2B9B7F04005EC9A4 /* Controllers */,
 				41F1C4212B9A4B1100F7BC62 /* AppDelegate.swift */,
 				41F1C4232B9A4B1100F7BC62 /* SceneDelegate.swift */,
-				41F1C4252B9A4B1100F7BC62 /* ViewController.swift */,
 				41F1C4272B9A4B1100F7BC62 /* Main.storyboard */,
 				41F1C42A2B9A4B1200F7BC62 /* Assets.xcassets */,
-				41F1C42C2B9A4B1200F7BC62 /* LaunchScreen.storyboard */,
 				41F1C42F2B9A4B1200F7BC62 /* Info.plist */,
 			);
 			path = Tracker;
@@ -77,6 +82,7 @@
 				41F1C41A2B9A4B1100F7BC62 /* Sources */,
 				41F1C41B2B9A4B1100F7BC62 /* Frameworks */,
 				41F1C41C2B9A4B1100F7BC62 /* Resources */,
+				4168FFD02B9B81E5005EC9A4 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -126,19 +132,39 @@
 			buildActionMask = 2147483647;
 			files = (
 				41F1C42B2B9A4B1200F7BC62 /* Assets.xcassets in Resources */,
-				41F1C42E2B9A4B1200F7BC62 /* Base in Resources */,
 				41F1C4292B9A4B1100F7BC62 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		4168FFD02B9B81E5005EC9A4 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"/opt/homebrew/bin:$PATH\"\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		41F1C41A2B9A4B1100F7BC62 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				41F1C4262B9A4B1100F7BC62 /* ViewController.swift in Sources */,
+				4168FFCF2B9B7F42005EC9A4 /* LauchViewController.swift in Sources */,
 				41F1C4222B9A4B1100F7BC62 /* AppDelegate.swift in Sources */,
 				41F1C4242B9A4B1100F7BC62 /* SceneDelegate.swift in Sources */,
 			);
@@ -153,14 +179,6 @@
 				41F1C4282B9A4B1100F7BC62 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		41F1C42C2B9A4B1200F7BC62 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				41F1C42D2B9A4B1200F7BC62 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -293,6 +311,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = CQNTWDSGK9;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Tracker/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -326,6 +345,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = CQNTWDSGK9;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Tracker/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
