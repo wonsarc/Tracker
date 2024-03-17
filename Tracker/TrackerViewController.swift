@@ -8,7 +8,14 @@
 import UIKit
 
 final class TrackerViewController: UIViewController {
+
+    // MARK: - Public Properties
+
+    var categories: [TrackerCategory] = []
+    var completedTrackers: [TrackerRecord] = []
+
     // MARK: - Private Properties
+
     private lazy var mainTitleLabel: UILabel = {
         let mainTitleLabel = UILabel()
         mainTitleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -27,6 +34,7 @@ final class TrackerViewController: UIViewController {
         addTaskButton.translatesAutoresizingMaskIntoConstraints = false
         addTaskButton.tintColor = .black
         addTaskButton.accessibilityIdentifier = "addTaskButton"
+
         return addTaskButton
     }()
 
@@ -44,6 +52,8 @@ final class TrackerViewController: UIViewController {
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.datePickerMode = .date
         datePicker.accessibilityIdentifier = "datePicker"
+        datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
+
         return datePicker
     }()
 
@@ -64,40 +74,36 @@ final class TrackerViewController: UIViewController {
         return emptyTaskImageView
     }()
 
-    // MARK: - View Life Cycles
+    // MARK: - Overrides Methods
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+
         setupViews()
         setupConstraints()
     }
 
     // MARK: - Private Methods
+
     private func setupViews() {
         view.addSubview(mainTitleLabel)
-        view.addSubview(addTaskButton)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: addTaskButton)
         view.addSubview(searchBar)
-        view.addSubview(datePicker)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
         view.addSubview(emptyTaskLabel)
         view.addSubview(emptyTaskImageView)
     }
 
     private func setupConstraints() {
+        guard let navigationController = navigationController else { return }
         NSLayoutConstraint.activate([
             mainTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            mainTitleLabel.topAnchor.constraint(equalTo: addTaskButton.bottomAnchor, constant: 1),
-
-            addTaskButton.widthAnchor.constraint(equalToConstant: 44),
-            addTaskButton.heightAnchor.constraint(equalToConstant: 44),
-            addTaskButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 1),
-            addTaskButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 6),
+            mainTitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 1),
 
             searchBar.topAnchor.constraint(equalTo: mainTitleLabel.bottomAnchor, constant: 7),
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-
-            datePicker.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
-            datePicker.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
 
             emptyTaskLabel.heightAnchor.constraint(equalToConstant: 18),
             emptyTaskLabel.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 318),
@@ -111,16 +117,17 @@ final class TrackerViewController: UIViewController {
         ])
     }
 
-    private func setDateString() {
+    @objc
+    private func datePickerValueChanged(_ sender: UIDatePicker) {
+        let selectedDate = sender.date
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yy"
-
-        let selectedDate = datePicker.date
-        let dateString = dateFormatter.string(from: selectedDate)
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        let formattedDate = dateFormatter.string(from: selectedDate)
+        print("Выбранная дата: \(formattedDate)")
     }
 
     @objc
     private func didTapAddTaskButton() {
-
+        //completedTrackers.append()
     }
 }
