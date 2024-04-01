@@ -8,7 +8,9 @@
 import UIKit
 
 final class StatisticViewController: UIViewController {
+
     // MARK: - Private Properties
+
     private lazy var mainTitleLabel: UILabel = {
         let mainTitleLabel = UILabel()
         mainTitleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -19,6 +21,7 @@ final class StatisticViewController: UIViewController {
     }()
 
     // MARK: - View Life Cycles
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -27,6 +30,7 @@ final class StatisticViewController: UIViewController {
     }
 
     // MARK: - Private Methods
+
     private func setupViews() {
         view.addSubview(mainTitleLabel)
     }

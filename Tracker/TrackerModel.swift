@@ -1,5 +1,5 @@
 //
-//  Tracker.swift
+//  TrackerModel.swift
 //  Tracker
 //
 //  Created by Artem Krasnov on 14.03.2024.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct Tracker {
+struct TrackerModel {
     let id = UUID()
     let name: String?
     let color: UIColor?
