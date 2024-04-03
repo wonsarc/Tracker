@@ -1,13 +1,13 @@
 //
-//  CreateHabbitViewController.swift
+//  CreateEventViewController.swift
 //  Tracker
 //
-//  Created by Artem Krasnov on 31.03.2024.
+//  Created by Artem Krasnov on 02.04.2024.
 //
 
 import UIKit
 
-final class CreateHabbitViewController: UIViewController {
+final class CreateEventViewController: UIViewController {
 
     // MARK: - Private Properties
 
@@ -16,7 +16,7 @@ final class CreateHabbitViewController: UIViewController {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = .black
         titleLabel.font = .systemFont(ofSize: 16)
-        titleLabel.text = "Новая привычка"
+        titleLabel.text = "Новое нерегулярное событие"
 
         return titleLabel
     }()
@@ -28,7 +28,6 @@ final class CreateHabbitViewController: UIViewController {
         nameTrackerTextField.textColor = .black
         nameTrackerTextField.borderStyle = .roundedRect
         nameTrackerTextField.backgroundColor = .customGray
-
         nameTrackerTextField.clearButtonMode = .always
 
         return nameTrackerTextField
@@ -106,7 +105,7 @@ final class CreateHabbitViewController: UIViewController {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
 
-            titleLabel.widthAnchor.constraint(equalToConstant: 149),
+            titleLabel.widthAnchor.constraint(equalToConstant: 241),
             titleLabel.heightAnchor.constraint(equalToConstant: 22),
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 13),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -116,7 +115,7 @@ final class CreateHabbitViewController: UIViewController {
             nameTrackerTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             nameTrackerTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
 
-            settingsTableView.heightAnchor.constraint(equalToConstant: 150),
+            settingsTableView.heightAnchor.constraint(equalToConstant: 74),
             settingsTableView.topAnchor.constraint(equalTo: nameTrackerTextField.bottomAnchor, constant: 24),
             settingsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             settingsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
@@ -141,18 +140,18 @@ final class CreateHabbitViewController: UIViewController {
         button.layer.cornerRadius = 16
     }
 
-    @objc private func didTapCanceledButton() {
-        self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
-    }
-
     @objc private func didTapCreateHabbitButton() {
 
+    }
+
+    @objc private func didTapCanceledButton() {
+        self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
     }
 }
 
 // MARK: - UITableViewDataSource
 
-extension CreateHabbitViewController: UITableViewDelegate, UITableViewDataSource {
+extension CreateEventViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
@@ -160,16 +159,13 @@ extension CreateHabbitViewController: UITableViewDelegate, UITableViewDataSource
 
         guard let cell = cell else { return UITableViewCell()}
 
-        if indexPath.row == 0 {
-            cell.textLabel?.text = "Категория"
-        } else {
-            cell.textLabel?.text = "Расписание"
-        }
+        cell.textLabel?.text = "Категория"
 
         return cell
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 1
     }
+
 }

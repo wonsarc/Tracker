@@ -39,7 +39,7 @@ final class CreateTrackerViewController: UIViewController {
         let createEventButton = UIButton.systemButton(
             with: UIImage(),
             target: self,
-            action: #selector(didTapCreateHabbitButton)
+            action: #selector(didTapCreateEventButton)
         )
 
         createEventButton.accessibilityIdentifier = "createEventButton"
@@ -96,6 +96,9 @@ final class CreateTrackerViewController: UIViewController {
 
     @objc private func didTapCreateHabbitButton() {
         present(CreateHabbitViewController(), animated: true)
+    }
 
+    @objc private func didTapCreateEventButton() {
+        present(CreateEventViewController(), animated: true)
     }
 }
