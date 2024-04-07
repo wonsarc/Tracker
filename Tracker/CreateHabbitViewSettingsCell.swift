@@ -25,7 +25,7 @@ final class CreateHabbitViewSettingsCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: "cell")
         accessoryType = .disclosureIndicator
-        self.backgroundColor = UIColor(red: 230/255, green: 232/255, blue: 235/255, alpha: 0.3) // todo вынести в assets
+        self.backgroundColor = .customGray
         setupNameLabel()
 
     }

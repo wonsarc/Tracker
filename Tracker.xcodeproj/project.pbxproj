@@ -21,7 +21,9 @@
 		418602CF2BB9D7930085BF1A /* CreateHabbitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418602CE2BB9D7930085BF1A /* CreateHabbitViewController.swift */; };
 		418602D12BBB47E90085BF1A /* CreateHabbitViewSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418602D02BBB47E90085BF1A /* CreateHabbitViewSettingsCell.swift */; };
 		418602D32BBC985B0085BF1A /* CreateEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418602D22BBC985B0085BF1A /* CreateEventViewController.swift */; };
-		418602D62BBCA0060085BF1A /* ShedulerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418602D52BBCA0060085BF1A /* ShedulerViewController.swift */; };
+		418602D62BBCA0060085BF1A /* SchedulerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418602D52BBCA0060085BF1A /* SchedulerViewController.swift */; };
+		418602D82BBDF67D0085BF1A /* WeekDaysModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418602D72BBDF67D0085BF1A /* WeekDaysModel.swift */; };
+		418602DA2BBDF87F0085BF1A /* SchedulerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418602D92BBDF87F0085BF1A /* SchedulerTableViewCell.swift */; };
 		41AAD2D82BA77B3700A1D2E1 /* TrackerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAD2D72BA77B3700A1D2E1 /* TrackerCollectionViewCell.swift */; };
 		41F1C4222B9A4B1100F7BC62 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F1C4212B9A4B1100F7BC62 /* AppDelegate.swift */; };
 		41F1C42B2B9A4B1200F7BC62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41F1C42A2B9A4B1200F7BC62 /* Assets.xcassets */; };
@@ -42,7 +44,9 @@
 		418602CE2BB9D7930085BF1A /* CreateHabbitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateHabbitViewController.swift; sourceTree = "<group>"; };
 		418602D02BBB47E90085BF1A /* CreateHabbitViewSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateHabbitViewSettingsCell.swift; sourceTree = "<group>"; };
 		418602D22BBC985B0085BF1A /* CreateEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEventViewController.swift; sourceTree = "<group>"; };
-		418602D52BBCA0060085BF1A /* ShedulerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShedulerViewController.swift; sourceTree = "<group>"; };
+		418602D52BBCA0060085BF1A /* SchedulerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulerViewController.swift; sourceTree = "<group>"; };
+		418602D72BBDF67D0085BF1A /* WeekDaysModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDaysModel.swift; sourceTree = "<group>"; };
+		418602D92BBDF87F0085BF1A /* SchedulerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulerTableViewCell.swift; sourceTree = "<group>"; };
 		41AAD2D72BA77B3700A1D2E1 /* TrackerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCollectionViewCell.swift; sourceTree = "<group>"; };
 		41F1C41E2B9A4B1100F7BC62 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		41F1C4212B9A4B1100F7BC62 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -89,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				41811A9A2BA359A800339440 /* TrackerModel */,
+				418602D72BBDF67D0085BF1A /* WeekDaysModel.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -142,7 +147,8 @@
 		418602D42BBC9FEB0085BF1A /* ShedulerViewController */ = {
 			isa = PBXGroup;
 			children = (
-				418602D52BBCA0060085BF1A /* ShedulerViewController.swift */,
+				418602D52BBCA0060085BF1A /* SchedulerViewController.swift */,
+				418602D92BBDF87F0085BF1A /* SchedulerTableViewCell.swift */,
 			);
 			name = ShedulerViewController;
 			sourceTree = "<group>";
@@ -283,12 +289,14 @@
 				418602CA2BB950070085BF1A /* SupplementaryView.swift in Sources */,
 				4168FFD92B9C7A1B005EC9A4 /* SplashViewController.swift in Sources */,
 				418602CF2BB9D7930085BF1A /* CreateHabbitViewController.swift in Sources */,
-				418602D62BBCA0060085BF1A /* ShedulerViewController.swift in Sources */,
+				418602D62BBCA0060085BF1A /* SchedulerViewController.swift in Sources */,
+				418602D82BBDF67D0085BF1A /* WeekDaysModel.swift in Sources */,
 				418602D12BBB47E90085BF1A /* CreateHabbitViewSettingsCell.swift in Sources */,
 				41811A9C2BA359BE00339440 /* TrackerRecordModel.swift in Sources */,
 				41811A972BA358EC00339440 /* TrackerModel.swift in Sources */,
 				418602CD2BB96B0F0085BF1A /* CreateTrackerViewController.swift in Sources */,
 				4168FFDB2B9C7C9E005EC9A4 /* OnboardingViewController.swift in Sources */,
+				418602DA2BBDF87F0085BF1A /* SchedulerTableViewCell.swift in Sources */,
 				4168FFD42B9B8860005EC9A4 /* StatisticViewController.swift in Sources */,
 				418602D32BBC985B0085BF1A /* CreateEventViewController.swift in Sources */,
 			);

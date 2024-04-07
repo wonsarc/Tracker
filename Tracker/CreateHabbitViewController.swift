@@ -43,6 +43,7 @@ final class CreateHabbitViewController: UIViewController {
         settingsTableView.layer.cornerRadius = 16
         settingsTableView.layer.masksToBounds = true
         settingsTableView.dataSource = self
+        settingsTableView.delegate = self
 
         return settingsTableView
     }()
@@ -150,7 +151,7 @@ final class CreateHabbitViewController: UIViewController {
     }
 }
 
-// MARK: - UITableViewDataSource
+// MARK: - UITableViewDelegate, UITableViewDataSource
 
 extension CreateHabbitViewController: UITableViewDelegate, UITableViewDataSource {
 
@@ -171,5 +172,27 @@ extension CreateHabbitViewController: UITableViewDelegate, UITableViewDataSource
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 2
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        if indexPath.row == 1 {
+
+            present(SchedulerViewController(), animated: true)
+//            let selectedCell = tableView.cellForRow(at: indexPath)
+//
+//            зку
+//            // Получаем текст из выбранной ячейки
+//            if let cellText = selectedCell?.textLabel?.text {
+//                // Выводим текст ячейки
+//                print("Выбрана первая ячейка с текстом: \(cellText)")
+//
+//                // Здесь вы можете выполнить необходимые действия при нажатии на первую ячейку
+//                // Например, открыть новый контроллер или выполнить другое действие
+//            }
+        }
+
+        // Снимаем выделение ячейки после нажатия
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
