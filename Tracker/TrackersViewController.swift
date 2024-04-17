@@ -25,15 +25,6 @@ final class TrackersViewController: UIViewController {
         return collectionView
     }()
 
-    private lazy var mainTitleLabel: UILabel = {
-        let mainTitleLabel = UILabel()
-        mainTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        mainTitleLabel.text = "Трекеры"
-        mainTitleLabel.textColor = UIColor(red: 26.0/255.0, green: 27.0/255.0, blue: 34.0/255.0, alpha: 1.0)
-        mainTitleLabel.font = .boldSystemFont(ofSize: 34)
-        return mainTitleLabel
-    }()
-
     private lazy var addTaskButton: UIButton = {
         let addTaskButton = UIButton.systemButton(
             with: UIImage(named: "plus") ?? UIImage(),
@@ -47,19 +38,11 @@ final class TrackersViewController: UIViewController {
         return addTaskButton
     }()
 
-    private lazy var searchBar: UISearchBar = {
-        let searchBar = UISearchBar()
-        searchBar.translatesAutoresizingMaskIntoConstraints = false
-        searchBar.searchBarStyle = .minimal
-        searchBar.placeholder = "Поиск"
-        searchBar.accessibilityIdentifier = "searchBar"
-        return searchBar
-    }()
-
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.datePickerMode = .date
+        datePicker.preferredDatePickerStyle = .compact
         datePicker.accessibilityIdentifier = "datePicker"
 
         return datePicker
@@ -87,10 +70,44 @@ final class TrackersViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        setupNavBar()
 
-        setupViews()
-        setupConstraints()
-        collectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        if categories.isEmpty {
+            setupViewsForEmptyCategories()
+            setupConstraintsForEmptyCategories()
+        } else {
+            setupCollectionView()
+        }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(
+                selectedCategoryChanged
+            ),
+            name: Notification.Name("CategoryChanged"),
+            object: nil
+        )
+    }
+
+    // MARK: - Private Methods
+
+    private func setupCollectionView() {
+        view.addSubview(collectionView)
+
+        NSLayoutConstraint.activate([
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+
+        collectionView.register(
+            TrackerCollectionViewCell.self,
+            forCellWithReuseIdentifier: IdentityCellEnum.trackerCollectionViewCell.rawValue
+        )
         collectionView.register(
             SupplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
@@ -98,80 +115,44 @@ final class TrackersViewController: UIViewController {
         )
     }
 
-    // MARK: - Private Methods
+    private func setupViewsForEmptyCategories() {
+        view.addSubview(emptyTaskLabel)
+        view.addSubview(emptyTaskImageView)
+    }
 
-    private func setupViews() {
-        view.addSubview(mainTitleLabel)
+    private func setupNavBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: addTaskButton)
-        view.addSubview(searchBar)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
+        navigationItem.rightBarButtonItem =  UIBarButtonItem(customView: datePicker)
 
-        if categories.isEmpty {
-            view.addSubview(emptyTaskLabel)
-            view.addSubview(emptyTaskImageView)
-        } else {
-            view.addSubview(collectionView)
-        }
+        var searchController = UISearchController()
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchBar.placeholder = "Поиск"
+        navigationItem.searchController = searchController
 
+        navigationItem.title = "Трекеры"
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
 
-    private func setupConstraints() {
+    private func setupConstraintsForEmptyCategories() {
+
         NSLayoutConstraint.activate([
-            mainTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            mainTitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 1),
+            emptyTaskImageView.widthAnchor.constraint(equalToConstant: 80),
+            emptyTaskImageView.heightAnchor.constraint(equalToConstant: 80),
+            emptyTaskImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            emptyTaskImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 
-            searchBar.topAnchor.constraint(equalTo: mainTitleLabel.bottomAnchor, constant: 7),
-            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
+            emptyTaskLabel.heightAnchor.constraint(equalToConstant: 18),
+            emptyTaskLabel.topAnchor.constraint(equalTo: emptyTaskImageView.bottomAnchor, constant: 8),
+            emptyTaskLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
-
-        if categories.isEmpty {
-            NSLayoutConstraint.activate([
-                emptyTaskLabel.heightAnchor.constraint(equalToConstant: 18),
-                emptyTaskLabel.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 318),
-                emptyTaskLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-                emptyTaskLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-
-                emptyTaskImageView.widthAnchor.constraint(equalToConstant: 80),
-                emptyTaskImageView.heightAnchor.constraint(equalToConstant: 80),
-                emptyTaskImageView.bottomAnchor.constraint(equalTo: emptyTaskLabel.topAnchor, constant: -8),
-                emptyTaskImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-            ])
-
-        } else {
-            NSLayoutConstraint.activate([
-                collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-                collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-                collectionView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
-                collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-            ])
-        }
-    }
-
-    @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
-        //        var d = Calendar(identifier: .gregorian)
-        //        var ss = DateComponents()
-        //        d.date(from: <#T##DateComponents#>)
-        //        ss.year = 2023
-        //        ss.month = 1
-        //        ss.day = 2
-        //        ss.
-        //
-        //        d = d.date(from: ss)
-        //
-        //        print((d.date(from: ss)).wee
-        //
-        //
-
-        let selectedDate = sender.date
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy"
-        let formattedDate = dateFormatter.string(from: selectedDate)
-        print("Выбранная дата: \(formattedDate)")
     }
 
     @objc private func didTapAddTaskButton() {
         present(CreateTrackerViewController(), animated: true)
+    }
+
+    @objc private func selectedCategoryChanged() {
+        categories = DataManager.shared.category
     }
 }
 
@@ -187,7 +168,7 @@ extension TrackersViewController: UICollectionViewDataSource {
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: "cell",
+            withReuseIdentifier: IdentityCellEnum.trackerCollectionViewCell.rawValue,
             for: indexPath
         ) as? TrackerCollectionViewCell
 
