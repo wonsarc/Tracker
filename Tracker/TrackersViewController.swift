@@ -13,6 +13,8 @@ final class TrackersViewController: UIViewController {
 
     var categories: [TrackerCategoryModel] = []
     var completedTrackers: [TrackerRecordModel] = []
+    var selectedDay: WeekDaysModel?
+    var currentDate: Date? = Date()
 
     // MARK: - Private Properties
 
@@ -82,6 +84,22 @@ final class TrackersViewController: UIViewController {
         }
 
         setupCollectionView()
+        datePicker.addTarget(self, action: #selector(datePickerValueChanged), for: .valueChanged)
+    }
+
+    @objc func datePickerValueChanged(_ sender: UIDatePicker) {
+        let selectedDate = sender.date
+        let customCalendar = Calendar(identifier: .gregorian)
+
+        currentDate = selectedDate
+
+        var weekday = customCalendar.component(.weekday, from: selectedDate)
+        weekday = (weekday - 2 + 7) % 7
+
+        if let selectedDayOfWeek = WeekDaysModel.fromIndex(weekday) {
+            self.selectedDay = selectedDayOfWeek
+            collectionView.reloadData()
+        }
     }
 
     // MARK: - Private Methods
@@ -186,7 +204,20 @@ extension TrackersViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return categories[section].trackers?.count ?? 0
+        let category = categories[section]
+
+        if let trackers = category.trackers {
+            let filteredTrackers = trackers.filter { tracker in
+                if let selectedDay = selectedDay, let schedule = tracker.schedule {
+                    return schedule.contains(selectedDay)
+                } else {
+                    return true
+                }
+            }
+            return filteredTrackers.count
+        } else {
+            return 0
+        }
     }
 
     func collectionView(
@@ -203,7 +234,7 @@ extension TrackersViewController: UICollectionViewDataSource {
         let category = categories[indexPath.section]
 
         if let tracker = category.trackers?[indexPath.row] {
-            cell.configure(with: tracker)
+            cell.configure(with: tracker, for: currentDate)
         }
 
         cell.delegate = self
@@ -252,11 +283,13 @@ extension TrackersViewController: CreateTrackerViewControllerDelegate {
     }
 }
 
-// MARK: - CreateHabbitViewControllerDelegate
+// MARK: - TrackerCollectionViewCellDelegate
 
 extension TrackersViewController: TrackerCollectionViewCellDelegate {
 
-    func didTapDoneButton() {
+    func didTapDoneButton(for tracker: TrackerModel) {
+        print("Button tapped for tracker:", tracker)
+
         collectionView.reloadData()
     }
 }

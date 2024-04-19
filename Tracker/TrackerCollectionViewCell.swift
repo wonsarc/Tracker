@@ -8,18 +8,18 @@
 import UIKit
 
 protocol TrackerCollectionViewCellProtocol {
-    func configure(with tracker: TrackerModel)
+    func configure(with tracker: TrackerModel, for currentDate: Date?)
 }
 
 protocol TrackerCollectionViewCellDelegate: AnyObject {
-    func didTapDoneButton()
+    func didTapDoneButton(for tracker: TrackerModel)
 }
 
 final class TrackerCollectionViewCell: UICollectionViewCell {
 
     weak var delegate: TrackerCollectionViewCellDelegate?
-    private var trackerId: UUID?
-    private var date: Date?
+    var trackerModel: TrackerModel?
+    var taskDate: Date?
 
     // MARK: - Private Properties
 
@@ -162,16 +162,13 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     }
 
     private func updateDoneButtonImage(_ isDone: Bool) {
-        let imageName = isDone ? "checkmark" : "plus"
-        doneButton.imageView?.image = UIImage(named: imageName)
+        let imageName = isDone ? "done" : "plus"
+        let image = UIImage(named: imageName)?.withRenderingMode(.alwaysTemplate)
+        doneButton.setImage(image, for: .normal)
     }
 
-    private func updateCountDays(_ isDone: Bool) {
-        let day = isDone ? 1 : -1
-        let currentDay = dateUILabel.text?.first?.wholeNumberValue ?? 0
-        descriptionUILabel.text = "\(day) + blalba"
-        dateUILabel.text = formateDate(day: day + currentDay)
-        print(formateDate(day: day + currentDay), "))))")
+    private func getCountDoneTasksById(id: UUID) -> Int { return DataManager.shared.completedTrackers.filter {
+        $0.id == id }.count
     }
 
     private func isDone(for trackerId: UUID, date: Date) -> Bool {
@@ -182,31 +179,22 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     }
 
     @objc private func didTapDoneButton() {
-        guard let trackerId = trackerId, let date = date else { return }
-        print("!!!!")
-        print(DataManager.shared.completedTrackers)
+        guard let trackerModel = trackerModel,
+              let taskDate = taskDate else { return }
 
-        let isDone = isDone(
-            for: trackerId,
-            date: date
-        )
-
-        print(isDone, "%%%%%%")
-
+        let isDone = isDone(for: trackerModel.id, date: taskDate)
         if isDone {
-            if let index = DataManager.shared.completedTrackers.firstIndex(where: {
-                $0.id == trackerId && $0.date == date
-            }) {
-                DataManager.shared.completedTrackers.remove(at: index)
-            }
-        } else {
-            let trackerDone = TrackerRecordModel(id: trackerId, date: date)
-            DataManager.shared.completedTrackers.append(trackerDone)
-        }
-        updateDoneButtonImage(isDone)
-        updateCountDays(isDone)
+            DataManager.shared.completedTrackers.removeAll { $0.id == trackerModel.id && Calendar.current.isDate($0.date ?? Date.distantPast, inSameDayAs: taskDate) }
 
-        delegate?.didTapDoneButton()
+        } else {
+            if Date() >= taskDate {
+                DataManager.shared.completedTrackers.append(
+                    TrackerRecordModel(id: trackerModel.id, date: taskDate)
+                )
+                updateDoneButtonImage(true)
+            }
+        }
+        delegate?.didTapDoneButton(for: trackerModel )
     }
 }
 
@@ -214,10 +202,20 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
 
 extension TrackerCollectionViewCell: TrackerCollectionViewCellProtocol {
 
-    func configure(with tracker: TrackerModel) {
-        trackerId = tracker.id
-        date = Date()
-
+    func configure(with tracker: TrackerModel, for currentDate: Date?) {
+        trackerModel = tracker
+        taskDate = currentDate
         descriptionUILabel.text = tracker.name
+
+        if let id = trackerModel?.id {
+            let days =  getCountDoneTasksById(id: id)
+            dateUILabel.text = formateDate(day: days)
+        }
+
+        if let id = trackerModel?.id,
+           let date = currentDate {
+            let isDone = isDone(for: id, date: date)
+            updateDoneButtonImage(isDone)
+        }
     }
 }

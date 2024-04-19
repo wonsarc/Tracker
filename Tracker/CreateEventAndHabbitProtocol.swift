@@ -93,7 +93,7 @@ extension CreateEventAndHabbitProtocol where Self: UIViewController {
             name: name,
             color: nil,
             emoji: nil,
-            chedule: schedule
+            schedule: schedule
         )
 
         if let existingCategoryIndex = DataManager.shared.category.firstIndex(where: { $0.title == detailTextLabel }) {

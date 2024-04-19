@@ -11,7 +11,6 @@ protocol CreateTrackerExtensionsDelegate: AnyObject {
     func didCreateNewTracker()
 }
 
-
 extension UIViewController {
 
     func textFieldFactory(withPlaceholder placeholder: String) -> UITextField {
