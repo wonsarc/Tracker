@@ -25,7 +25,7 @@ final class SchedulerTableViewCell: UITableViewCell {
     private lazy var toggleSwitch: UISwitch = {
         let toggleSwitch = UISwitch()
         toggleSwitch.translatesAutoresizingMaskIntoConstraints = false
-        toggleSwitch.isOn = true
+        toggleSwitch.isOn = false
         toggleSwitch.onTintColor = UIColor(red: 55/255, green: 114/255, blue: 231/255, alpha: 1)
         toggleSwitch.addTarget(
             self,
@@ -38,7 +38,7 @@ final class SchedulerTableViewCell: UITableViewCell {
     // MARK: - Initializers
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: "SchedulerCell")
+        super.init(style: style, reuseIdentifier: IdentityCellEnum.schedulerTableViewCell.rawValue)
         self.backgroundColor = .customGray
         setupDayLabel()
         setupToggleSwitch()

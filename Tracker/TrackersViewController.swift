@@ -75,21 +75,13 @@ final class TrackersViewController: UIViewController {
         if categories.isEmpty {
             setupViewsForEmptyCategories()
             setupConstraintsForEmptyCategories()
+            collectionView.isHidden = true
         } else {
-            setupCollectionView()
+            emptyTaskLabel.isHidden = true
+            emptyTaskImageView.isHidden = true
         }
-    }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(
-                selectedCategoryChanged
-            ),
-            name: Notification.Name("CategoryChanged"),
-            object: nil
-        )
+        setupCollectionView()
     }
 
     // MARK: - Private Methods
@@ -124,7 +116,7 @@ final class TrackersViewController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: addTaskButton)
         navigationItem.rightBarButtonItem =  UIBarButtonItem(customView: datePicker)
 
-        var searchController = UISearchController()
+        let searchController = UISearchController()
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.placeholder = "Поиск"
         navigationItem.searchController = searchController
@@ -148,31 +140,22 @@ final class TrackersViewController: UIViewController {
     }
 
     @objc private func didTapAddTaskButton() {
-        present(CreateTrackerViewController(), animated: true)
-    }
-
-    @objc private func selectedCategoryChanged() {
-        categories = DataManager.shared.category
+        let viewController = CreateTrackerViewController()
+        viewController.delegate = self
+        present(viewController, animated: true)
     }
 }
 
 // MARK: - UICollectionViewDataSource
 
 extension TrackersViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        categories.count
-    }
 
     func collectionView(
         _ collectionView: UICollectionView,
-        cellForItemAt indexPath: IndexPath
-    ) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: IdentityCellEnum.trackerCollectionViewCell.rawValue,
-            for: indexPath
-        ) as? TrackerCollectionViewCell
-
-        return cell ?? UICollectionViewCell()
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int
+    ) -> CGSize {
+        return CGSize(width: collectionView.bounds.width, height: 50)
     }
 
     func collectionView(
@@ -180,23 +163,52 @@ extension TrackersViewController: UICollectionViewDataSource {
         viewForSupplementaryElementOfKind kind: String,
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
-        var id: String
-        switch kind {
-        case UICollectionView.elementKindSectionHeader:
-            id = "header"
-        case UICollectionView.elementKindSectionFooter:
-            id = "footer"
-        default:
-            id = ""
+
+        guard kind == UICollectionView.elementKindSectionHeader else {
+            return UICollectionReusableView()
         }
 
-        let view = collectionView.dequeueReusableSupplementaryView(
+        let headerView = collectionView.dequeueReusableSupplementaryView(
             ofKind: kind,
-            withReuseIdentifier: id,
+            withReuseIdentifier: "header",
             for: indexPath
         ) as? SupplementaryView
-        view?.titleLabel.text = "Домашний уют"
-        return view ?? UICollectionReusableView()
+
+        let category = categories[indexPath.section]
+
+        headerView?.titleLabel.text = category.title
+
+        return headerView ?? UICollectionReusableView()
+    }
+
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return categories.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return categories[section].trackers?.count ?? 0
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: IdentityCellEnum.trackerCollectionViewCell.rawValue,
+            for: indexPath
+        ) as? TrackerCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+
+        let category = categories[indexPath.section]
+
+        if let tracker = category.trackers?[indexPath.row] {
+            cell.configure(with: tracker)
+        }
+
+        cell.delegate = self
+
+        return cell
     }
 }
 
@@ -218,25 +230,33 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
     ) -> CGFloat {
         return 0
     }
+}
 
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int
-    ) -> CGSize {
+// MARK: - CreateHabbitViewControllerDelegate
 
-        let indexPath = IndexPath(row: 0, section: section)
-        let headerView = self.collectionView(
-            collectionView,
-            viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader,
-            at: indexPath
-        )
+extension TrackersViewController: CreateTrackerViewControllerDelegate {
 
-        return headerView.systemLayoutSizeFitting(
-            CGSize(
-                width: collectionView.frame.width,
-                height: UIView.layoutFittingExpandedSize.height
-            )
-        )
+    func didCreateNewHabit() {
+        categories = DataManager.shared.category
+        collectionView.reloadData()
+
+        if categories.isEmpty {
+            collectionView.isHidden = true
+            emptyTaskLabel.isHidden = false
+            emptyTaskImageView.isHidden = false
+        } else {
+            collectionView.isHidden = false
+            emptyTaskLabel.isHidden = true
+            emptyTaskImageView.isHidden = true
+        }
+    }
+}
+
+// MARK: - CreateHabbitViewControllerDelegate
+
+extension TrackersViewController: TrackerCollectionViewCellDelegate {
+
+    func didTapDoneButton() {
+        collectionView.reloadData()
     }
 }

@@ -7,83 +7,62 @@
 
 import UIKit
 
-final class CreateHabbitViewController: UIViewController {
+final class CreateHabbitViewController: UIViewController, CreateEventAndHabbitProtocol {
 
-    // MARK: - Private Properties
+    // MARK: - Public Properties
 
-    private lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel()
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.textColor = .black
-        titleLabel.font = .systemFont(ofSize: 16)
-        titleLabel.text = "Новая привычка"
+    weak var delegate: CreateTrackerExtensionsDelegate?
+    var isHeaderVisible = false
+    var detailTextLabel = ""
 
+    lazy var titleLabel: UILabel = {
+        let titleLabel = self.titleLabelFactory(withText: "Новая привычка")
         return titleLabel
     }()
 
-    private lazy var nameTrackerTextField: UITextField = {
-        let nameTrackerTextField = UITextField()
-        nameTrackerTextField.translatesAutoresizingMaskIntoConstraints = false
-        nameTrackerTextField.placeholder = "Введите название трекера"
-        nameTrackerTextField.textColor = .black
-        nameTrackerTextField.borderStyle = .roundedRect
-        nameTrackerTextField.backgroundColor = .customGray
-
-        nameTrackerTextField.clearButtonMode = .always
-
-        return nameTrackerTextField
+    lazy var nameTrackerTextField: UITextField = {
+        let textField = self.textFieldFactory(withPlaceholder: "Введите название трекера")
+        return textField
     }()
 
-    private lazy var settingsTableView: UITableView = {
-        let settingsTableView = UITableView()
-        settingsTableView.translatesAutoresizingMaskIntoConstraints = false
-        settingsTableView.register(CreateHabbitViewSettingsCell.self, forCellReuseIdentifier: "cell")
-        settingsTableView.tableFooterView = UIView(frame: .zero)
-        settingsTableView.rowHeight = 75
-        settingsTableView.layer.cornerRadius = 16
-        settingsTableView.layer.masksToBounds = true
+    lazy var limitUILabel: UILabel = {
+        let limitUILabel = self.limitUILabelFactory(withText: "Ограничение 38 символов")
+        return limitUILabel
+    }()
+
+    lazy var settingsTableView: UITableView = {
+        let settingsTableView = self.settingsTableViewFactory()
+
+        settingsTableView.register(
+            CreateHabbitViewSettingsCell.self,
+            forCellReuseIdentifier: IdentityCellEnum.createHabbitViewSettingsCell.rawValue
+        )
         settingsTableView.dataSource = self
         settingsTableView.delegate = self
 
         return settingsTableView
     }()
 
-    private lazy var canceledButton: UIButton = {
-        let canceledButton = UIButton.systemButton(
-            with: UIImage(),
+    lazy var canceledButton: UIButton = {
+        let canceledButton = self.cancelButtonFactory(
             target: self,
             action: #selector(didTapCanceledButton)
         )
-
-        canceledButton.translatesAutoresizingMaskIntoConstraints = false
-        canceledButton.accessibilityIdentifier = "canceledButton"
-        canceledButton.setTitle("Отменить", for: .normal)
-        canceledButton.layer.borderWidth = 1
-        canceledButton.layer.borderColor = UIColor.red.cgColor
-        canceledButton.tintColor = .red
-        canceledButton.titleLabel?.font = .systemFont(ofSize: 16)
-        canceledButton.layer.cornerRadius = 16
-
         return canceledButton
     }()
 
-    private lazy var createdButton: UIButton = {
-        let createdButton = UIButton.systemButton(
-            with: UIImage(),
+    lazy var createdButton: UIButton = {
+        let createdButton = self.createdButtonFactory(
             target: self,
             action: #selector(didTapCreateHabbitButton)
         )
-
-        createdButton.translatesAutoresizingMaskIntoConstraints = false
-        createdButton.accessibilityIdentifier = "createdButton"
-        createdButton.setTitle("Создать", for: .normal)
-        createdButton.tintColor = .white
-        createdButton.titleLabel?.font = .systemFont(ofSize: 16)
-        createdButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
-        createdButton.layer.cornerRadius = 16
-
         return createdButton
     }()
+
+    // MARK: - Private Properties
+
+    private var selectedDays = ""
+    private var schedule: [WeekDaysModel] = []
 
     // MARK: - View Life Cycles
 
@@ -92,62 +71,21 @@ final class CreateHabbitViewController: UIViewController {
         view.backgroundColor = .white
         setupViews()
         setupConstraints()
+        nameTrackerTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
 
     // MARK: - Private Methods
 
-    private func setupViews() {
-        view.addSubview(titleLabel)
-        view.addSubview(nameTrackerTextField)
-        view.addSubview(settingsTableView)
-        view.addSubview(canceledButton)
-        view.addSubview(createdButton)
-    }
-
-    private func setupConstraints() {
-        NSLayoutConstraint.activate([
-
-            titleLabel.widthAnchor.constraint(equalToConstant: 149),
-            titleLabel.heightAnchor.constraint(equalToConstant: 22),
-            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 13),
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-
-            nameTrackerTextField.heightAnchor.constraint(equalToConstant: 75),
-            nameTrackerTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
-            nameTrackerTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            nameTrackerTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-
-            settingsTableView.heightAnchor.constraint(equalToConstant: 150),
-            settingsTableView.topAnchor.constraint(equalTo: nameTrackerTextField.bottomAnchor, constant: 24),
-            settingsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            settingsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-
-            canceledButton.widthAnchor.constraint(equalToConstant: 166),
-            canceledButton.heightAnchor.constraint(equalToConstant: 60),
-            canceledButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            canceledButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-
-            createdButton.widthAnchor.constraint(equalToConstant: 166),
-            createdButton.heightAnchor.constraint(equalToConstant: 60),
-            createdButton.leadingAnchor.constraint(equalTo: canceledButton.trailingAnchor, constant: 8),
-            createdButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ])
-    }
-
-    private func setupButton(_ button: UIButton) {
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .black
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 16)
-        button.layer.cornerRadius = 16
+    @objc private func textFieldDidChange(_ textField: UITextField) {
+        createTextFieldCheckAction(textField)
     }
 
     @objc private func didTapCanceledButton() {
-        self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
+        cancelButtonAction()
     }
 
     @objc private func didTapCreateHabbitButton() {
-
+        createButtonAction(name: nameTrackerTextField.text, schedule: schedule)
     }
 }
 
@@ -155,16 +93,47 @@ final class CreateHabbitViewController: UIViewController {
 
 extension CreateHabbitViewController: UITableViewDelegate, UITableViewDataSource {
 
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 50))
+
+        let label = limitUILabel
+        label.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(label)
+
+        NSLayoutConstraint.activate([
+            label.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
+            label.centerYAnchor.constraint(equalTo: headerView.centerYAnchor)
+        ])
+
+        return headerView
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return !isHeaderVisible ? 0 : 50
+    }
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as? CreateHabbitViewSettingsCell
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: IdentityCellEnum.createHabbitViewSettingsCell.rawValue
+        ) as? CreateHabbitViewSettingsCell
 
         guard let cell = cell else { return UITableViewCell()}
 
+        cell.clipsToBounds = true
+        cell.layer.masksToBounds = true
+        cell.layer.cornerRadius = 16
+        cell.detailTextLabel?.font = .systemFont(ofSize: 17)
+        cell.detailTextLabel?.textColor = .lightGray
+
         if indexPath.row == 0 {
             cell.textLabel?.text = "Категория"
+            cell.detailTextLabel?.text = detailTextLabel
+            cell.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         } else {
             cell.textLabel?.text = "Расписание"
+            cell.detailTextLabel?.text = selectedDays
+            cell.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         }
 
         return cell
@@ -176,23 +145,50 @@ extension CreateHabbitViewController: UITableViewDelegate, UITableViewDataSource
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        if indexPath.row == 1 {
-
-            present(SchedulerViewController(), animated: true)
-//            let selectedCell = tableView.cellForRow(at: indexPath)
-//
-//            зку
-//            // Получаем текст из выбранной ячейки
-//            if let cellText = selectedCell?.textLabel?.text {
-//                // Выводим текст ячейки
-//                print("Выбрана первая ячейка с текстом: \(cellText)")
-//
-//                // Здесь вы можете выполнить необходимые действия при нажатии на первую ячейку
-//                // Например, открыть новый контроллер или выполнить другое действие
-//            }
+        if indexPath.row == 0 {
+            let categoryViewController = CategoryViewController()
+            categoryViewController.delegate = self
+            present(categoryViewController, animated: true)
+        } else {
+            let schedulerViewController = SchedulerViewController()
+            schedulerViewController.delegate = self
+            present(schedulerViewController, animated: true)
         }
 
-        // Снимаем выделение ячейки после нажатия
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row != tableView.numberOfRows(inSection: indexPath.section) - 1 {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        } else {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: tableView.bounds.size.width)
+        }
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 75
+    }
+}
+
+// MARK: - CategoryViewControllerDelegate
+
+extension CreateHabbitViewController: CategoryViewControllerDelegate {
+
+    func didSelectCategory(_ category: String) {
+        detailTextLabel = category
+        settingsTableView.reloadData()
+    }
+}
+
+// MARK: - SchedulerViewControllerDelegate
+
+extension CreateHabbitViewController: SchedulerViewControllerDelegate {
+
+    func schedulerViewController(_ viewController: SchedulerViewController, didSelectDays days: [WeekDaysModel]) {
+        schedule = days
+        let weekdayStrings = days.map { $0.rawValue }
+        selectedDays = weekdayStrings.joined(separator: ", ")
+        settingsTableView.reloadData()
     }
 }

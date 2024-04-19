@@ -7,9 +7,19 @@
 
 import UIKit
 
+protocol TrackerCollectionViewCellProtocol {
+    func configure(with tracker: TrackerModel)
+}
+
+protocol TrackerCollectionViewCellDelegate: AnyObject {
+    func didTapDoneButton()
+}
+
 final class TrackerCollectionViewCell: UICollectionViewCell {
 
-    // MARK: - Public Properties
+    weak var delegate: TrackerCollectionViewCellDelegate?
+    private var trackerId: UUID?
+    private var date: Date?
 
     // MARK: - Private Properties
 
@@ -51,7 +61,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         descriptionUILabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionUILabel.textColor = .white
         descriptionUILabel.font = .systemFont(ofSize: 12)
-        descriptionUILabel.text = "Поливать растения"
         return descriptionUILabel
     }()
 
@@ -60,7 +69,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         dateUILabel.translatesAutoresizingMaskIntoConstraints = false
         dateUILabel.textColor = .black
         dateUILabel.font = .systemFont(ofSize: 12)
-        dateUILabel.text = "1 день"
         return dateUILabel
     }()
 
@@ -139,8 +147,77 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             doneButton.trailingAnchor.constraint(equalTo: cellUIView.trailingAnchor, constant: -12)
         ])
     }
+        private func formateDate(day: Int) -> String {
+
+        switch day % 10 {
+        case 1:
+            return "\(day) день"
+        case 2, 3, 4:
+            return "\(day) дня"
+        case 5, 6, 7, 8, 9, 0:
+            return "\(day) дней"
+        default:
+            return "сегодня"
+        }
+    }
+
+    private func updateDoneButtonImage(_ isDone: Bool) {
+        let imageName = isDone ? "checkmark" : "plus"
+        doneButton.imageView?.image = UIImage(named: imageName)
+    }
+
+    private func updateCountDays(_ isDone: Bool) {
+        let day = isDone ? 1 : -1
+        let currentDay = dateUILabel.text?.first?.wholeNumberValue ?? 0
+        descriptionUILabel.text = "\(day) + blalba"
+        dateUILabel.text = formateDate(day: day + currentDay)
+        print(formateDate(day: day + currentDay), "))))")
+    }
+
+    private func isDone(for trackerId: UUID, date: Date) -> Bool {
+        let dateDone = DataManager.shared.completedTrackers.filter {
+            $0.id == trackerId && Calendar.current.isDate($0.date ?? Date.distantPast, inSameDayAs: date)
+        }
+        return !dateDone.isEmpty
+    }
 
     @objc private func didTapDoneButton() {
+        guard let trackerId = trackerId, let date = date else { return }
+        print("!!!!")
+        print(DataManager.shared.completedTrackers)
 
+        let isDone = isDone(
+            for: trackerId,
+            date: date
+        )
+
+        print(isDone, "%%%%%%")
+
+        if isDone {
+            if let index = DataManager.shared.completedTrackers.firstIndex(where: {
+                $0.id == trackerId && $0.date == date
+            }) {
+                DataManager.shared.completedTrackers.remove(at: index)
+            }
+        } else {
+            let trackerDone = TrackerRecordModel(id: trackerId, date: date)
+            DataManager.shared.completedTrackers.append(trackerDone)
+        }
+        updateDoneButtonImage(isDone)
+        updateCountDays(isDone)
+
+        delegate?.didTapDoneButton()
+    }
+}
+
+// MARK: - TrackerCollectionViewCellProtocol
+
+extension TrackerCollectionViewCell: TrackerCollectionViewCellProtocol {
+
+    func configure(with tracker: TrackerModel) {
+        trackerId = tracker.id
+        date = Date()
+
+        descriptionUILabel.text = tracker.name
     }
 }

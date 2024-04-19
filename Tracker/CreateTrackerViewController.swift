@@ -7,17 +7,18 @@
 
 import UIKit
 
-final class CreateTrackerViewController: UIViewController {
+protocol CreateTrackerViewControllerDelegate: AnyObject {
+    func didCreateNewHabit()
+}
+
+final class CreateTrackerViewController: UIViewController, CreateTrackerExtensionsDelegate {
+
+    weak var delegate: CreateTrackerViewControllerDelegate?
 
     // MARK: - Private Properties
 
     private lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel()
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.textColor = .black
-        titleLabel.font = .systemFont(ofSize: 16)
-        titleLabel.text = "Создание трекера"
-
+        let titleLabel = self.titleLabelFactory(withText: "Создание трекера")
         return titleLabel
     }()
 
@@ -58,6 +59,10 @@ final class CreateTrackerViewController: UIViewController {
         setupConstraints()
     }
 
+    func didCreateNewTracker() {
+        delegate?.didCreateNewHabit()
+    }
+
     // MARK: - Private Methods
 
     private func setupViews() {
@@ -95,10 +100,14 @@ final class CreateTrackerViewController: UIViewController {
     }
 
     @objc private func didTapCreateHabbitButton() {
-        present(CreateHabbitViewController(), animated: true)
+        let viewController = CreateHabbitViewController()
+        viewController.delegate = self
+        present(viewController, animated: true)
     }
 
     @objc private func didTapCreateEventButton() {
-        present(CreateEventViewController(), animated: true)
+        let viewController = CreateEventViewController()
+        viewController.delegate = self
+        present(viewController, animated: true)
     }
 }

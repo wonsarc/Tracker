@@ -8,11 +8,27 @@
 import Foundation
 
 enum WeekDaysModel: String {
-    case monday = "Понедельник"
-    case tuesday = "Вторник"
-    case wednesday = "Среда"
-    case thursday = "Четверг"
-    case friday = "Пятница"
-    case saturday = "Суббота"
-    case sunday = "Воскресенье"
+    case monday = "Пн"
+    case tuesday = "Вт"
+    case wednesday = "Cр"
+    case thursday = "Чт"
+    case friday = "Пт"
+    case saturday = "Сб"
+    case sunday = "Вс"
+}
+
+extension WeekDaysModel {
+
+    static func fromIndex(_ index: Int) -> WeekDaysModel? {
+        switch index {
+        case 0: return .monday
+        case 1: return .tuesday
+        case 2: return .wednesday
+        case 3: return .thursday
+        case 4: return .friday
+        case 5: return .saturday
+        case 6: return .sunday
+        default: return nil
+        }
+    }
 }

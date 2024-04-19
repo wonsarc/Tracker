@@ -23,7 +23,7 @@ final class CreateHabbitViewSettingsCell: UITableViewCell {
     // MARK: - Initializers
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: "cell")
+        super.init(style: .subtitle, reuseIdentifier: IdentityCellEnum.createHabbitViewSettingsCell.rawValue)
         accessoryType = .disclosureIndicator
         self.backgroundColor = .customGray
         setupNameLabel()

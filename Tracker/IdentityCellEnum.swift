@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+enum IdentityCellEnum: String {
+
+    case categoryViewCell = "categoryCell"
+    case schedulerTableViewCell = "schedulerCell"
+    case createHabbitViewSettingsCell = "habbitCell"
+    case trackerCollectionViewCell = "trackerCell"
+}
