@@ -72,27 +72,23 @@ final class TrackersViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+
         setupNavBar()
-
-        if categories.isEmpty {
-            setupViewsForEmptyCategories()
-            setupConstraintsForEmptyCategories()
-            collectionView.isHidden = true
-        } else {
-            emptyTaskLabel.isHidden = true
-            emptyTaskImageView.isHidden = true
-            collectionView.isHidden = false
-        }
-
+        setupViewsForEmptyCategories()
+        setupConstraintsForEmptyCategories()
         setupCollectionView()
+
+        updateSelectedDate(date: Date())
+
+        updateUI()
+
         datePicker.addTarget(self, action: #selector(datePickerValueChanged), for: .valueChanged)
     }
 
-    @objc func datePickerValueChanged(_ sender: UIDatePicker) {
-        let selectedDate = sender.date
-        let customCalendar = Calendar(identifier: .gregorian)
+    // MARK: - Public Methods
 
-        currentDate = selectedDate
+    private func updateSelectedDate (date selectedDate: Date) {
+        let customCalendar = Calendar(identifier: .gregorian)
 
         var weekday = customCalendar.component(.weekday, from: selectedDate)
         weekday = (weekday - 2 + 7) % 7
@@ -103,7 +99,29 @@ final class TrackersViewController: UIViewController {
         }
     }
 
+    @objc func datePickerValueChanged(_ sender: UIDatePicker) {
+        let selectedDate = sender.date
+        currentDate = selectedDate
+
+        if let currentDate = currentDate {
+            updateSelectedDate(date: currentDate)
+            updateUI()
+        }
+    }
+
     // MARK: - Private Methods
+
+    private func updateUI() {
+        if getAvailibleCategories() == 0 {
+            emptyTaskLabel.isHidden = false
+            emptyTaskImageView.isHidden = false
+            collectionView.isHidden = true
+        } else {
+            emptyTaskLabel.isHidden = true
+            emptyTaskImageView.isHidden = true
+            collectionView.isHidden = false
+        }
+    }
 
     private func setupCollectionView() {
         view.addSubview(collectionView)
@@ -163,6 +181,16 @@ final class TrackersViewController: UIViewController {
         viewController.delegate = self
         present(viewController, animated: true)
     }
+
+    private func getAvailibleCategories() -> Int {
+        return categories.compactMap { $0.trackers?.filter { tracker in
+            if let selectedDay = selectedDay, let schedule = tracker.schedule {
+                return schedule.contains(selectedDay)
+            } else {
+                return true
+            }
+        }}.filter { !$0.isEmpty }.count
+    }
 }
 
 // MARK: - UICollectionViewDataSource
@@ -201,7 +229,7 @@ extension TrackersViewController: UICollectionViewDataSource {
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return categories.count
+        return getAvailibleCategories()
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -271,16 +299,7 @@ extension TrackersViewController: CreateTrackerViewControllerDelegate {
     func didCreateNewHabit() {
         categories = DataManager.shared.category
         collectionView.reloadData()
-
-        if categories.isEmpty {
-            collectionView.isHidden = true
-            emptyTaskLabel.isHidden = false
-            emptyTaskImageView.isHidden = false
-        } else {
-            collectionView.isHidden = false
-            emptyTaskLabel.isHidden = true
-            emptyTaskImageView.isHidden = true
-        }
+        updateUI()
     }
 }
 
