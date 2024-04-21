@@ -97,7 +97,7 @@ final class SchedulerViewController: UIViewController {
         view.addSubview(titleLabel)
 
         titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 38).isActive = true
-        titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 140).isActive = true
+        titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
 
     private func setupSchedulerTableView() {

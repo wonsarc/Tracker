@@ -149,8 +149,8 @@ final class CategoryViewController: UIViewController, NewCategoryViewControllerD
 
         NSLayoutConstraint.activate([
             addCategoryButton.heightAnchor.constraint(equalToConstant: 60),
-            addCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            addCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            addCategoryButton.widthAnchor.constraint(equalToConstant: 335),
+            addCategoryButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             addCategoryButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
     }

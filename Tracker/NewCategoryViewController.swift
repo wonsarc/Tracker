@@ -79,8 +79,8 @@ final class NewCategoryViewController: UIViewController {
             nameCategoryTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
 
             doneButton.heightAnchor.constraint(equalToConstant: 60),
-            doneButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            doneButton.widthAnchor.constraint(equalToConstant: 335),
+            doneButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             doneButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
     }

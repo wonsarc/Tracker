@@ -58,12 +58,12 @@ extension CreateEventAndHabbitProtocol where Self: UIViewController {
 
             canceledButton.widthAnchor.constraint(equalToConstant: 166),
             canceledButton.heightAnchor.constraint(equalToConstant: 60),
-            canceledButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            canceledButton.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -4),
             canceledButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
-            createdButton.widthAnchor.constraint(equalToConstant: 166),
+            createdButton.widthAnchor.constraint(equalToConstant: 161),
             createdButton.heightAnchor.constraint(equalToConstant: 60),
-            createdButton.leadingAnchor.constraint(equalTo: canceledButton.trailingAnchor, constant: 8),
+            createdButton.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 4),
             createdButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
