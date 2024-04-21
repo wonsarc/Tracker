@@ -78,6 +78,7 @@ final class CreateHabbitViewController: UIViewController, CreateEventAndHabbitPr
 
     @objc private func textFieldDidChange(_ textField: UITextField) {
         createTextFieldCheckAction(textField)
+        updateAddCategoryButton()
     }
 
     @objc private func didTapCanceledButton() {
@@ -177,6 +178,7 @@ extension CreateHabbitViewController: CategoryViewControllerDelegate {
 
     func didSelectCategory(_ category: String) {
         detailTextLabel = category
+        updateAddCategoryButton()
         settingsTableView.reloadData()
     }
 }

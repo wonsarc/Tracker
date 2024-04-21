@@ -54,7 +54,7 @@ final class CreateEventViewController: UIViewController, CreateEventAndHabbitPro
         let createdButton = self.createdButtonFactory(
             target: self,
             action: #selector(didTapCreateEventButton)
-        )
+            )
         return createdButton
     }()
 
@@ -72,6 +72,7 @@ final class CreateEventViewController: UIViewController, CreateEventAndHabbitPro
 
     @objc private func textFieldDidChange(_ textField: UITextField) {
         createTextFieldCheckAction(textField)
+        updateAddCategoryButton()
     }
 
     @objc private func didTapCanceledButton() {
@@ -153,6 +154,7 @@ extension CreateEventViewController: CategoryViewControllerDelegate {
 
     func didSelectCategory(_ category: String) {
         detailTextLabel = category
+        updateAddCategoryButton()
         settingsTableView.reloadData()
     }
 }

@@ -97,6 +97,7 @@ extension UIViewController {
         createdButton.titleLabel?.font = .systemFont(ofSize: 16)
         createdButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
         createdButton.layer.cornerRadius = 16
+        createdButton.isEnabled = false
 
         return createdButton
      }

@@ -23,6 +23,7 @@ protocol CreateEventAndHabbitProtocol: AnyObject {
     func createTextFieldCheckAction(_ textField: UITextField)
     func createButtonAction(name: String?, schedule: [WeekDaysModel]?)
     func cancelButtonAction()
+    func updateAddCategoryButton()
 }
 
 extension CreateEventAndHabbitProtocol where Self: UIViewController {
@@ -119,6 +120,16 @@ extension CreateEventAndHabbitProtocol where Self: UIViewController {
         delegate?.didCreateNewTracker()
         if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
             rootViewController.dismiss(animated: true, completion: nil)
+        }
+    }
+
+    func updateAddCategoryButton() {
+        if detailTextLabel != "" && nameTrackerTextField.text != "" && nameTrackerTextField.text != nil {
+            createdButton.backgroundColor = .black
+            createdButton.isEnabled = true
+        } else {
+            createdButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
+            createdButton.isEnabled = false
         }
     }
 }
