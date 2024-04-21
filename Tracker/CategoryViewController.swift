@@ -50,7 +50,6 @@ final class CategoryViewController: UIViewController, NewCategoryViewControllerD
             forCellReuseIdentifier: IdentityCellEnum.categoryViewCell.rawValue
         )
         categoryTableView.tableFooterView = UIView(frame: .zero)
-        categoryTableView.rowHeight = 75
         categoryTableView.layer.cornerRadius = 16
         categoryTableView.layer.masksToBounds = true
         categoryTableView.dataSource = self
@@ -82,69 +81,106 @@ final class CategoryViewController: UIViewController, NewCategoryViewControllerD
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        setupViews()
-        setupConstraints()
 
+        setupTitleLabel()
+        setupEmptyScreen()
+        setupCategoryTableView()
+        setupAddCategoryButton()
+
+        updateUI()
     }
+
+    // MARK: - Public Methods
 
     func addCategory() {
         categoryData = DataManager.shared.category
-        view.subviews.forEach { $0.removeFromSuperview() }
-        setupViews()
-        setupConstraints()
-        categoryTableView.reloadData()
+        updateUI()
     }
-
     // MARK: - Private Methods
 
-    private func setupViews() {
-        view.addSubview(titleLabel)
+    private func getHeightTableView() -> CGFloat {
+        let height = CGFloat(categoryData.count) * 75
 
-        if categoryData.isEmpty {
-            view.addSubview(emptyTaskImageView)
-            view.addSubview(emptyTaskLabel)
-        } else {
-            view.addSubview(categoryTableView)
-        }
+        let limitHeight = view.frame.size.height
+        - titleLabel.frame.size.height - 16
+        - addCategoryButton.frame.size.height - 148
 
-        view.addSubview(addCategoryButton)
+        return height > limitHeight ? limitHeight : height
     }
 
-    private func setupConstraints() {
+    private func setupHeightCategoryTableView(with height: CGFloat) {
+
+        categoryTableView.constraints.forEach { constraint in
+            if constraint.firstAttribute == .height {
+                constraint.constant = height
+            }
+        }
+    }
+
+    private func updateUI() {
+         if categoryData.isEmpty {
+             emptyTaskLabel.isHidden = false
+             emptyTaskImageView.isHidden = false
+             categoryTableView.isHidden = true
+         } else {
+             emptyTaskLabel.isHidden = true
+             emptyTaskImageView.isHidden = true
+             categoryTableView.isHidden = false
+         }
+
+        let height = getHeightTableView()
+        setupHeightCategoryTableView(with: height)
+        categoryTableView.reloadData()
+     }
+
+    private func setupTitleLabel() {
+        view.addSubview(titleLabel)
 
         NSLayoutConstraint.activate([
-
             titleLabel.widthAnchor.constraint(equalToConstant: 84),
             titleLabel.heightAnchor.constraint(equalToConstant: 22),
-            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 13),
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 38),
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+    }
 
+    private func setupAddCategoryButton() {
+        view.addSubview(addCategoryButton)
+
+        NSLayoutConstraint.activate([
             addCategoryButton.heightAnchor.constraint(equalToConstant: 60),
             addCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             addCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             addCategoryButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
+    }
 
-        if categoryData.isEmpty {
-            NSLayoutConstraint.activate([
-                emptyTaskImageView.widthAnchor.constraint(equalToConstant: 80),
-                emptyTaskImageView.heightAnchor.constraint(equalToConstant: 80),
-                emptyTaskImageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 246),
-                emptyTaskImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+    private func setupEmptyScreen() {
+        view.addSubview(emptyTaskLabel)
+        view.addSubview(emptyTaskImageView)
 
-                emptyTaskLabel.heightAnchor.constraint(equalToConstant: 36),
-                emptyTaskLabel.topAnchor.constraint(equalTo: emptyTaskImageView.bottomAnchor, constant: 8),
-                emptyTaskLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-                emptyTaskLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
-            ])
-        } else {
-            NSLayoutConstraint.activate([
-                categoryTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-                categoryTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-                categoryTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
-                categoryTableView.heightAnchor.constraint(equalToConstant: 150)
-            ])
-        }
+        NSLayoutConstraint.activate([
+
+            emptyTaskImageView.widthAnchor.constraint(equalToConstant: 80),
+            emptyTaskImageView.heightAnchor.constraint(equalToConstant: 80),
+            emptyTaskImageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 246),
+            emptyTaskImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+
+            emptyTaskLabel.heightAnchor.constraint(equalToConstant: 36),
+            emptyTaskLabel.topAnchor.constraint(equalTo: emptyTaskImageView.bottomAnchor, constant: 8),
+            emptyTaskLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+    }
+
+    private func setupCategoryTableView() {
+        view.addSubview(categoryTableView)
+
+        NSLayoutConstraint.activate([
+            categoryTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            categoryTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            categoryTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
+            categoryTableView.heightAnchor.constraint(equalToConstant: getHeightTableView())
+        ])
     }
 
     @objc private func didTapAddCategoryButton() {
@@ -182,6 +218,18 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return categoryData.count
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row != tableView.numberOfRows(inSection: indexPath.section) - 1 {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        } else {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: tableView.bounds.size.width)
+        }
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 75
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

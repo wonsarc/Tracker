@@ -81,6 +81,7 @@ final class TrackersViewController: UIViewController {
         } else {
             emptyTaskLabel.isHidden = true
             emptyTaskImageView.isHidden = true
+            collectionView.isHidden = false
         }
 
         setupCollectionView()
@@ -288,8 +289,6 @@ extension TrackersViewController: CreateTrackerViewControllerDelegate {
 extension TrackersViewController: TrackerCollectionViewCellDelegate {
 
     func didTapDoneButton(for tracker: TrackerModel) {
-        print("Button tapped for tracker:", tracker)
-
         collectionView.reloadData()
     }
 }
