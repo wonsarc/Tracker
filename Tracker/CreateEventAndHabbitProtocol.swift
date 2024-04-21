@@ -43,7 +43,7 @@ extension CreateEventAndHabbitProtocol where Self: UIViewController {
 
             titleLabel.widthAnchor.constraint(equalToConstant: 149),
             titleLabel.heightAnchor.constraint(equalToConstant: 22),
-            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 13),
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 38),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 
             nameTrackerTextField.heightAnchor.constraint(equalToConstant: 75),

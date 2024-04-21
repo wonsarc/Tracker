@@ -19,7 +19,7 @@ final class SchedulerViewController: UIViewController {
 
     // MARK: - Private Properties
 
-    private var selectDays: [WeekDaysModel] = []
+    private var selectIndexSet: Set<Int> = []
 
     private lazy var titleLabel: UILabel = {
         let titleLabel = self.titleLabelFactory(withText: "Расписание")
@@ -44,6 +44,24 @@ final class SchedulerViewController: UIViewController {
         return schedulerTableView
     }()
 
+    private lazy var doneButton: UIButton = {
+        let doneButton = UIButton.systemButton(
+            with: UIImage(),
+            target: self,
+            action: #selector(didTapDoneButton)
+        )
+
+        doneButton.translatesAutoresizingMaskIntoConstraints = false
+        doneButton.accessibilityIdentifier = "doneButton"
+        doneButton.setTitle("Готово", for: .normal)
+        doneButton.tintColor = .white
+        doneButton.titleLabel?.font = .systemFont(ofSize: 16)
+        doneButton.backgroundColor = .black
+        doneButton.layer.cornerRadius = 16
+
+        return doneButton
+    }()
+
     // MARK: - Initializers
 
     override func viewDidLoad() {
@@ -51,29 +69,34 @@ final class SchedulerViewController: UIViewController {
         view.backgroundColor = .white
         setupTitleLabel()
         setupSchedulerTableView()
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-
-        delegate?.schedulerViewController(self, didSelectDays: selectDays)
-    }
-
-    // MARK: - Overrides Methods
-
-    // MARK: - IB Actions
-
-    // MARK: - Public Methods
-
-    func didSelectScheduler() -> [WeekDaysModel] {
-        return selectDays
+        setupDoneButton()
     }
 
     // MARK: - Private Methods
 
+    @objc private func didTapDoneButton() {
+        let selectDays = didSelectScheduler()
+        delegate?.schedulerViewController(self, didSelectDays: selectDays)
+        dismiss(animated: true)
+    }
+
+    private func didSelectScheduler() -> [WeekDaysModel] {
+        var days: [WeekDaysModel] = []
+
+        let sortedIndexes = selectIndexSet.map {$0}.sorted()
+
+        sortedIndexes.forEach {
+            guard let day = WeekDaysModel.fromIndex($0) else { return }
+            days.append(day)
+        }
+
+        return days
+    }
+
     private func setupTitleLabel() {
         view.addSubview(titleLabel)
-        titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 13).isActive = true
+
+        titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 38).isActive = true
         titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 140).isActive = true
     }
 
@@ -86,6 +109,17 @@ final class SchedulerViewController: UIViewController {
         schedulerTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
     }
 
+    private func setupDoneButton() {
+        view.addSubview(doneButton)
+
+        doneButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        doneButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        doneButton.bottomAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+            constant: -16
+        ).isActive = true
+    }
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
@@ -109,10 +143,12 @@ extension SchedulerViewController: UITableViewDelegate, UITableViewDataSource {
         cell.textLabel?.text = day.capitalized
         cell.selectionStyle = .none
 
-        cell.switchValueChangedHandler = { [weak self] _ in
+        cell.switchValueChangedHandler = { [weak self] isOn in
             guard self != nil else { return }
-            if let day = WeekDaysModel.fromIndex(indexPath.row) {
-                self?.selectDays.append(day)
+            if isOn {
+                self?.selectIndexSet.insert(indexPath.row)
+            } else {
+                self?.selectIndexSet.remove(indexPath.row)
             }
         }
 

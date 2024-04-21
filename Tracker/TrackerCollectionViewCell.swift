@@ -184,7 +184,9 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
 
         let isDone = isDone(for: trackerModel.id, date: taskDate)
         if isDone {
-            DataManager.shared.completedTrackers.removeAll { $0.id == trackerModel.id && Calendar.current.isDate($0.date ?? Date.distantPast, inSameDayAs: taskDate) }
+            DataManager.shared.completedTrackers.removeAll {
+                $0.id == trackerModel.id && Calendar.current.isDate($0.date ?? Date.distantPast, inSameDayAs: taskDate)
+            }
 
         } else {
             if Date() >= taskDate {
