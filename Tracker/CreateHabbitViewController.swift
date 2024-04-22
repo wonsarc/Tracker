@@ -118,19 +118,16 @@ final class CreateHabbitViewController: UIViewController, CreateEventAndHabbitPr
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        // Обновите contentSize на основе размеров содержимого в scrollView
         updateScrollViewContentSize()
     }
 
     private func updateScrollViewContentSize() {
         var contentRect = CGRect.zero
 
-        // Перебирайте все подвиды scrollView и объединяйте их рамки
         for view in scrollView.subviews {
             contentRect = contentRect.union(view.frame)
         }
 
-        // Установите contentSize равным размеру объединенной рамки
         scrollView.contentSize = contentRect.size
     }
 

@@ -51,7 +51,6 @@ extension UIViewController {
     }
 
     func titleLabelFactory(withText text: String) -> UILabel {
-
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = .black

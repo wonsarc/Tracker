@@ -44,13 +44,7 @@ extension CreateEventAndHabbitProtocol where Self: UIViewController {
 
         let topAnchor: CGFloat = !isHeaderVisible ? 0 : 24
 
-
         NSLayoutConstraint.activate([
-
-            
-
-            
-
             titleLabel.heightAnchor.constraint(equalToConstant: 22),
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 38),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -66,24 +60,21 @@ extension CreateEventAndHabbitProtocol where Self: UIViewController {
 
             settingsTableView.topAnchor.constraint(equalTo: nameTrackerTextField.bottomAnchor, constant: topAnchor),
             settingsTableView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            settingsTableView.heightAnchor.constraint(equalToConstant: 200),
 
-            emojiAndColorCollectionView.topAnchor.constraint(equalTo: settingsTableView.bottomAnchor, constant: 32),
+            emojiAndColorCollectionView.topAnchor.constraint(equalTo: settingsTableView.bottomAnchor, constant: 8),
             emojiAndColorCollectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            emojiAndColorCollectionView.heightAnchor.constraint(equalToConstant: 500),
 
             canceledButton.widthAnchor.constraint(equalToConstant: 166),
             canceledButton.heightAnchor.constraint(equalToConstant: 60),
             canceledButton.trailingAnchor.constraint(equalTo: scrollView.centerXAnchor, constant: -4),
-            canceledButton.topAnchor.constraint(equalTo: emojiAndColorCollectionView.bottomAnchor, constant: 16),
+            canceledButton.topAnchor.constraint(equalTo: emojiAndColorCollectionView.bottomAnchor, constant: 1),
 
             createdButton.widthAnchor.constraint(equalToConstant: 161),
             createdButton.heightAnchor.constraint(equalToConstant: 60),
+            createdButton.topAnchor.constraint(equalTo: settingsTableView.bottomAnchor, constant: 8),
             createdButton.leadingAnchor.constraint(equalTo: scrollView.centerXAnchor, constant: 4),
-            createdButton.topAnchor.constraint(equalTo: emojiAndColorCollectionView.bottomAnchor, constant: 16)
+            createdButton.topAnchor.constraint(equalTo: emojiAndColorCollectionView.bottomAnchor, constant: 1)
         ])
-
-        
     }
 
     func createTextFieldCheckAction(_ textField: UITextField) {
