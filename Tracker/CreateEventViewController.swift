@@ -42,8 +42,10 @@ final class CreateEventViewController: UIViewController, CreateEventAndHabbitPro
             CreateHabbitViewSettingsCell.self,
             forCellReuseIdentifier: IdentityCellEnum.createHabbitViewSettingsCell.rawValue
         )
+
         settingsTableView.dataSource = self
         settingsTableView.delegate = self
+
         return settingsTableView
     }()
 
@@ -54,6 +56,11 @@ final class CreateEventViewController: UIViewController, CreateEventAndHabbitPro
         emojiAndColorCollectionView.register(
             EmojiAndColorViewCell.self,
             forCellWithReuseIdentifier: IdentityCellEnum.emojiAndColorViewCell.rawValue
+        )
+        emojiAndColorCollectionView.register(
+            UICollectionReusableView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: IdentityCellEnum.headerViewIdentifier.rawValue
         )
 
         return emojiAndColorCollectionView
@@ -76,6 +83,10 @@ final class CreateEventViewController: UIViewController, CreateEventAndHabbitPro
     }()
 
     // MARK: - Private Properties
+
+    private var currentEmoji: String?
+    private var currentColor: UIColor?
+    private var selectedIndexPaths: [IndexPath?] = [nil, nil]
 
     private var emojiList = [
         "🙂", "😻", "🌺", "🐶", "❤️", "😱",
@@ -102,11 +113,27 @@ final class CreateEventViewController: UIViewController, CreateEventAndHabbitPro
         nameTrackerTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        updateScrollViewContentSize()
+    }
+
     // MARK: - Private Methods
+
+    private func updateScrollViewContentSize() {
+        var contentRect = CGRect.zero
+
+        for view in scrollView.subviews {
+            contentRect = contentRect.union(view.frame)
+        }
+
+        scrollView.contentSize = contentRect.size
+    }
 
     @objc private func textFieldDidChange(_ textField: UITextField) {
         createTextFieldCheckAction(textField)
-        updateAddCategoryButton()
+        canCreateTracker()
     }
 
     @objc private func didTapCanceledButton() {
@@ -121,6 +148,22 @@ final class CreateEventViewController: UIViewController, CreateEventAndHabbitPro
             schedule: nil
         )
         createButtonAction(with: newTracker)
+    }
+
+    private func canCreateTracker() {
+        let isCanCreateTracker = detailTextLabel != "" &&
+        nameTrackerTextField.text != nil &&
+        nameTrackerTextField.text != "" &&
+        currentColor != nil &&
+        currentEmoji != nil
+
+        if isCanCreateTracker {
+            createdButton.backgroundColor = .black
+            createdButton.isEnabled = true
+        } else {
+            createdButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
+            createdButton.isEnabled = false
+        }
     }
 }
 
@@ -194,20 +237,75 @@ extension CreateEventViewController: CategoryViewControllerDelegate {
 
     func didSelectCategory(_ category: String) {
         detailTextLabel = category
-        updateAddCategoryButton()
+        canCreateTracker()
         settingsTableView.reloadData()
     }
 }
 
-// MARK: - SchedulerViewControllerDelegate
+// MARK: - UICollectionViewDataSource
 
 extension CreateEventViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if section == 0 {
-            emojiList.count
+
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 2
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+
+        UIEdgeInsets(top: 30, left: 0, bottom: 16, right: 0)
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int
+    ) -> CGSize {
+        return CGSize(width: collectionView.bounds.width, height: 18)
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath
+    ) -> UICollectionReusableView {
+        if kind == UICollectionView.elementKindSectionHeader {
+            let headerView = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: IdentityCellEnum.headerViewIdentifier.rawValue,
+                for: indexPath
+            )
+
+            let label = UILabel(
+                frame: CGRect(
+                    x: 16,
+                    y: 0,
+                    width: headerView.frame.width - 32,
+                    height: headerView.frame.height
+                )
+            )
+
+            label.textColor = .black
+            label.font = UIFont.boldSystemFont(ofSize: 19)
+
+            if indexPath.section == 0 {
+                label.text = "Emoji"
+            } else {
+                label.text = "Цвет"
+            }
+
+            headerView.addSubview(label)
+            return headerView
         } else {
-            colorList.count
+            return UICollectionReusableView()
         }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        section == 0 ? emojiList.count :  colorList.count
     }
 
     func collectionView(
@@ -249,5 +347,41 @@ extension CreateEventViewController: UICollectionViewDelegateFlowLayout {
         minimumInteritemSpacingForSectionAt section: Int
     ) -> CGFloat {
         return 0
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+        if indexPath.section == 0 {
+            if let otherSelectedIndexPath = selectedIndexPaths[0] {
+                collectionView.deselectItem(at: otherSelectedIndexPath, animated: true)
+                if let cell = collectionView.cellForItem(at: otherSelectedIndexPath) as? EmojiAndColorViewCell {
+                    cell.contentUILabel.backgroundColor = .clear
+                }
+            }
+
+            if let cell = collectionView.cellForItem(at: indexPath) as? EmojiAndColorViewCell {
+                cell.contentUILabel.backgroundColor = UIColor(hex: 0xE6E8EB)
+                currentEmoji = emojiList[indexPath.row]
+                selectedIndexPaths[0] = indexPath
+            }
+
+        } else {
+            if let otherSelectedIndexPath = selectedIndexPaths[1] {
+                collectionView.deselectItem(at: otherSelectedIndexPath, animated: true)
+                if let cell = collectionView.cellForItem(at: otherSelectedIndexPath) as? EmojiAndColorViewCell {
+                    cell.cellUIView.layer.borderWidth = 0
+                }
+            }
+
+            if let cell = collectionView.cellForItem(at: indexPath) as? EmojiAndColorViewCell {
+                let color = cell.contentUILabel.backgroundColor
+                guard let borderColor = color?.withAlphaComponent(0.3).cgColor else { return }
+                cell.cellUIView.layer.borderColor = borderColor
+                cell.cellUIView.layer.borderWidth = 3
+                currentColor = color
+                selectedIndexPaths[1] = indexPath
+            }
+
+        }
     }
 }

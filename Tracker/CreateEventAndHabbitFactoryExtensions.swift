@@ -19,6 +19,7 @@ extension UIViewController {
         scrollUIViewFactory.translatesAutoresizingMaskIntoConstraints = false
         scrollUIViewFactory.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         scrollUIViewFactory.alwaysBounceVertical = true
+        scrollUIViewFactory.showsHorizontalScrollIndicator = false
 
         return scrollUIViewFactory
     }

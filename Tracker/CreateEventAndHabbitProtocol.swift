@@ -25,7 +25,6 @@ protocol CreateEventAndHabbitProtocol: AnyObject {
     func createTextFieldCheckAction(_ textField: UITextField)
     func createButtonAction(with newTracker: TrackerModel)
     func cancelButtonAction()
-    func updateAddCategoryButton()
 }
 
 extension CreateEventAndHabbitProtocol where Self: UIViewController {
@@ -56,24 +55,28 @@ extension CreateEventAndHabbitProtocol where Self: UIViewController {
 
             nameTrackerTextField.topAnchor.constraint(equalTo: scrollView.topAnchor),
             nameTrackerTextField.heightAnchor.constraint(equalToConstant: 75),
-            nameTrackerTextField.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            nameTrackerTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            nameTrackerTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
 
             settingsTableView.topAnchor.constraint(equalTo: nameTrackerTextField.bottomAnchor, constant: topAnchor),
-            settingsTableView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            settingsTableView.heightAnchor.constraint(equalToConstant: 200),
+            settingsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            settingsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
 
             emojiAndColorCollectionView.topAnchor.constraint(equalTo: settingsTableView.bottomAnchor, constant: 8),
-            emojiAndColorCollectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            emojiAndColorCollectionView.heightAnchor.constraint(equalToConstant: 525),
+            emojiAndColorCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            emojiAndColorCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
 
             canceledButton.widthAnchor.constraint(equalToConstant: 166),
             canceledButton.heightAnchor.constraint(equalToConstant: 60),
-            canceledButton.trailingAnchor.constraint(equalTo: scrollView.centerXAnchor, constant: -4),
-            canceledButton.topAnchor.constraint(equalTo: emojiAndColorCollectionView.bottomAnchor, constant: 1),
+            canceledButton.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -4),
+            canceledButton.topAnchor.constraint(equalTo: emojiAndColorCollectionView.bottomAnchor, constant: -16),
 
             createdButton.widthAnchor.constraint(equalToConstant: 161),
             createdButton.heightAnchor.constraint(equalToConstant: 60),
-            createdButton.topAnchor.constraint(equalTo: settingsTableView.bottomAnchor, constant: 8),
-            createdButton.leadingAnchor.constraint(equalTo: scrollView.centerXAnchor, constant: 4),
-            createdButton.topAnchor.constraint(equalTo: emojiAndColorCollectionView.bottomAnchor, constant: 1)
+            createdButton.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 4),
+            createdButton.topAnchor.constraint(equalTo: emojiAndColorCollectionView.bottomAnchor, constant: -16)
         ])
     }
 
@@ -122,16 +125,6 @@ extension CreateEventAndHabbitProtocol where Self: UIViewController {
         delegate?.didCreateNewTracker()
         if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
             rootViewController.dismiss(animated: true, completion: nil)
-        }
-    }
-
-    func updateAddCategoryButton() {
-        if detailTextLabel != "" && nameTrackerTextField.text != "" && nameTrackerTextField.text != nil {
-            createdButton.backgroundColor = .black
-            createdButton.isEnabled = true
-        } else {
-            createdButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
-            createdButton.isEnabled = false
         }
     }
 }

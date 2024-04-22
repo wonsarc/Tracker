@@ -12,8 +12,8 @@ final class CreateHabbitViewController: UIViewController, CreateEventAndHabbitPr
     // MARK: - Public Properties
 
     weak var delegate: CreateTrackerExtensionsDelegate?
-    var isHeaderVisible = false
     var detailTextLabel = ""
+    var isHeaderVisible = false
 
     lazy var titleLabel: UILabel = {
         let titleLabel = self.titleLabelFactory(withText: "Новая привычка")
@@ -121,6 +121,8 @@ final class CreateHabbitViewController: UIViewController, CreateEventAndHabbitPr
         updateScrollViewContentSize()
     }
 
+    // MARK: - Private Methods
+
     private func updateScrollViewContentSize() {
         var contentRect = CGRect.zero
 
@@ -130,8 +132,6 @@ final class CreateHabbitViewController: UIViewController, CreateEventAndHabbitPr
 
         scrollView.contentSize = contentRect.size
     }
-
-    // MARK: - Private Methods
 
     @objc private func textFieldDidChange(_ textField: UITextField) {
         createTextFieldCheckAction(textField)
@@ -149,6 +149,8 @@ final class CreateHabbitViewController: UIViewController, CreateEventAndHabbitPr
 
     private func canCreateTracker() {
         let isCanCreateTracker = detailTextLabel != "" &&
+        nameTrackerTextField.text != nil &&
+        nameTrackerTextField.text != "" &&
         currentColor != nil &&
         currentEmoji != nil &&
         !currentSchedule.isEmpty
@@ -276,10 +278,11 @@ extension CreateHabbitViewController: SchedulerViewControllerDelegate {
         let weekdayStrings = days.map { $0.rawValue }
         selectedDays = weekdayStrings.joined(separator: ", ")
         settingsTableView.reloadData()
+        canCreateTracker()
     }
 }
 
-// MARK: - SchedulerViewControllerDelegate
+// MARK: - UICollectionViewDataSource
 
 extension CreateHabbitViewController: UICollectionViewDataSource {
 
@@ -400,6 +403,7 @@ extension CreateHabbitViewController: UICollectionViewDelegateFlowLayout {
                 cell.contentUILabel.backgroundColor = UIColor(hex: 0xE6E8EB)
                 currentEmoji = emojiList[indexPath.row]
                 selectedIndexPaths[0] = indexPath
+                canCreateTracker()
             }
 
         } else {
@@ -417,6 +421,7 @@ extension CreateHabbitViewController: UICollectionViewDelegateFlowLayout {
                 cell.cellUIView.layer.borderWidth = 3
                 currentColor = color
                 selectedIndexPaths[1] = indexPath
+                canCreateTracker()
             }
 
         }

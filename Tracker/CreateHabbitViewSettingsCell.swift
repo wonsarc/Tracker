@@ -38,7 +38,7 @@ final class CreateHabbitViewSettingsCell: UITableViewCell {
 
     private func setupNameLabel() {
         addSubview(nameLabel)
-        nameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 27).isActive = true
-        nameLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 12).isActive = true
+        nameLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
     }
 }
