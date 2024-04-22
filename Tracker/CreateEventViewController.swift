@@ -20,6 +20,11 @@ final class CreateEventViewController: UIViewController, CreateEventAndHabbitPro
         return titleLabel
     }()
 
+    lazy var scrollView = {
+        let scrollView = self.scrollUIViewFactory()
+        return scrollView
+    }()
+
     lazy var nameTrackerTextField: UITextField = {
         let textField = self.textFieldFactory(withPlaceholder: "Введите название трекера")
         return textField
@@ -42,6 +47,18 @@ final class CreateEventViewController: UIViewController, CreateEventAndHabbitPro
         return settingsTableView
     }()
 
+    lazy var emojiAndColorCollectionView: UICollectionView = {
+        let emojiAndColorCollectionView = self.emojiAndColorCollectionViewFactory()
+        emojiAndColorCollectionView.dataSource = self
+        emojiAndColorCollectionView.delegate = self
+        emojiAndColorCollectionView.register(
+            EmojiAndColorViewCell.self,
+            forCellWithReuseIdentifier: IdentityCellEnum.emojiAndColorViewCell.rawValue
+        )
+
+        return emojiAndColorCollectionView
+    }()
+
     lazy var canceledButton: UIButton = {
         let canceledButton = self.cancelButtonFactory(
             target: self,
@@ -57,6 +74,23 @@ final class CreateEventViewController: UIViewController, CreateEventAndHabbitPro
             )
         return createdButton
     }()
+
+    // MARK: - Private Properties
+
+    private var emojiList = [
+        "🙂", "😻", "🌺", "🐶", "❤️", "😱",
+        "😇", "😡", "🥶", "🤔", "🙌", "🍔",
+        "🥦", "🏓", "🥇", "🎸", "🏝", "😪"
+    ]
+
+   private var colorList: [UIColor] = [
+        UIColor(hex: 0xFD4C49), UIColor(hex: 0xFF881E), UIColor(hex: 0x007BFA),
+        UIColor(hex: 0x6E44FE), UIColor(hex: 0x33CF69), UIColor(hex: 0xE66DD4),
+        UIColor(hex: 0xF9D4D4), UIColor(hex: 0x34A7FE), UIColor(hex: 0x46E69D),
+        UIColor(hex: 0x35347C), UIColor(hex: 0xFF674D), UIColor(hex: 0xFF99CC),
+        UIColor(hex: 0xF6C48B), UIColor(hex: 0x7994F5), UIColor(hex: 0x832CF1),
+        UIColor(hex: 0xAD56DA), UIColor(hex: 0x8D72E6), UIColor(hex: 0x2FD058)
+    ]
 
     // MARK: - View Life Cycles
 
@@ -80,7 +114,13 @@ final class CreateEventViewController: UIViewController, CreateEventAndHabbitPro
     }
 
     @objc private func didTapCreateEventButton() {
-        createButtonAction(name: nameTrackerTextField.text, schedule: nil)
+        let newTracker = TrackerModel(
+            name: nameTrackerTextField.text,
+            color: .customGray,
+            emoji: "",
+            schedule: nil
+        )
+        createButtonAction(with: newTracker)
     }
 }
 
@@ -156,5 +196,58 @@ extension CreateEventViewController: CategoryViewControllerDelegate {
         detailTextLabel = category
         updateAddCategoryButton()
         settingsTableView.reloadData()
+    }
+}
+
+// MARK: - SchedulerViewControllerDelegate
+
+extension CreateEventViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if section == 0 {
+            emojiList.count
+        } else {
+            colorList.count
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: IdentityCellEnum.emojiAndColorViewCell.rawValue,
+            for: indexPath
+        ) as? EmojiAndColorViewCell
+
+        if indexPath.section == 0 {
+            cell?.contentUILabel.text = emojiList[indexPath.row]
+            cell?.contentUILabel.backgroundColor = .clear
+            return cell ?? UICollectionViewCell()
+        } else {
+            cell?.contentUILabel.text = ""
+            cell?.contentUILabel.backgroundColor = colorList[indexPath.row]
+
+            return cell ?? UICollectionViewCell()
+        }
+    }
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+
+extension CreateEventViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        return CGSize(width: collectionView.bounds.width / 6, height: 50)
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumInteritemSpacingForSectionAt section: Int
+    ) -> CGFloat {
+        return 0
     }
 }

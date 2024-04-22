@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		4163DAC02BD057EF00D05B41 /* CreateEventAndHabbitFactoryExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4163DABF2BD057EF00D05B41 /* CreateEventAndHabbitFactoryExtensions.swift */; };
 		4163DAC22BD2832D00D05B41 /* CreateEventAndHabbitProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4163DAC12BD2832D00D05B41 /* CreateEventAndHabbitProtocol.swift */; };
+		4163DAC42BD569AC00D05B41 /* EmojiAndColorViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4163DAC32BD569AC00D05B41 /* EmojiAndColorViewCell.swift */; };
+		4163DAC62BD56C3600D05B41 /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4163DAC52BD56C3600D05B41 /* UIColorExtensions.swift */; };
 		4168FFD22B9B86B4005EC9A4 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4168FFD12B9B86B4005EC9A4 /* TabBarController.swift */; };
 		4168FFD42B9B8860005EC9A4 /* StatisticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4168FFD32B9B8860005EC9A4 /* StatisticViewController.swift */; };
 		4168FFD62B9B8BCA005EC9A4 /* TrackersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4168FFD52B9B8BCA005EC9A4 /* TrackersViewController.swift */; };
@@ -38,6 +40,8 @@
 /* Begin PBXFileReference section */
 		4163DABF2BD057EF00D05B41 /* CreateEventAndHabbitFactoryExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEventAndHabbitFactoryExtensions.swift; sourceTree = "<group>"; };
 		4163DAC12BD2832D00D05B41 /* CreateEventAndHabbitProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEventAndHabbitProtocol.swift; sourceTree = "<group>"; };
+		4163DAC32BD569AC00D05B41 /* EmojiAndColorViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiAndColorViewCell.swift; sourceTree = "<group>"; };
+		4163DAC52BD56C3600D05B41 /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
 		4168FFD12B9B86B4005EC9A4 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		4168FFD32B9B8860005EC9A4 /* StatisticViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticViewController.swift; sourceTree = "<group>"; };
 		4168FFD52B9B8BCA005EC9A4 /* TrackersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersViewController.swift; sourceTree = "<group>"; };
@@ -181,6 +185,7 @@
 				418602CE2BB9D7930085BF1A /* CreateHabbitViewController.swift */,
 				418602D02BBB47E90085BF1A /* CreateHabbitViewSettingsCell.swift */,
 				4163DAC12BD2832D00D05B41 /* CreateEventAndHabbitProtocol.swift */,
+				4163DAC32BD569AC00D05B41 /* EmojiAndColorViewCell.swift */,
 			);
 			name = CreateEventAndHabbitViewController;
 			sourceTree = "<group>";
@@ -189,6 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				419D2CF92BC318860092FB8D /* DataManager.swift */,
+				4163DAC52BD56C3600D05B41 /* UIColorExtensions.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -322,6 +328,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4163DAC62BD56C3600D05B41 /* UIColorExtensions.swift in Sources */,
 				419D2CF32BC30D0D0092FB8D /* CategoryViewCell.swift in Sources */,
 				419D2CFA2BC318860092FB8D /* DataManager.swift in Sources */,
 				419D2CEF2BC2FF600092FB8D /* CategoryViewController.swift in Sources */,
@@ -341,6 +348,7 @@
 				41811A9C2BA359BE00339440 /* TrackerRecordModel.swift in Sources */,
 				41811A972BA358EC00339440 /* TrackerModel.swift in Sources */,
 				418602CD2BB96B0F0085BF1A /* CreateTrackerViewController.swift in Sources */,
+				4163DAC42BD569AC00D05B41 /* EmojiAndColorViewCell.swift in Sources */,
 				4168FFDB2B9C7C9E005EC9A4 /* OnboardingViewController.swift in Sources */,
 				419D2CF52BC30D800092FB8D /* IdentityCellEnum.swift in Sources */,
 				418602DA2BBDF87F0085BF1A /* SchedulerTableViewCell.swift in Sources */,

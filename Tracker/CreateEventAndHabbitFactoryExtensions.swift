@@ -13,6 +13,16 @@ protocol CreateTrackerExtensionsDelegate: AnyObject {
 
 extension UIViewController {
 
+    func scrollUIViewFactory() -> UIScrollView {
+
+        let scrollUIViewFactory = UIScrollView()
+        scrollUIViewFactory.translatesAutoresizingMaskIntoConstraints = false
+        scrollUIViewFactory.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        scrollUIViewFactory.alwaysBounceVertical = true
+
+        return scrollUIViewFactory
+    }
+
     func textFieldFactory(withPlaceholder placeholder: String) -> UITextField {
         let nameTrackerTextField = UITextField()
         nameTrackerTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -60,6 +70,17 @@ extension UIViewController {
         settingsTableView.isScrollEnabled = false
 
         return settingsTableView
+    }
+
+    func emojiAndColorCollectionViewFactory() -> UICollectionView {
+        let emojiAndColorCollectionViewFactory = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: UICollectionViewFlowLayout()
+        )
+        emojiAndColorCollectionViewFactory.translatesAutoresizingMaskIntoConstraints = false
+        emojiAndColorCollectionViewFactory.isScrollEnabled = false
+
+        return emojiAndColorCollectionViewFactory
     }
 
     func cancelButtonFactory(target: Any?, action: Selector) -> UIButton {

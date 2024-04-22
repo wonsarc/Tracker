@@ -9,9 +9,11 @@ import UIKit
 
 protocol CreateEventAndHabbitProtocol: AnyObject {
     var titleLabel: UILabel { get }
+    var scrollView: UIScrollView { get }
     var nameTrackerTextField: UITextField { get }
     var limitUILabel: UILabel { get }
     var settingsTableView: UITableView { get }
+    var emojiAndColorCollectionView: UICollectionView { get }
     var canceledButton: UIButton { get }
     var createdButton: UIButton { get }
     var detailTextLabel: String { get set }
@@ -21,7 +23,7 @@ protocol CreateEventAndHabbitProtocol: AnyObject {
     func setupViews()
     func setupConstraints()
     func createTextFieldCheckAction(_ textField: UITextField)
-    func createButtonAction(name: String?, schedule: [WeekDaysModel]?)
+    func createButtonAction(with newTracker: TrackerModel)
     func cancelButtonAction()
     func updateAddCategoryButton()
 }
@@ -30,42 +32,58 @@ extension CreateEventAndHabbitProtocol where Self: UIViewController {
 
     func setupViews() {
         view.addSubview(titleLabel)
-        view.addSubview(nameTrackerTextField)
-        view.addSubview(settingsTableView)
-        view.addSubview(canceledButton)
-        view.addSubview(createdButton)
+        view.addSubview(scrollView)
+        scrollView.addSubview(nameTrackerTextField)
+        scrollView.addSubview(settingsTableView)
+        scrollView.addSubview(emojiAndColorCollectionView)
+        scrollView.addSubview(canceledButton)
+        scrollView.addSubview(createdButton)
     }
 
     func setupConstraints() {
 
         let topAnchor: CGFloat = !isHeaderVisible ? 0 : 24
 
+
         NSLayoutConstraint.activate([
+
+            
+
+            
 
             titleLabel.heightAnchor.constraint(equalToConstant: 22),
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 38),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 
+            scrollView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+
+            nameTrackerTextField.topAnchor.constraint(equalTo: scrollView.topAnchor),
             nameTrackerTextField.heightAnchor.constraint(equalToConstant: 75),
-            nameTrackerTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
-            nameTrackerTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            nameTrackerTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            nameTrackerTextField.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
             settingsTableView.topAnchor.constraint(equalTo: nameTrackerTextField.bottomAnchor, constant: topAnchor),
-            settingsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            settingsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            settingsTableView.bottomAnchor.constraint(equalTo: canceledButton.topAnchor, constant: -8),
+            settingsTableView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            settingsTableView.heightAnchor.constraint(equalToConstant: 200),
+
+            emojiAndColorCollectionView.topAnchor.constraint(equalTo: settingsTableView.bottomAnchor, constant: 32),
+            emojiAndColorCollectionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            emojiAndColorCollectionView.heightAnchor.constraint(equalToConstant: 500),
 
             canceledButton.widthAnchor.constraint(equalToConstant: 166),
             canceledButton.heightAnchor.constraint(equalToConstant: 60),
-            canceledButton.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -4),
-            canceledButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            canceledButton.trailingAnchor.constraint(equalTo: scrollView.centerXAnchor, constant: -4),
+            canceledButton.topAnchor.constraint(equalTo: emojiAndColorCollectionView.bottomAnchor, constant: 16),
 
             createdButton.widthAnchor.constraint(equalToConstant: 161),
             createdButton.heightAnchor.constraint(equalToConstant: 60),
-            createdButton.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 4),
-            createdButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            createdButton.leadingAnchor.constraint(equalTo: scrollView.centerXAnchor, constant: 4),
+            createdButton.topAnchor.constraint(equalTo: emojiAndColorCollectionView.bottomAnchor, constant: 16)
         ])
+
+        
     }
 
     func createTextFieldCheckAction(_ textField: UITextField) {
@@ -87,14 +105,7 @@ extension CreateEventAndHabbitProtocol where Self: UIViewController {
         self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
     }
 
-    func createButtonAction(name: String?, schedule: [WeekDaysModel]?) {
-
-        let newTracker = TrackerModel(
-            name: name,
-            color: nil,
-            emoji: nil,
-            schedule: schedule
-        )
+    func createButtonAction(with newTracker: TrackerModel) {
 
         if let existingCategoryIndex = DataManager.shared.category.firstIndex(where: { $0.title == detailTextLabel }) {
             let category = DataManager.shared.category[existingCategoryIndex]

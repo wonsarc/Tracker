@@ -33,7 +33,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         let colorUIView = UIView()
         colorUIView.translatesAutoresizingMaskIntoConstraints = false
         colorUIView.layer.cornerRadius = 16
-        colorUIView.backgroundColor = .systemBlue
         return colorUIView
     }()
 
@@ -50,7 +49,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         let emojiUILabel = UILabel()
         emojiUILabel.translatesAutoresizingMaskIntoConstraints = false
         emojiUILabel.font = .systemFont(ofSize: 14)
-        emojiUILabel.text = "❤️"
         emojiUILabel.numberOfLines = 0
         emojiUILabel.textAlignment = .center
         return emojiUILabel
@@ -208,6 +206,9 @@ extension TrackerCollectionViewCell: TrackerCollectionViewCellProtocol {
         trackerModel = tracker
         taskDate = currentDate
         descriptionUILabel.text = tracker.name
+        emojiUILabel.text = tracker.emoji
+        colorUIView.backgroundColor = tracker.color
+        doneButton.backgroundColor = tracker.color
 
         if let id = trackerModel?.id {
             let days =  getCountDoneTasksById(id: id)
