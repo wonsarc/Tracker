@@ -17,7 +17,7 @@ enum WeekDaysModel: String {
     case sunday = "Вс"
 }
 
-extension WeekDaysModel {
+extension WeekDaysModel: Codable {
 
     static func fromIndex(_ index: Int) -> WeekDaysModel? {
         switch index {

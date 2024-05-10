@@ -7,15 +7,50 @@
 
 import CoreData
 
-final class TrackerCategoryStore {
+final class TrackerCategoryStore: NSObject {
 
-    let coreDataManager = CoreDataManager.shared
+    let context = CoreDataManager.shared.getContext()
 
-    func addTrackerCategory(name: String) {
-        let context = coreDataManager.getContext()
+    private lazy var fetchedResultsController: NSFetchedResultsController<TrackerCategoryCoreData> = {
 
-        let trackerCategory = TrackerCategoryData(context: context)
-        trackerCategory.title = "123"
-        coreDataManager.saveContext()
+        let fetchRequest = TrackerCategoryCoreData.fetchRequest()
+
+        fetchRequest.sortDescriptors = [
+            NSSortDescriptor(key: "title", ascending: false)
+        ]
+
+        let fetchedResultsController = NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: context,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
+
+        fetchedResultsController.delegate = self
+
+        try? fetchedResultsController.performFetch()
+
+        return fetchedResultsController
+    }()
+}
+
+extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
+
+}
+
+extension TrackerCategoryStore: DataProviderProtocol {
+
+    typealias T = TrackerCategoryCoreData
+
+    func object(at indexPath: IndexPath) -> TrackerCategoryCoreData? {
+        fetchedResultsController.object(at: indexPath)
+    }
+
+    func addRecord(_ record: TrackerCategoryCoreData) throws {
+        let trackerRecordCoreData = TrackerRecordCoreData(context: context)
+//        trackerRecordCoreData.id = record.id
+//        trackerRecordCoreData.tracker = TrackerCoreData
+//        trackerRecordCoreData.date = record.date
+        CoreDataManager.shared.saveContext()
     }
 }

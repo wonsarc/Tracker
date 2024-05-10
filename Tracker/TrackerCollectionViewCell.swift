@@ -165,15 +165,13 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         doneButton.setImage(image, for: .normal)
     }
 
-    private func getCountDoneTasksById(id: UUID) -> Int { return DataManager.shared.completedTrackers.filter {
-        $0.id == id }.count
+    private func getCountDoneTasksById(id: UUID) -> Int {
+        TrackerRecordStore().countFetchById(id: id)
     }
 
     private func isDone(for trackerId: UUID, date: Date) -> Bool {
-        let dateDone = DataManager.shared.completedTrackers.filter {
-            $0.id == trackerId && Calendar.current.isDate($0.date ?? Date.distantPast, inSameDayAs: date)
-        }
-        return !dateDone.isEmpty
+        let dateDone = TrackerRecordStore().countFetchByIdAndDate(id: trackerId, date: date)
+        return dateDone != 0
     }
 
     @objc private func didTapDoneButton() {
@@ -181,15 +179,19 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
               let taskDate = taskDate else { return }
 
         let isDone = isDone(for: trackerModel.id, date: taskDate)
-        if isDone {
-            DataManager.shared.completedTrackers.removeAll {
-                $0.id == trackerModel.id && Calendar.current.isDate($0.date ?? Date.distantPast, inSameDayAs: taskDate)
-            }
 
+        if isDone {
+            TrackerRecordStore().deleteTrackerRecord(
+                id: trackerModel.id,
+                date: taskDate
+            )
         } else {
             if Date() >= taskDate {
-                DataManager.shared.completedTrackers.append(
-                    TrackerRecordModel(id: trackerModel.id, date: taskDate)
+                try? TrackerRecordStore().addRecord(
+                    TrackerRecordModel(
+                        id: trackerModel.id,
+                        date: taskDate
+                    )
                 )
                 updateDoneButtonImage(true)
             }
