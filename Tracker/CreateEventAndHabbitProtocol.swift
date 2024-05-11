@@ -101,26 +101,10 @@ extension CreateEventAndHabbitProtocol where Self: UIViewController {
 
     func createButtonAction(with newTracker: TrackerModel) {
 
-        if let existingCategoryIndex = DataManager.shared.category.firstIndex(where: { $0.title == detailTextLabel }) {
-            let category = DataManager.shared.category[existingCategoryIndex]
-            let title = category.title
-            var trackers = category.trackers
-            trackers?.append(newTracker)
-
-            let newTrackerCategory = TrackerCategoryModel(
-                title: title,
-                trackers: trackers
-            )
-
-            DataManager.shared.category.remove(at: existingCategoryIndex)
-            DataManager.shared.category.append(newTrackerCategory)
-        } else {
-            let newTrackerCategory = TrackerCategoryModel(
-                title: detailTextLabel,
-                trackers: [newTracker]
-            )
-            DataManager.shared.category.append(newTrackerCategory)
-        }
+        try? TrackerStore().addRecord(
+            newTracker,
+            toCategoryWithName: detailTextLabel
+        )
 
         delegate?.didCreateNewTracker()
         if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {

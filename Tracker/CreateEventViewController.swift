@@ -141,11 +141,16 @@ final class CreateEventViewController: UIViewController, CreateEventAndHabbitPro
     }
 
     @objc private func didTapCreateEventButton() {
+        guard let name = nameTrackerTextField.text else {
+                  fatalError("Cannot create TrackerModel without name")
+              }
+
         let newTracker = TrackerModel(
-            name: nameTrackerTextField.text,
+            id: UUID(),
+            name: name,
             color: .customGray,
             emoji: "",
-            schedule: nil
+            schedule: []
         )
         createButtonAction(with: newTracker)
     }

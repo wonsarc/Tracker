@@ -6,24 +6,51 @@
 //
 
 import CoreData
+import UIKit
 
-final class TrackerRecordStore: NSObject {
+final class TrackerRecordStore {
 
-    let context = CoreDataManager.shared.getContext()
+    // MARK: - Private Properties
 
-    func countFetchByIdAndDate(id: UUID, date: Date) -> Int {
+    private let context: NSManagedObjectContext
+
+    // MARK: - Initializers
+
+    init(context: NSManagedObjectContext) {
+        self.context = context
+    }
+
+    convenience init() {
+        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else {
+            fatalError("Unable to retrieve Core Data context")
+        }
+        self.init(context: context)
+    }
+
+    // MARK: - Public Methods
+
+    func addRecord(_ record: TrackerRecordModel) throws {
+        let trackerRecordCoreData = TrackerRecordCoreData(context: context)
+        trackerRecordCoreData.id = record.id
+        trackerRecordCoreData.date = record.date
+        try context.save()
+    }
+
+    func deleteTrackerRecord(id: UUID, date: Date) {
         let fetchRequest: NSFetchRequest<TrackerRecordCoreData> = TrackerRecordCoreData.fetchRequest()
-        fetchRequest.resultType = .countResultType
         fetchRequest.predicate = NSPredicate(format: "id == %@ AND date == %@", id as CVarArg, date as CVarArg)
 
         do {
-            let count = try context.count(for: fetchRequest)
-            print("Количество записей для трекера с id \(id) и датой \(date): \(count)")
-            return count
+            let records = try context.fetch(fetchRequest)
+            for record in records {
+                context.delete(record)
+            }
+
+            try context.save()
+            print("Запись с id \(id) и датой \(date) удалена успешно")
         } catch {
-            print("Ошибка при выполнении запроса: \(error.localizedDescription)")
+            print("Ошибка при удалении записи: \(error.localizedDescription)")
         }
-        return 0
     }
 
     func countFetchById(id: UUID) -> Int {
@@ -41,27 +68,13 @@ final class TrackerRecordStore: NSObject {
         return 0
     }
 
-    func addRecord(_ record: TrackerRecordModel) throws {
-        let trackerRecordCoreData = TrackerRecordCoreData(context: context)
-        trackerRecordCoreData.id = record.id
-        trackerRecordCoreData.date = record.date
-        CoreDataManager.shared.saveContext()
-    }
-
-    func deleteTrackerRecord(id: UUID, date: Date) {
+    func isTrackerDone(with id: UUID, for date: Date) -> Bool {
         let fetchRequest: NSFetchRequest<TrackerRecordCoreData> = TrackerRecordCoreData.fetchRequest()
+
         fetchRequest.predicate = NSPredicate(format: "id == %@ AND date == %@", id as CVarArg, date as CVarArg)
 
-        do {
-            let records = try context.fetch(fetchRequest)
-            for record in records {
-                context.delete(record) // Удалить объект из контекста CoreData
-            }
+        let results = try?context.fetch(fetchRequest)
 
-            try context.save() // Сохранить изменения
-            print("Запись с id \(id) и датой \(date) удалена успешно")
-        } catch {
-            print("Ошибка при удалении записи: \(error.localizedDescription)")
-        }
+        return !(results?.isEmpty ?? true)
     }
 }

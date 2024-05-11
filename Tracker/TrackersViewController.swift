@@ -11,8 +11,9 @@ final class TrackersViewController: UIViewController {
 
     // MARK: - Public Properties
 
-    var categories: [TrackerCategoryModel] = []
-    var completedTrackers: [TrackerRecordModel] = []
+//    var categories: [TrackerCategoryModel] = TrackerCategoryStore().getAll(scheduleDay: selectedDay!)
+//    var completedTrackers: [TrackerRecordModel] = []
+    let trackerCategoryStore = TrackerCategoryStore()
     var selectedDay: WeekDaysModel?
     var currentDate: Date? = Date()
 
@@ -183,13 +184,9 @@ final class TrackersViewController: UIViewController {
     }
 
     private func getAvailibleCategories() -> Int {
-        return categories.compactMap { $0.trackers?.filter { tracker in
-            if let selectedDay = selectedDay, let schedule = tracker.schedule {
-                return schedule.contains(selectedDay)
-            } else {
-                return true
-            }
-        }}.filter { !$0.isEmpty }.count
+        trackerCategoryStore.getAll(day: selectedDay!).filter {
+            $0.trackers.count != 0
+        }.count
     }
 }
 
@@ -221,7 +218,7 @@ extension TrackersViewController: UICollectionViewDataSource {
             for: indexPath
         ) as? SupplementaryView
 
-        let category = categories[indexPath.section]
+        let category = trackerCategoryStore.getAll(day: selectedDay!)[indexPath.section]
 
         headerView?.titleLabel.text = category.title
 
@@ -233,20 +230,7 @@ extension TrackersViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let category = categories[section]
-
-        if let trackers = category.trackers {
-            let filteredTrackers = trackers.filter { tracker in
-                if let selectedDay = selectedDay, let schedule = tracker.schedule {
-                    return schedule.contains(selectedDay)
-                } else {
-                    return true
-                }
-            }
-            return filteredTrackers.count
-        } else {
-            return 0
-        }
+        trackerCategoryStore.getAll(day: selectedDay!)[section].trackers.count
     }
 
     func collectionView(
@@ -260,9 +244,9 @@ extension TrackersViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
 
-        let category = categories[indexPath.section]
+        let category = trackerCategoryStore.getAll(day: selectedDay!)[indexPath.section]
 
-        if let tracker = category.trackers?[indexPath.row] {
+        if let tracker = category.trackers[indexPath.row] {
             cell.configure(with: tracker, for: currentDate)
         }
 
@@ -297,7 +281,6 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
 extension TrackersViewController: CreateTrackerViewControllerDelegate {
 
     func didCreateNewHabit() {
-        categories = DataManager.shared.category
         collectionView.reloadData()
         updateUI()
     }

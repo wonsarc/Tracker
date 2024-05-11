@@ -165,10 +165,17 @@ final class CreateHabbitViewController: UIViewController, CreateEventAndHabbitPr
     }
 
     private func createNewTracker() -> TrackerModel {
+        guard let name = nameTrackerTextField.text,
+              let color = currentColor,
+              let emoji = currentEmoji else {
+                  fatalError("Cannot create TrackerModel without name, color, and emoji")
+              }
+
         let newTracker = TrackerModel(
-            name: nameTrackerTextField.text,
-            color: currentColor,
-            emoji: currentEmoji,
+            id: UUID(),
+            name: name,
+            color: color,
+            emoji: emoji,
             schedule: currentSchedule
         )
 

@@ -86,8 +86,7 @@ final class NewCategoryViewController: UIViewController {
     }
 
     @objc private func didTapDoneButton() {
-        let category = TrackerCategoryModel(title: nameCategoryTextField.text, trackers: [])
-        DataManager.shared.category.append(category)
+        TrackerCategoryStore().createRecord(with: nameCategoryTextField.text!)
         delegate?.addCategory()
         dismiss(animated: false)
     }

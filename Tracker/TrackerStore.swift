@@ -6,63 +6,44 @@
 //
 
 import CoreData
+import UIKit
 
-final class TrackerStore: NSObject {
+final class TrackerStore {
 
-    let context = CoreDataManager.shared.getContext()
+    // MARK: - Private Properties
 
-    private lazy var fetchedResultsController: NSFetchedResultsController<TrackerCoreData> = {
+    private let context: NSManagedObjectContext
 
-        let fetchRequest = TrackerCoreData.fetchRequest()
+    // MARK: - Initializers
 
-        fetchRequest.sortDescriptors = [
-            NSSortDescriptor(key: "id", ascending: false)
-        ]
-
-        let fetchedResultsController = NSFetchedResultsController(
-            fetchRequest: fetchRequest,
-            managedObjectContext: context,
-            sectionNameKeyPath: nil, // todo
-            cacheName: nil
-        )
-
-        fetchedResultsController.delegate = self
-
-        try? fetchedResultsController.performFetch()
-
-        return fetchedResultsController
-    }()
-}
-
-extension TrackerStore: NSFetchedResultsControllerDelegate {
-
-    var numberOfSections: Int {
-        fetchedResultsController.sections?.count ?? 1
+    init(context: NSManagedObjectContext) {
+        self.context = context
     }
 
-    func numberOfRowsInSection(_ section: Int) -> Int {
-        fetchedResultsController.sections?[section].numberOfObjects ?? 0
+    convenience init() {
+        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else {
+            fatalError("Unable to retrieve Core Data context")
+        }
+        self.init(context: context)
     }
 
-}
+    // MARK: - Public Methods
 
-extension TrackerStore: DataProviderProtocol {
+    func addRecord(_ record: TrackerModel, toCategoryWithName categoryName: String) throws {
 
-    typealias T = TrackerCoreData
+        let trackerCategory = try TrackerCategoryStore().getCategory(withName: categoryName)
 
-    func object(at indexPath: IndexPath) -> TrackerCoreData? {
-        fetchedResultsController.object(at: indexPath)
-    }
-
-    func addRecord(_ record: TrackerCoreData) throws {
         let trackerCoreData = TrackerCoreData(context: context)
-
+        trackerCoreData.id = record.id
         trackerCoreData.name = record.name
-        trackerCoreData.category = record.category
-        trackerCoreData.color = record.color
         trackerCoreData.emoji = record.emoji
-        trackerCoreData.schedule = record.schedule
+        trackerCoreData.color = record.color
+        trackerCoreData.schedule = record.schedule as NSObject
 
-        CoreDataManager.shared.saveContext()
+        trackerCoreData.category = trackerCategory
+
+        trackerCategory.addToTrackers(trackerCoreData)
+
+        try context.save()
     }
 }
