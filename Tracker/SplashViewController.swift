@@ -8,7 +8,7 @@
 import UIKit
 
 final class SplashViewController: UIViewController {
-    var isFirstOpen = false // todo вынести в userdefaults
+    var isFirstOpen = false
 
     // MARK: - View Life Cycles
     override func viewDidAppear(_ animated: Bool) {

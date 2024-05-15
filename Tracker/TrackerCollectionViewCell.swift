@@ -23,6 +23,8 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Private Properties
 
+    private var trackerRecordStore = TrackerRecordStore()
+
     private lazy var cellUIView: UIView = {
         let cellUIView = UIView()
         cellUIView.translatesAutoresizingMaskIntoConstraints = false
@@ -33,7 +35,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         let colorUIView = UIView()
         colorUIView.translatesAutoresizingMaskIntoConstraints = false
         colorUIView.layer.cornerRadius = 16
-        colorUIView.backgroundColor = .systemBlue
         return colorUIView
     }()
 
@@ -50,7 +51,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         let emojiUILabel = UILabel()
         emojiUILabel.translatesAutoresizingMaskIntoConstraints = false
         emojiUILabel.font = .systemFont(ofSize: 14)
-        emojiUILabel.text = "❤️"
         emojiUILabel.numberOfLines = 0
         emojiUILabel.textAlignment = .center
         return emojiUILabel
@@ -167,35 +167,29 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         doneButton.setImage(image, for: .normal)
     }
 
-    private func getCountDoneTasksById(id: UUID) -> Int { return DataManager.shared.completedTrackers.filter {
-        $0.id == id }.count
-    }
-
-    private func isDone(for trackerId: UUID, date: Date) -> Bool {
-        let dateDone = DataManager.shared.completedTrackers.filter {
-            $0.id == trackerId && Calendar.current.isDate($0.date ?? Date.distantPast, inSameDayAs: date)
-        }
-        return !dateDone.isEmpty
-    }
-
     @objc private func didTapDoneButton() {
         guard let trackerModel = trackerModel,
               let taskDate = taskDate else { return }
 
-        let isDone = isDone(for: trackerModel.id, date: taskDate)
-        if isDone {
-            DataManager.shared.completedTrackers.removeAll {
-                $0.id == trackerModel.id && Calendar.current.isDate($0.date ?? Date.distantPast, inSameDayAs: taskDate)
-            }
+        let isDone = trackerRecordStore.isTrackerDone(with: trackerModel.id, for: taskDate)
 
+        if isDone {
+            TrackerRecordStore().deleteTrackerRecord(
+                id: trackerModel.id,
+                date: taskDate
+            )
         } else {
             if Date() >= taskDate {
-                DataManager.shared.completedTrackers.append(
-                    TrackerRecordModel(id: trackerModel.id, date: taskDate)
+                try? TrackerRecordStore().addRecord(
+                    TrackerRecordModel(
+                        id: trackerModel.id,
+                        date: taskDate
+                    )
                 )
                 updateDoneButtonImage(true)
             }
         }
+
         delegate?.didTapDoneButton(for: trackerModel )
     }
 }
@@ -208,15 +202,18 @@ extension TrackerCollectionViewCell: TrackerCollectionViewCellProtocol {
         trackerModel = tracker
         taskDate = currentDate
         descriptionUILabel.text = tracker.name
+        emojiUILabel.text = tracker.emoji
+        colorUIView.backgroundColor = tracker.color
+        doneButton.backgroundColor = tracker.color
 
         if let id = trackerModel?.id {
-            let days =  getCountDoneTasksById(id: id)
+            let days = trackerRecordStore.countFetchById(id: id)
             dateUILabel.text = formateDate(day: days)
         }
 
         if let id = trackerModel?.id,
            let date = currentDate {
-            let isDone = isDone(for: id, date: date)
+            let isDone = trackerRecordStore.isTrackerDone(with: id, for: date)
             updateDoneButtonImage(isDone)
         }
     }

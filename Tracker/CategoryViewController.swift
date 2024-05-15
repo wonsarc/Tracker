@@ -17,7 +17,8 @@ final class CategoryViewController: UIViewController, NewCategoryViewControllerD
 
     // MARK: - Private Properties
 
-    private var categoryData =  DataManager.shared.category
+    private var categoryData: [String] = []
+    private var categoryStore = TrackerCategoryStore()
 
     private lazy var titleLabel: UILabel = {
         let titleLabel = self.titleLabelFactory(withText: "Категория")
@@ -86,6 +87,7 @@ final class CategoryViewController: UIViewController, NewCategoryViewControllerD
         setupEmptyScreen()
         setupCategoryTableView()
         setupAddCategoryButton()
+        categoryData = categoryStore.getAllTitle()
 
         updateUI()
     }
@@ -93,9 +95,10 @@ final class CategoryViewController: UIViewController, NewCategoryViewControllerD
     // MARK: - Public Methods
 
     func addCategory() {
-        categoryData = DataManager.shared.category
+        categoryData = categoryStore.getAllTitle()
         updateUI()
     }
+
     // MARK: - Private Methods
 
     private func getHeightTableView() -> CGFloat {
@@ -118,15 +121,9 @@ final class CategoryViewController: UIViewController, NewCategoryViewControllerD
     }
 
     private func updateUI() {
-         if categoryData.isEmpty {
-             emptyTaskLabel.isHidden = false
-             emptyTaskImageView.isHidden = false
-             categoryTableView.isHidden = true
-         } else {
-             emptyTaskLabel.isHidden = true
-             emptyTaskImageView.isHidden = true
-             categoryTableView.isHidden = false
-         }
+        emptyTaskLabel.isHidden = !categoryData.isEmpty
+        emptyTaskImageView.isHidden = !categoryData.isEmpty
+        categoryTableView.isHidden = categoryData.isEmpty
 
         let height = getHeightTableView()
         setupHeightCategoryTableView(with: height)
@@ -186,6 +183,7 @@ final class CategoryViewController: UIViewController, NewCategoryViewControllerD
     @objc private func didTapAddCategoryButton() {
         let viewController = NewCategoryViewController()
         viewController.delegate = self
+        viewController.trackerCategoryStore = categoryStore
         present(viewController, animated: true)
     }
 }
@@ -205,13 +203,8 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
 
         guard let cell = cell else { return UITableViewCell()}
 
-        if let title = categoryData[indexPath.row].title {
+         let title = categoryData[indexPath.row]
             cell.textLabel?.text = title
-        }
-
-        if indexPath == DataManager.shared.selectCategoryItem {
-            cell.accessoryType = .checkmark
-        }
 
         return cell
     }
@@ -235,9 +228,8 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
 
-        let selectedCategory = categoryData[indexPath.row].title ?? ""
+        let selectedCategory = categoryData[indexPath.row]
         delegate?.didSelectCategory(selectedCategory)
-        DataManager.shared.selectCategoryItem = indexPath
         dismiss(animated: true, completion: nil)
     }
 }

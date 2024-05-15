@@ -14,6 +14,7 @@ protocol NewCategoryViewControllerDelegate: AnyObject {
 final class NewCategoryViewController: UIViewController {
 
     weak var delegate: NewCategoryViewControllerDelegate?
+    var trackerCategoryStore = TrackerCategoryStore()
 
     // MARK: - Private Properties
 
@@ -86,8 +87,7 @@ final class NewCategoryViewController: UIViewController {
     }
 
     @objc private func didTapDoneButton() {
-        let category = TrackerCategoryModel(title: nameCategoryTextField.text, trackers: [])
-        DataManager.shared.category.append(category)
+        trackerCategoryStore.createRecord(with: nameCategoryTextField.text!)
         delegate?.addCategory()
         dismiss(animated: false)
     }

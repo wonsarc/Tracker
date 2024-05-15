@@ -7,13 +7,9 @@
 
 import UIKit
 
-protocol CreateTrackerViewControllerDelegate: AnyObject {
-    func didCreateNewHabit()
-}
+final class CreateTrackerViewController: UIViewController {
 
-final class CreateTrackerViewController: UIViewController, CreateTrackerExtensionsDelegate {
-
-    weak var delegate: CreateTrackerViewControllerDelegate?
+    var trackerStore: TrackerStore?
 
     // MARK: - Private Properties
 
@@ -59,10 +55,6 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerExtensio
         setupConstraints()
     }
 
-    func didCreateNewTracker() {
-        delegate?.didCreateNewHabit()
-    }
-
     // MARK: - Private Methods
 
     private func setupViews() {
@@ -101,13 +93,17 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerExtensio
 
     @objc private func didTapCreateHabbitButton() {
         let viewController = CreateHabbitViewController()
-        viewController.delegate = self
-        present(viewController, animated: true)
+        if let trackerStore = trackerStore {
+            viewController.trackerStore = trackerStore
+            present(viewController, animated: true)
+        }
     }
 
     @objc private func didTapCreateEventButton() {
         let viewController = CreateEventViewController()
-        viewController.delegate = self
-        present(viewController, animated: true)
+        if let trackerStore = trackerStore {
+            viewController.trackerStore = trackerStore
+            present(viewController, animated: true)
+        }
     }
 }

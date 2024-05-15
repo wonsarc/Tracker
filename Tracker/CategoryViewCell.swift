@@ -36,8 +36,7 @@ final class CategoryViewCell: UITableViewCell {
 
     private func setupNameCategoryLabel() {
         addSubview(nameCategoryLabel)
-        nameCategoryLabel.topAnchor.constraint(equalTo: topAnchor, constant: 26.5).isActive = true
+        nameCategoryLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         nameCategoryLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
     }
-
 }

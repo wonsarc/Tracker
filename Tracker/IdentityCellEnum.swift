@@ -13,4 +13,6 @@ enum IdentityCellEnum: String {
     case schedulerTableViewCell = "schedulerCell"
     case createHabbitViewSettingsCell = "habbitCell"
     case trackerCollectionViewCell = "trackerCell"
+    case emojiAndColorViewCell = "emojiAndColorCell"
+    case headerViewIdentifier =  "headerViewIdentifier"
 }
