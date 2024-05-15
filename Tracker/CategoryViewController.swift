@@ -17,7 +17,8 @@ final class CategoryViewController: UIViewController, NewCategoryViewControllerD
 
     // MARK: - Private Properties
 
-    private var categoryData = TrackerCategoryStore().getAllTitle()
+    private var categoryData: [String] = []
+    private var categoryStore = TrackerCategoryStore()
 
     private lazy var titleLabel: UILabel = {
         let titleLabel = self.titleLabelFactory(withText: "Категория")
@@ -86,6 +87,7 @@ final class CategoryViewController: UIViewController, NewCategoryViewControllerD
         setupEmptyScreen()
         setupCategoryTableView()
         setupAddCategoryButton()
+        categoryData = categoryStore.getAllTitle()
 
         updateUI()
     }
@@ -93,10 +95,10 @@ final class CategoryViewController: UIViewController, NewCategoryViewControllerD
     // MARK: - Public Methods
 
     func addCategory() {
-        categoryData = TrackerCategoryStore().getAllTitle(
-        )
+        categoryData = categoryStore.getAllTitle()
         updateUI()
     }
+
     // MARK: - Private Methods
 
     private func getHeightTableView() -> CGFloat {
@@ -181,6 +183,7 @@ final class CategoryViewController: UIViewController, NewCategoryViewControllerD
     @objc private func didTapAddCategoryButton() {
         let viewController = NewCategoryViewController()
         viewController.delegate = self
+        viewController.trackerCategoryStore = categoryStore
         present(viewController, animated: true)
     }
 }

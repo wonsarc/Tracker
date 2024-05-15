@@ -11,9 +11,9 @@ final class CreateHabbitViewController: UIViewController, CreateEventAndHabbitPr
 
     // MARK: - Public Properties
 
-    weak var delegate: CreateTrackerExtensionsDelegate?
     var detailTextLabel = ""
     var isHeaderVisible = false
+    var trackerStore = TrackerStore()
 
     lazy var titleLabel: UILabel = {
         let titleLabel = self.titleLabelFactory(withText: "Новая привычка")
@@ -90,13 +90,13 @@ final class CreateHabbitViewController: UIViewController, CreateEventAndHabbitPr
     private var currentSchedule: [WeekDaysModel] = []
     private var selectedIndexPaths: [IndexPath?] = [nil, nil]
 
-    private var emojiList = [
+    private let emojiList = [
         "🙂", "😻", "🌺", "🐶", "❤️", "😱",
         "😇", "😡", "🥶", "🤔", "🙌", "🍔",
         "🥦", "🏓", "🥇", "🎸", "🏝", "😪"
     ]
 
-   private var colorList: [UIColor] = [
+   private let colorList: [UIColor] = [
         UIColor(hex: 0xFD4C49), UIColor(hex: 0xFF881E), UIColor(hex: 0x007BFA),
         UIColor(hex: 0x6E44FE), UIColor(hex: 0x33CF69), UIColor(hex: 0xE66DD4),
         UIColor(hex: 0xF9D4D4), UIColor(hex: 0x34A7FE), UIColor(hex: 0x46E69D),
@@ -155,13 +155,10 @@ final class CreateHabbitViewController: UIViewController, CreateEventAndHabbitPr
         currentEmoji != nil &&
         !currentSchedule.isEmpty
 
-        if isCanCreateTracker {
-            createdButton.backgroundColor = .black
-            createdButton.isEnabled = true
-        } else {
-            createdButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
-            createdButton.isEnabled = false
-        }
+        createdButton.backgroundColor = isCanCreateTracker ?
+            .black : UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
+
+        createdButton.isEnabled = isCanCreateTracker
     }
 
     private func createNewTracker() -> TrackerModel {
@@ -352,7 +349,7 @@ extension CreateHabbitViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        section == 0 ? emojiList.count :  colorList.count
+        section == 0 ? emojiList.count: colorList.count
     }
 
     func collectionView(

@@ -11,9 +11,9 @@ final class CreateEventViewController: UIViewController, CreateEventAndHabbitPro
 
     // MARK: - Public Properties
 
-    weak var delegate: CreateTrackerExtensionsDelegate?
     var detailTextLabel = ""
     var isHeaderVisible = false
+    var trackerStore = TrackerStore()
 
     lazy var titleLabel: UILabel = {
         let titleLabel = self.titleLabelFactory(withText: "Новое нерегулярное событие")
@@ -45,6 +45,8 @@ final class CreateEventViewController: UIViewController, CreateEventAndHabbitPro
 
         settingsTableView.dataSource = self
         settingsTableView.delegate = self
+
+        settingsTableView.heightAnchor.constraint(equalToConstant: 125).isActive = true
 
         return settingsTableView
     }()
@@ -78,7 +80,7 @@ final class CreateEventViewController: UIViewController, CreateEventAndHabbitPro
         let createdButton = self.createdButtonFactory(
             target: self,
             action: #selector(didTapCreateEventButton)
-            )
+        )
         return createdButton
     }()
 
@@ -88,13 +90,13 @@ final class CreateEventViewController: UIViewController, CreateEventAndHabbitPro
     private var currentColor: UIColor?
     private var selectedIndexPaths: [IndexPath?] = [nil, nil]
 
-    private var emojiList = [
+    private let emojiList = [
         "🙂", "😻", "🌺", "🐶", "❤️", "😱",
         "😇", "😡", "🥶", "🤔", "🙌", "🍔",
         "🥦", "🏓", "🥇", "🎸", "🏝", "😪"
     ]
 
-   private var colorList: [UIColor] = [
+    private let colorList: [UIColor] = [
         UIColor(hex: 0xFD4C49), UIColor(hex: 0xFF881E), UIColor(hex: 0x007BFA),
         UIColor(hex: 0x6E44FE), UIColor(hex: 0x33CF69), UIColor(hex: 0xE66DD4),
         UIColor(hex: 0xF9D4D4), UIColor(hex: 0x34A7FE), UIColor(hex: 0x46E69D),
@@ -141,18 +143,8 @@ final class CreateEventViewController: UIViewController, CreateEventAndHabbitPro
     }
 
     @objc private func didTapCreateEventButton() {
-        guard let name = nameTrackerTextField.text else {
-                  fatalError("Cannot create TrackerModel without name")
-              }
-
-        let newTracker = TrackerModel(
-            id: UUID(),
-            name: name,
-            color: .customGray,
-            emoji: "",
-            schedule: []
-        )
-        createButtonAction(with: newTracker)
+        let newEvent =  createNewEvent()
+        createButtonAction(with: newEvent)
     }
 
     private func canCreateTracker() {
@@ -162,13 +154,28 @@ final class CreateEventViewController: UIViewController, CreateEventAndHabbitPro
         currentColor != nil &&
         currentEmoji != nil
 
-        if isCanCreateTracker {
-            createdButton.backgroundColor = .black
-            createdButton.isEnabled = true
-        } else {
-            createdButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
-            createdButton.isEnabled = false
-        }
+        createdButton.backgroundColor = isCanCreateTracker ?
+            .black : UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
+
+        createdButton.isEnabled = isCanCreateTracker
+    }
+
+    private func createNewEvent() -> TrackerModel {
+        guard let name = nameTrackerTextField.text,
+              let color = currentColor,
+              let emoji = currentEmoji else {
+                  fatalError("Cannot create TrackerModel without name, color, and emoji")
+              }
+
+        let newEvent = TrackerModel(
+            id: UUID(),
+            name: name,
+            color: color,
+            emoji: emoji,
+            schedule: []
+        )
+
+        return newEvent
     }
 }
 
@@ -304,13 +311,12 @@ extension CreateEventViewController: UICollectionViewDataSource {
 
             headerView.addSubview(label)
             return headerView
-        } else {
-            return UICollectionReusableView()
         }
+        return UICollectionReusableView()
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        section == 0 ? emojiList.count :  colorList.count
+        section == 0 ? emojiList.count: colorList.count
     }
 
     func collectionView(

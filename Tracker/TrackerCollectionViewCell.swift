@@ -189,6 +189,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
                 updateDoneButtonImage(true)
             }
         }
+
         delegate?.didTapDoneButton(for: trackerModel )
     }
 }

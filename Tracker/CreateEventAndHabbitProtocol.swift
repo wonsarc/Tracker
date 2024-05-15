@@ -18,7 +18,7 @@ protocol CreateEventAndHabbitProtocol: AnyObject {
     var createdButton: UIButton { get }
     var detailTextLabel: String { get set }
     var isHeaderVisible: Bool { get set }
-    var delegate: CreateTrackerExtensionsDelegate? { get }
+    var trackerStore: TrackerStore { get }
 
     func setupViews()
     func setupConstraints()
@@ -101,12 +101,9 @@ extension CreateEventAndHabbitProtocol where Self: UIViewController {
 
     func createButtonAction(with newTracker: TrackerModel) {
 
-        try? TrackerStore().addRecord(
-            newTracker,
-            toCategoryWithName: detailTextLabel
-        )
+        try? trackerStore.addRecord(newTracker, toCategoryWithName: detailTextLabel)
+        trackerStore.refreshFetchResults()
 
-        delegate?.didCreateNewTracker()
         if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
             rootViewController.dismiss(animated: true, completion: nil)
         }

@@ -11,9 +11,7 @@ final class TrackersViewController: UIViewController {
 
     // MARK: - Public Properties
 
-//    var categories: [TrackerCategoryModel] = TrackerCategoryStore().getAll(scheduleDay: selectedDay!)
-//    var completedTrackers: [TrackerRecordModel] = []
-    let trackerCategoryStore = TrackerCategoryStore()
+    let trackerStore = TrackerStore()
     var selectedDay: WeekDaysModel?
     var currentDate: Date? = Date()
 
@@ -74,16 +72,18 @@ final class TrackersViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
 
+        trackerStore.delegate = self
+
         setupNavBar()
         setupViewsForEmptyCategories()
         setupConstraintsForEmptyCategories()
         setupCollectionView()
 
+        datePicker.addTarget(self, action: #selector(datePickerValueChanged), for: .valueChanged)
+
         updateSelectedDate(date: Date())
 
-        updateUI()
-
-        datePicker.addTarget(self, action: #selector(datePickerValueChanged), for: .valueChanged)
+        didUpdate()
     }
 
     // MARK: - Public Methods
@@ -96,7 +96,7 @@ final class TrackersViewController: UIViewController {
 
         if let selectedDayOfWeek = WeekDaysModel.fromIndex(weekday) {
             self.selectedDay = selectedDayOfWeek
-            collectionView.reloadData()
+            trackerStore.day = selectedDay
         }
     }
 
@@ -106,25 +106,22 @@ final class TrackersViewController: UIViewController {
 
         if let currentDate = currentDate {
             updateSelectedDate(date: currentDate)
-            updateUI()
         }
     }
 
     // MARK: - Private Methods
 
     private func updateUI() {
-        if getAvailibleCategories() == 0 {
-            emptyTaskLabel.isHidden = false
-            emptyTaskImageView.isHidden = false
-            collectionView.isHidden = true
-        } else {
-            emptyTaskLabel.isHidden = true
-            emptyTaskImageView.isHidden = true
-            collectionView.isHidden = false
-        }
+
+        let isHiddenEmptyLabel = trackerStore.numberOfSections != 0
+
+        emptyTaskLabel.isHidden = isHiddenEmptyLabel
+        emptyTaskImageView.isHidden = isHiddenEmptyLabel
+        collectionView.isHidden = !isHiddenEmptyLabel
     }
 
     private func setupCollectionView() {
+
         view.addSubview(collectionView)
 
         NSLayoutConstraint.activate([
@@ -179,14 +176,8 @@ final class TrackersViewController: UIViewController {
 
     @objc private func didTapAddTaskButton() {
         let viewController = CreateTrackerViewController()
-        viewController.delegate = self
+        viewController.trackerStore = self.trackerStore
         present(viewController, animated: true)
-    }
-
-    private func getAvailibleCategories() -> Int {
-        trackerCategoryStore.getAll(day: selectedDay!).filter {
-            $0.trackers.count != 0
-        }.count
     }
 }
 
@@ -218,19 +209,21 @@ extension TrackersViewController: UICollectionViewDataSource {
             for: indexPath
         ) as? SupplementaryView
 
-        let category = trackerCategoryStore.getAll(day: selectedDay!)[indexPath.section]
-
-        headerView?.titleLabel.text = category.title
+        if let category = trackerStore.frcStore?.object(
+            at: IndexPath(row: indexPath.row, section: indexPath.section)
+        ).category {
+            headerView?.titleLabel.text = category.title
+        }
 
         return headerView ?? UICollectionReusableView()
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return getAvailibleCategories()
+        trackerStore.numberOfSections
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        trackerCategoryStore.getAll(day: selectedDay!)[section].trackers.count
+        trackerStore.numberOfRowsInSection(section)
     }
 
     func collectionView(
@@ -244,9 +237,7 @@ extension TrackersViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
 
-        let category = trackerCategoryStore.getAll(day: selectedDay!)[indexPath.section]
-
-        if let tracker = category.trackers[indexPath.row] {
+        if let tracker = trackerStore.object(at: indexPath) {
             cell.configure(with: tracker, for: currentDate)
         }
 
@@ -276,21 +267,21 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-// MARK: - CreateHabbitViewControllerDelegate
-
-extension TrackersViewController: CreateTrackerViewControllerDelegate {
-
-    func didCreateNewHabit() {
-        collectionView.reloadData()
-        updateUI()
-    }
-}
-
 // MARK: - TrackerCollectionViewCellDelegate
 
 extension TrackersViewController: TrackerCollectionViewCellDelegate {
 
     func didTapDoneButton(for tracker: TrackerModel) {
         collectionView.reloadData()
+    }
+}
+
+// MARK: - TrackerStoreDelegate
+
+extension TrackersViewController: TrackerStoreDelegate {
+
+    func didUpdate() {
+        collectionView.reloadData()
+        updateUI()
     }
 }

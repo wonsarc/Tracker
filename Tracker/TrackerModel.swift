@@ -12,5 +12,5 @@ struct TrackerModel {
     let name: String
     let color: UIColor
     let emoji: String
-    let schedule: [WeekDaysModel?]
+    let schedule: [WeekDaysModel]
 }

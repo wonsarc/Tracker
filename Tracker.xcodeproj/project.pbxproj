@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		411D83A52BF38FB90027B0F0 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411D83A42BF38FB90027B0F0 /* CoreDataManager.swift */; };
 		415B86812BD6B2B400A4BBFE /* TrackerModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 415B867F2BD6B2B400A4BBFE /* TrackerModel.xcdatamodeld */; };
 		4163DAC02BD057EF00D05B41 /* CreateEventAndHabbitFactoryExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4163DABF2BD057EF00D05B41 /* CreateEventAndHabbitFactoryExtensions.swift */; };
 		4163DAC22BD2832D00D05B41 /* CreateEventAndHabbitProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4163DAC12BD2832D00D05B41 /* CreateEventAndHabbitProtocol.swift */; };
@@ -36,12 +37,13 @@
 		41BB958D2BE7D1C300A84D89 /* TrackerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BB958C2BE7D1C300A84D89 /* TrackerStore.swift */; };
 		41BB958F2BE7D1D400A84D89 /* TrackerCategoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BB958E2BE7D1D400A84D89 /* TrackerCategoryStore.swift */; };
 		41BB95912BE7D1F500A84D89 /* TrackerRecordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BB95902BE7D1F500A84D89 /* TrackerRecordStore.swift */; };
-		41BB95A82BED4A9400A84D89 /* DaysValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BB95A72BED4A9400A84D89 /* DaysValueTransformer.swift */; };
+		41BB95A82BED4A9400A84D89 /* WeekDaysTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41BB95A72BED4A9400A84D89 /* WeekDaysTransformer.swift */; };
 		41F1C4222B9A4B1100F7BC62 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F1C4212B9A4B1100F7BC62 /* AppDelegate.swift */; };
 		41F1C42B2B9A4B1200F7BC62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41F1C42A2B9A4B1200F7BC62 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		411D83A42BF38FB90027B0F0 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		415B86802BD6B2B400A4BBFE /* TrackerModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TrackerModel.xcdatamodel; sourceTree = "<group>"; };
 		4163DABF2BD057EF00D05B41 /* CreateEventAndHabbitFactoryExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEventAndHabbitFactoryExtensions.swift; sourceTree = "<group>"; };
 		4163DAC12BD2832D00D05B41 /* CreateEventAndHabbitProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEventAndHabbitProtocol.swift; sourceTree = "<group>"; };
@@ -71,7 +73,7 @@
 		41BB958C2BE7D1C300A84D89 /* TrackerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerStore.swift; sourceTree = "<group>"; };
 		41BB958E2BE7D1D400A84D89 /* TrackerCategoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategoryStore.swift; sourceTree = "<group>"; };
 		41BB95902BE7D1F500A84D89 /* TrackerRecordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecordStore.swift; sourceTree = "<group>"; };
-		41BB95A72BED4A9400A84D89 /* DaysValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaysValueTransformer.swift; sourceTree = "<group>"; };
+		41BB95A72BED4A9400A84D89 /* WeekDaysTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDaysTransformer.swift; sourceTree = "<group>"; };
 		41F1C41E2B9A4B1100F7BC62 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		41F1C4212B9A4B1100F7BC62 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		41F1C42A2B9A4B1200F7BC62 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -92,7 +94,7 @@
 		415B86852BD6B59700A4BBFE /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				41BB95A72BED4A9400A84D89 /* DaysValueTransformer.swift */,
+				41BB95A72BED4A9400A84D89 /* WeekDaysTransformer.swift */,
 				415B867F2BD6B2B400A4BBFE /* TrackerModel.xcdatamodeld */,
 			);
 			name = CoreData;
@@ -214,6 +216,7 @@
 				41BB958C2BE7D1C300A84D89 /* TrackerStore.swift */,
 				41BB958E2BE7D1D400A84D89 /* TrackerCategoryStore.swift */,
 				41BB95902BE7D1F500A84D89 /* TrackerRecordStore.swift */,
+				411D83A42BF38FB90027B0F0 /* CoreDataManager.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -362,12 +365,13 @@
 				4168FFD92B9C7A1B005EC9A4 /* SplashViewController.swift in Sources */,
 				418602CF2BB9D7930085BF1A /* CreateHabbitViewController.swift in Sources */,
 				418602D62BBCA0060085BF1A /* SchedulerViewController.swift in Sources */,
+				411D83A52BF38FB90027B0F0 /* CoreDataManager.swift in Sources */,
 				418602D82BBDF67D0085BF1A /* WeekDaysModel.swift in Sources */,
 				4163DAC22BD2832D00D05B41 /* CreateEventAndHabbitProtocol.swift in Sources */,
 				418602D12BBB47E90085BF1A /* CreateHabbitViewSettingsCell.swift in Sources */,
 				41811A9C2BA359BE00339440 /* TrackerRecordModel.swift in Sources */,
 				41811A972BA358EC00339440 /* TrackerModel.swift in Sources */,
-				41BB95A82BED4A9400A84D89 /* DaysValueTransformer.swift in Sources */,
+				41BB95A82BED4A9400A84D89 /* WeekDaysTransformer.swift in Sources */,
 				418602CD2BB96B0F0085BF1A /* CreateTrackerViewController.swift in Sources */,
 				41BB95912BE7D1F500A84D89 /* TrackerRecordStore.swift in Sources */,
 				4163DAC42BD569AC00D05B41 /* EmojiAndColorViewCell.swift in Sources */,

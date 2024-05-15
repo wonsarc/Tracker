@@ -21,9 +21,7 @@ final class TrackerRecordStore {
     }
 
     convenience init() {
-        guard let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext else {
-            fatalError("Unable to retrieve Core Data context")
-        }
+        let context = CoreDataManager.shared.persistentContainer.viewContext
         self.init(context: context)
     }
 
@@ -73,7 +71,7 @@ final class TrackerRecordStore {
 
         fetchRequest.predicate = NSPredicate(format: "id == %@ AND date == %@", id as CVarArg, date as CVarArg)
 
-        let results = try?context.fetch(fetchRequest)
+        let results = try? context.fetch(fetchRequest)
 
         return !(results?.isEmpty ?? true)
     }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum WeekDaysModel: String {
+enum WeekDaysModel: String, Codable, CaseIterable {
     case monday = "Пн"
     case tuesday = "Вт"
     case wednesday = "Cр"
@@ -15,9 +15,6 @@ enum WeekDaysModel: String {
     case friday = "Пт"
     case saturday = "Сб"
     case sunday = "Вс"
-}
-
-extension WeekDaysModel: Codable {
 
     static func fromIndex(_ index: Int) -> WeekDaysModel? {
         switch index {
@@ -31,4 +28,8 @@ extension WeekDaysModel: Codable {
         default: return nil
         }
     }
+
+    static func fromRawValue(_ value: String) -> WeekDaysModel? {
+         return WeekDaysModel.allCases.first { $0.rawValue == value }
+     }
 }
