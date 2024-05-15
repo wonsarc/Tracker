@@ -55,10 +55,6 @@ final class CreateTrackerViewController: UIViewController {
         setupConstraints()
     }
 
-//    func didCreateNewTracker() {
-//        delegate?.didCreateNewHabit()
-//    }
-
     // MARK: - Private Methods
 
     private func setupViews() {
