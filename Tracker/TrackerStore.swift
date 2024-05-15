@@ -30,13 +30,8 @@ final class TrackerStore: NSObject {
 
     // MARK: - Initializers
 
-    init(context: NSManagedObjectContext) {
-        self.context = context
-    }
-
-    convenience override init() {
-        let context = CoreDataManager.shared.getContext()
-        self.init(context: context)
+    override init() {
+        self.context = CoreDataManager.shared.getContext()
     }
 
     // MARK: - Public Methods

@@ -16,13 +16,8 @@ final class TrackerRecordStore {
 
     // MARK: - Initializers
 
-    init(context: NSManagedObjectContext) {
-        self.context = context
-    }
-
-    convenience init() {
-        let context = CoreDataManager.shared.persistentContainer.viewContext
-        self.init(context: context)
+    init() {
+        self.context = CoreDataManager.shared.getContext()
     }
 
     // MARK: - Public Methods
