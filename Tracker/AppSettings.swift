@@ -11,3 +11,13 @@ class AppSettings {
     @UserDefaultsWrapper(key: "isFirstOpen", defaultValue: true)
     static var isFirstOpen: Bool
 }
+
+enum IdentityCellEnum: String {
+
+    case categoryViewCell = "categoryCell"
+    case schedulerTableViewCell = "schedulerCell"
+    case createHabbitViewSettingsCell = "habbitCell"
+    case trackerCollectionViewCell = "trackerCell"
+    case emojiAndColorViewCell = "emojiAndColorCell"
+    case headerViewIdentifier =  "headerViewIdentifier"
+}

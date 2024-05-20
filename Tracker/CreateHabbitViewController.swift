@@ -237,9 +237,9 @@ extension CreateHabbitViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         if indexPath.row == 0 {
-            let categoryViewController = CategoryViewController()
-            categoryViewController.delegate = self
-            present(categoryViewController, animated: true)
+            let categoryVC = createCategoryVC()
+            categoryVC.delegate = self
+            present(categoryVC, animated: true)
         } else {
             let schedulerViewController = SchedulerViewController()
             schedulerViewController.delegate = self

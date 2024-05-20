@@ -226,10 +226,9 @@ extension CreateEventViewController: UITableViewDelegate, UITableViewDataSource 
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let categoryViewController = CategoryViewController()
-        categoryViewController.delegate = self
-
-        present(categoryViewController, animated: true)
+        let categoryVC = createCategoryVC()
+        categoryVC.delegate = self
+        present(categoryVC, animated: true)
 
         tableView.deselectRow(at: indexPath, animated: true)
     }

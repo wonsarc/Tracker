@@ -11,14 +11,16 @@ protocol CategoryViewControllerDelegate: AnyObject {
     func didSelectCategory(_ category: String)
 }
 
-final class CategoryViewController: UIViewController, NewCategoryViewControllerDelegate {
+final class CategoryViewController: UIViewController {
+
+    // MARK: - Public Properties
 
     weak var delegate: CategoryViewControllerDelegate?
 
     // MARK: - Private Properties
 
     private var categoryData: [String] = []
-    private var categoryStore = TrackerCategoryStore()
+    private var viewModel: CategoryViewModel?
 
     private lazy var titleLabel: UILabel = {
         let titleLabel = self.titleLabelFactory(withText: "Категория")
@@ -87,19 +89,32 @@ final class CategoryViewController: UIViewController, NewCategoryViewControllerD
         setupEmptyScreen()
         setupCategoryTableView()
         setupAddCategoryButton()
-        categoryData = categoryStore.getAllTitle()
 
+        viewModel?.fetchCategories()
         updateUI()
     }
 
-    // MARK: - Public Methods
-
-    func addCategory() {
-        categoryData = categoryStore.getAllTitle()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel?.fetchCategories()
         updateUI()
     }
 
     // MARK: - Private Methods
+
+    func initialize(viewModel: CategoryViewModel) {
+        self.viewModel = viewModel
+        bind()
+    }
+
+    private func bind() {
+        guard let viewModel = viewModel else { return }
+
+        viewModel.categories = { [weak self] categories in
+            self?.categoryData = categories
+            self?.updateUI()
+        }
+    }
 
     private func getHeightTableView() -> CGFloat {
         let height = CGFloat(categoryData.count) * 75
@@ -121,6 +136,7 @@ final class CategoryViewController: UIViewController, NewCategoryViewControllerD
     }
 
     private func updateUI() {
+
         emptyTaskLabel.isHidden = !categoryData.isEmpty
         emptyTaskImageView.isHidden = !categoryData.isEmpty
         categoryTableView.isHidden = categoryData.isEmpty
@@ -181,10 +197,7 @@ final class CategoryViewController: UIViewController, NewCategoryViewControllerD
     }
 
     @objc private func didTapAddCategoryButton() {
-        let viewController = NewCategoryViewController()
-        viewController.delegate = self
-        viewController.trackerCategoryStore = categoryStore
-        present(viewController, animated: true)
+        present(NewCategoryViewController(), animated: true)
     }
 }
 
