@@ -100,8 +100,8 @@
 		415B86852BD6B59700A4BBFE /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				41BB95A72BED4A9400A84D89 /* WeekDaysTransformer.swift */,
 				415B867F2BD6B2B400A4BBFE /* TrackerModel.xcdatamodeld */,
+				41BB95A72BED4A9400A84D89 /* WeekDaysTransformer.swift */,
 			);
 			name = CoreData;
 			sourceTree = "<group>";
@@ -112,8 +112,8 @@
 				418602CB2BB96AEC0085BF1A /* CreateTrackerViewComtroller */,
 				418602C62BB94E5F0085BF1A /* OnboardingViewController */,
 				418602C52BB94E4F0085BF1A /* StatisticViewController */,
-				41AAD2D42BA7591800A1D2E1 /* TrackersViewController */,
 				4168FFD72B9C79F6005EC9A4 /* SplashController */,
+				41AAD2D42BA7591800A1D2E1 /* TrackersViewController */,
 				418602C92BB950070085BF1A /* SupplementaryView.swift */,
 			);
 			name = ViewControllers;
@@ -133,7 +133,6 @@
 			children = (
 				41811A9A2BA359A800339440 /* TrackerModel */,
 				418602D72BBDF67D0085BF1A /* WeekDaysModel.swift */,
-				41F53F9D2BFB4D30005E0BB5 /* CategoryModel.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -141,8 +140,9 @@
 		41811A9A2BA359A800339440 /* TrackerModel */ = {
 			isa = PBXGroup;
 			children = (
-				41811A962BA358EC00339440 /* TrackerModel.swift */,
+				41F53F9D2BFB4D30005E0BB5 /* CategoryModel.swift */,
 				41811A982BA3597100339440 /* TrackerCategoryModel.swift */,
+				41811A962BA358EC00339440 /* TrackerModel.swift */,
 				41811A9B2BA359BE00339440 /* TrackerRecordModel.swift */,
 			);
 			name = TrackerModel;
@@ -175,9 +175,9 @@
 		418602CB2BB96AEC0085BF1A /* CreateTrackerViewComtroller */ = {
 			isa = PBXGroup;
 			children = (
+				419D2CED2BC2FF4E0092FB8D /* CategoryViewController */,
 				419D2CF62BC310840092FB8D /* CreateEventAndHabbitViewController */,
 				418602D42BBC9FEB0085BF1A /* ShedulerViewController */,
-				419D2CED2BC2FF4E0092FB8D /* CategoryViewController */,
 				418602CC2BB96B0F0085BF1A /* CreateTrackerViewController.swift */,
 			);
 			name = CreateTrackerViewComtroller;
@@ -186,8 +186,8 @@
 		418602D42BBC9FEB0085BF1A /* ShedulerViewController */ = {
 			isa = PBXGroup;
 			children = (
-				418602D52BBCA0060085BF1A /* SchedulerViewController.swift */,
 				418602D92BBDF87F0085BF1A /* SchedulerTableViewCell.swift */,
+				418602D52BBCA0060085BF1A /* SchedulerViewController.swift */,
 			);
 			name = ShedulerViewController;
 			sourceTree = "<group>";
@@ -195,9 +195,9 @@
 		419D2CED2BC2FF4E0092FB8D /* CategoryViewController */ = {
 			isa = PBXGroup;
 			children = (
+				419D2CF22BC30D0D0092FB8D /* CategoryViewCell.swift */,
 				419D2CEE2BC2FF600092FB8D /* CategoryViewController.swift */,
 				419D2CF02BC3080B0092FB8D /* NewCategoryViewController.swift */,
-				419D2CF22BC30D0D0092FB8D /* CategoryViewCell.swift */,
 			);
 			name = CategoryViewController;
 			sourceTree = "<group>";
@@ -205,11 +205,11 @@
 		419D2CF62BC310840092FB8D /* CreateEventAndHabbitViewController */ = {
 			isa = PBXGroup;
 			children = (
+				4163DAC12BD2832D00D05B41 /* CreateEventAndHabbitProtocol.swift */,
 				4163DABF2BD057EF00D05B41 /* CreateEventAndHabbitFactoryExtensions.swift */,
 				418602D22BBC985B0085BF1A /* CreateEventViewController.swift */,
 				418602CE2BB9D7930085BF1A /* CreateHabbitViewController.swift */,
 				418602D02BBB47E90085BF1A /* CreateHabbitViewSettingsCell.swift */,
-				4163DAC12BD2832D00D05B41 /* CreateEventAndHabbitProtocol.swift */,
 				4163DAC32BD569AC00D05B41 /* EmojiAndColorViewCell.swift */,
 			);
 			name = CreateEventAndHabbitViewController;
@@ -218,11 +218,11 @@
 		419D2CF82BC3187A0092FB8D /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				4163DAC52BD56C3600D05B41 /* UIColorExtensions.swift */,
-				41BB958C2BE7D1C300A84D89 /* TrackerStore.swift */,
+				411D83A42BF38FB90027B0F0 /* CoreDataManager.swift */,
 				41BB958E2BE7D1D400A84D89 /* TrackerCategoryStore.swift */,
 				41BB95902BE7D1F500A84D89 /* TrackerRecordStore.swift */,
-				411D83A42BF38FB90027B0F0 /* CoreDataManager.swift */,
+				41BB958C2BE7D1C300A84D89 /* TrackerStore.swift */,
+				4163DAC52BD56C3600D05B41 /* UIColorExtensions.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -271,8 +271,8 @@
 		41F53F752BFA730E005E0BB5 /* AppSettings */ = {
 			isa = PBXGroup;
 			children = (
-				41F53F732BFA72BB005E0BB5 /* UserDefaultsWrapper.swift */,
 				41F53F762BFA7326005E0BB5 /* AppSettings.swift */,
+				41F53F732BFA72BB005E0BB5 /* UserDefaultsWrapper.swift */,
 			);
 			name = AppSettings;
 			sourceTree = "<group>";
