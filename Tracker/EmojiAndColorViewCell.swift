@@ -34,6 +34,7 @@ final class EmojiAndColorViewCell: UICollectionViewCell {
         contentUILabel.translatesAutoresizingMaskIntoConstraints = false
 
         contentUILabel.textAlignment = .center
+        contentUILabel.font = .boldSystemFont(ofSize: 32)
 
         contentUILabel.layer.masksToBounds = true
         contentUILabel.layer.cornerRadius = 8

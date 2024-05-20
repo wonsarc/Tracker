@@ -20,7 +20,7 @@ final class CategoryViewController: UIViewController {
     // MARK: - Private Properties
 
     private var categoryData: [String] = []
-    private var viewModel: CategoryViewModel?
+    private var viewModel: CategoryViewModel
 
     private lazy var titleLabel: UILabel = {
         let titleLabel = self.titleLabelFactory(withText: "Категория")
@@ -79,6 +79,18 @@ final class CategoryViewController: UIViewController {
         return addCategoryButton
     }()
 
+    // MARK: - Initializers
+
+    init(viewModel: CategoryViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        bind()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     // MARK: - View Life Cycles
 
     override func viewDidLoad() {
@@ -90,26 +102,17 @@ final class CategoryViewController: UIViewController {
         setupCategoryTableView()
         setupAddCategoryButton()
 
-        viewModel?.fetchCategories()
+        viewModel.fetchCategories()
         updateUI()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel?.fetchCategories()
+        viewModel.fetchCategories()
         updateUI()
     }
 
-    // MARK: - Private Methods
-
-    func initialize(viewModel: CategoryViewModel) {
-        self.viewModel = viewModel
-        bind()
-    }
-
     private func bind() {
-        guard let viewModel = viewModel else { return }
-
         viewModel.categories = { [weak self] categories in
             self?.categoryData = categories
             self?.updateUI()

@@ -111,11 +111,9 @@ extension CreateEventAndHabbitProtocol where Self: UIViewController {
     }
 
     func createCategoryVC() -> CategoryViewController {
-        let categoryVC = CategoryViewController()
         let categoryModel = CategoryModel()
         let viewModel = CategoryViewModel(for: categoryModel)
-        
-        categoryVC.initialize(viewModel: viewModel)
-        return categoryVC
+
+        return CategoryViewController(viewModel: viewModel)
     }
 }
