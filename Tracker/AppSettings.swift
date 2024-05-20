@@ -1,11 +1,16 @@
 //
-//  IdentityCellEnum.swift
+//  AppSettings.swift
 //  Tracker
 //
-//  Created by Artem Krasnov on 07.04.2024.
+//  Created by Artem Krasnov on 19.05.2024.
 //
 
 import Foundation
+
+class AppSettings {
+    @UserDefaultsWrapper(key: "isFirstOpen", defaultValue: true)
+    static var isFirstOpen: Bool
+}
 
 enum IdentityCellEnum: String {
 

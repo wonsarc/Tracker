@@ -25,6 +25,7 @@ protocol CreateEventAndHabbitProtocol: AnyObject {
     func createTextFieldCheckAction(_ textField: UITextField)
     func createButtonAction(with newTracker: TrackerModel)
     func cancelButtonAction()
+    func createCategoryVC() -> CategoryViewController
 }
 
 extension CreateEventAndHabbitProtocol where Self: UIViewController {
@@ -107,5 +108,12 @@ extension CreateEventAndHabbitProtocol where Self: UIViewController {
         if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
             rootViewController.dismiss(animated: true, completion: nil)
         }
+    }
+
+    func createCategoryVC() -> CategoryViewController {
+        let categoryModel = CategoryModel()
+        let viewModel = CategoryViewModel(for: categoryModel)
+
+        return CategoryViewController(viewModel: viewModel)
     }
 }

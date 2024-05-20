@@ -8,12 +8,11 @@
 import UIKit
 
 final class SplashViewController: UIViewController {
-    var isFirstOpen = false
 
     // MARK: - View Life Cycles
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        let viewController = isFirstOpen ? OnboardingViewController() : TabBarController()
+        let viewController = AppSettings.isFirstOpen ? OnboardingViewController() : TabBarController()
         setRootViewController(viewController)
     }
 

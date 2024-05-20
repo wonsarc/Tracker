@@ -7,14 +7,7 @@
 
 import UIKit
 
-protocol NewCategoryViewControllerDelegate: AnyObject {
-    func addCategory()
-}
-
 final class NewCategoryViewController: UIViewController {
-
-    weak var delegate: NewCategoryViewControllerDelegate?
-    var trackerCategoryStore = TrackerCategoryStore()
 
     // MARK: - Private Properties
 
@@ -87,9 +80,11 @@ final class NewCategoryViewController: UIViewController {
     }
 
     @objc private func didTapDoneButton() {
-        trackerCategoryStore.createRecord(with: nameCategoryTextField.text!)
-        delegate?.addCategory()
-        dismiss(animated: false)
+        if let text = nameCategoryTextField.text {
+            TrackerCategoryStore().createRecord(with: text)
+            dismiss(animated: false)
+            (self.presentingViewController as? CategoryViewController)?.viewWillAppear(true)
+        }
     }
 
     @objc private func textFieldDidChange(_ textField: UITextField) {
