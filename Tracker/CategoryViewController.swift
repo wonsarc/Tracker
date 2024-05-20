@@ -112,6 +112,8 @@ final class CategoryViewController: UIViewController {
         updateUI()
     }
 
+    // MARK: - Private Methods
+
     private func bind() {
         viewModel.categories = { [weak self] categories in
             self?.categoryData = categories
