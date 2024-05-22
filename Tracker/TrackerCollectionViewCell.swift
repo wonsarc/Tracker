@@ -147,19 +147,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             doneButton.trailingAnchor.constraint(equalTo: cellUIView.trailingAnchor, constant: -12)
         ])
     }
-        private func formateDate(day: Int) -> String {
-
-        switch day % 10 {
-        case 1:
-            return "\(day) день"
-        case 2, 3, 4:
-            return "\(day) дня"
-        case 5, 6, 7, 8, 9, 0:
-            return "\(day) дней"
-        default:
-            return "сегодня"
-        }
-    }
 
     private func updateDoneButtonImage(_ isDone: Bool) {
         let imageName = isDone ? "done" : "plus"
@@ -208,7 +195,10 @@ extension TrackerCollectionViewCell: TrackerCollectionViewCellProtocol {
 
         if let id = trackerModel?.id {
             let days = trackerRecordStore.countFetchById(id: id)
-            dateUILabel.text = formateDate(day: days)
+            dateUILabel.text = String.localizedStringWithFormat(
+                NSLocalizedString("countDays", comment: "Count done days"),
+                days
+            )
         }
 
         if let id = trackerModel?.id,

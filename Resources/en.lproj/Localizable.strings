@@ -1,0 +1,13 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Artem Krasnov on 21.05.2024.
+  
+*/
+
+"trackersVC.emptyState.title" = "What are we going to track?";
+"trackersVC.navigationItem.title" = "Trackers";
+"trackersVC.searchController.searchBar.placeholder" = "Search";
+
+"tabBar.tab_stats" = "Statistics";

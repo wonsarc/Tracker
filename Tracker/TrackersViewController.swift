@@ -52,7 +52,7 @@ final class TrackersViewController: UIViewController {
     private lazy var emptyTaskLabel: UILabel = {
         let emptyTaskLabel = UILabel()
         emptyTaskLabel.translatesAutoresizingMaskIntoConstraints = false
-        emptyTaskLabel.text = "Что будем отслеживать?"
+        emptyTaskLabel.text = NSLocalizedString("trackersVC.emptyState.title", comment: "Text displayed on empty state")
         emptyTaskLabel.textColor = UIColor(red: 26.0/255.0, green: 27.0/255.0, blue: 34.0/255.0, alpha: 1.0)
         emptyTaskLabel.font = .systemFont(ofSize: 12)
         emptyTaskLabel.textAlignment = .center
@@ -153,10 +153,13 @@ final class TrackersViewController: UIViewController {
 
         let searchController = UISearchController()
         searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchBar.placeholder = "Поиск"
+        searchController.searchBar.placeholder = NSLocalizedString(
+            "trackersVC.searchController.searchBar.placeholder",
+            comment: ""
+        )
         navigationItem.searchController = searchController
 
-        navigationItem.title = "Трекеры"
+        navigationItem.title = NSLocalizedString("trackersVC.navigationItem.title", comment: "")
         navigationController?.navigationBar.prefersLargeTitles = true
     }
 
