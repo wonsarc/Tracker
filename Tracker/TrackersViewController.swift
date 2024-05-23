@@ -9,13 +9,11 @@ import UIKit
 
 final class TrackersViewController: UIViewController {
 
-    // MARK: - Public Properties
-
-    let trackerStore = TrackerStore()
-    var selectedDay: WeekDaysModel?
-    var currentDate: Date? = Date()
-
     // MARK: - Private Properties
+
+    private let trackerStore = TrackerStore()
+    private var selectedDay: WeekDaysModel?
+    private var currentDate: Date? = Date()
 
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -82,8 +80,6 @@ final class TrackersViewController: UIViewController {
         datePicker.addTarget(self, action: #selector(datePickerValueChanged), for: .valueChanged)
 
         updateSelectedDate(date: Date())
-
-        didUpdate()
     }
 
     // MARK: - Public Methods
@@ -151,12 +147,13 @@ final class TrackersViewController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: addTaskButton)
         navigationItem.rightBarButtonItem =  UIBarButtonItem(customView: datePicker)
 
-        let searchController = UISearchController()
+        let searchController = UISearchController(searchResultsController: nil)
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.placeholder = NSLocalizedString(
             "trackersVC.searchController.searchBar.placeholder",
             comment: ""
         )
+        searchController.searchResultsUpdater = self
         navigationItem.searchController = searchController
 
         navigationItem.title = NSLocalizedString("trackersVC.navigationItem.title", comment: "")
@@ -286,5 +283,19 @@ extension TrackersViewController: TrackerStoreDelegate {
     func didUpdate() {
         collectionView.reloadData()
         updateUI()
+    }
+}
+
+// MARK: - UISearchResultsUpdating
+
+extension TrackersViewController: UISearchResultsUpdating {
+
+   func updateSearchResults(for searchController: UISearchController) {
+
+        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
+            trackerStore.searchName = searchText
+        } else {
+            trackerStore.searchName = nil
+        }
     }
 }

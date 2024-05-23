@@ -22,6 +22,12 @@ final class TrackerStore: NSObject {
         }
     }
 
+    var searchName: String? {
+        didSet {
+            refreshFetchResults()
+        }
+    }
+
     var frcStore: NSFetchedResultsController<TrackerCoreData>?
 
     // MARK: - Private Properties
@@ -87,6 +93,10 @@ final class TrackerStore: NSObject {
         fetchRequest.sortDescriptors = [
             NSSortDescriptor(key: "category", ascending: false)
         ]
+
+        if let searchName = searchName {
+            fetchRequest.predicate = NSPredicate(format: "name contains %@", searchName)
+        }
 
         if let day = day {
             let fetchedObjects = try? context.fetch(fetchRequest)
