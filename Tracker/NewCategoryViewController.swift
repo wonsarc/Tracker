@@ -12,12 +12,22 @@ final class NewCategoryViewController: UIViewController {
     // MARK: - Private Properties
 
     private lazy var titleLabel: UILabel = {
-        let titleLabel = self.titleLabelFactory(withText: "Новая категория")
+        let titleLabel = self.titleLabelFactory(
+            withText: NSLocalizedString(
+                "newCategoryVC.titleLabel.text",
+                comment: ""
+            )
+        )
         return titleLabel
     }()
 
     private lazy var nameCategoryTextField: UITextField = {
-        let textField = self.textFieldFactory(withPlaceholder: "Введите название категории")
+        let textField = self.textFieldFactory(
+            withPlaceholder: NSLocalizedString(
+                "newCategoryVC.nameCategoryTextField.text",
+                comment: ""
+            )
+        )
         return textField
     }()
 
@@ -30,7 +40,13 @@ final class NewCategoryViewController: UIViewController {
 
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         doneButton.accessibilityIdentifier = "doneButton"
-        doneButton.setTitle("Готово", for: .normal)
+        doneButton.setTitle(
+            NSLocalizedString(
+                "schedulerVC.doneButton.text",
+                comment: ""
+            ),
+            for: .normal
+        )
         doneButton.tintColor = .white
         doneButton.titleLabel?.font = .systemFont(ofSize: 16)
         doneButton.backgroundColor = .lightGray

@@ -16,7 +16,12 @@ final class CreateHabbitViewController: UIViewController, CreateEventAndHabbitPr
     var trackerStore = TrackerStore()
 
     lazy var titleLabel: UILabel = {
-        let titleLabel = self.titleLabelFactory(withText: "Новая привычка")
+        let titleLabel = self.titleLabelFactory(
+            withText: NSLocalizedString(
+                "createHabbitVC.titleLabel.text",
+                comment: ""
+            )
+        )
         return titleLabel
     }()
 
@@ -26,12 +31,19 @@ final class CreateHabbitViewController: UIViewController, CreateEventAndHabbitPr
     }()
 
     lazy var nameTrackerTextField: UITextField = {
-        let textField = self.textFieldFactory(withPlaceholder: "Введите название трекера")
+        let textField = self.textFieldFactory(
+            withPlaceholder: NSLocalizedString(
+                "createVC.nameTrackerTextField.text",
+                comment: ""
+            )
+        )
         return textField
     }()
 
     lazy var limitUILabel: UILabel = {
-        let limitUILabel = self.limitUILabelFactory(withText: "Ограничение 38 символов")
+        let limitUILabel = self.limitUILabelFactory(
+            withText: NSLocalizedString("createVC.limitUILabel.text", comment: "")
+        )
         return limitUILabel
     }()
 
@@ -218,11 +230,11 @@ extension CreateHabbitViewController: UITableViewDelegate, UITableViewDataSource
         cell.detailTextLabel?.textColor = .lightGray
 
         if indexPath.row == 0 {
-            cell.textLabel?.text = "Категория"
+            cell.textLabel?.text = NSLocalizedString("categoryVC.titleLabel.text", comment: "")
             cell.detailTextLabel?.text = detailTextLabel
             cell.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         } else {
-            cell.textLabel?.text = "Расписание"
+            cell.textLabel?.text = NSLocalizedString("schedulerVC.titleLabel.text", comment: "")
             cell.detailTextLabel?.text = selectedDays
             cell.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         }
@@ -336,9 +348,9 @@ extension CreateHabbitViewController: UICollectionViewDataSource {
             label.font = UIFont.boldSystemFont(ofSize: 19)
 
             if indexPath.section == 0 {
-                label.text = "Emoji"
+                label.text = NSLocalizedString("createVC.cell.label.emoji.text", comment: "")
             } else {
-                label.text = "Цвет"
+                label.text = NSLocalizedString("createVC.cell.label.color.text", comment: "")
             }
 
             headerView.addSubview(label)

@@ -67,7 +67,13 @@ final class OnboardingViewController: UIPageViewController {
         let confirmButton = UIButton(type: .system)
 
         confirmButton.backgroundColor = .black
-        confirmButton.setTitle("Вот это технологии!", for: .normal)
+        confirmButton.setTitle(
+            NSLocalizedString(
+                "onboardingVC.confirmButton.title",
+                comment: ""
+            ),
+            for: .normal
+        )
         confirmButton.titleLabel?.font = .systemFont(ofSize: 16)
         confirmButton.tintColor = .white
         confirmButton.layer.cornerRadius = 16
@@ -90,7 +96,7 @@ final class OnboardingViewController: UIPageViewController {
 
         let textLabel = UILabel()
 
-        textLabel.text = "Отслеживайте только то, что хотите"
+        textLabel.text = NSLocalizedString("onboardingVC.firstScreen.textLabel.text", comment: "")
         textLabel.numberOfLines = 2
         textLabel.lineBreakMode = .byWordWrapping
         textLabel.textAlignment = .center
@@ -161,8 +167,8 @@ final class OnboardingViewController: UIPageViewController {
 
     private func setLabelText(for page: Int) {
         textLabel.text = page == 0 ?
-        "Отслеживайте только то, что хотите" :
-        "Даже если это не литры воды и йога"
+        NSLocalizedString("onboardingVC.firstScreen.textLabel.text", comment: "") :
+        NSLocalizedString("onboardingVC.secondScreen.textLabel.text", comment: "")
     }
 
     @objc private func confirmButtonTapped() {

@@ -16,7 +16,12 @@ final class CreateEventViewController: UIViewController, CreateEventAndHabbitPro
     var trackerStore = TrackerStore()
 
     lazy var titleLabel: UILabel = {
-        let titleLabel = self.titleLabelFactory(withText: "Новое нерегулярное событие")
+        let titleLabel = self.titleLabelFactory(
+            withText: NSLocalizedString(
+                "createEventVC.titleLabel.text",
+                comment: ""
+            )
+        )
         return titleLabel
     }()
 
@@ -26,12 +31,19 @@ final class CreateEventViewController: UIViewController, CreateEventAndHabbitPro
     }()
 
     lazy var nameTrackerTextField: UITextField = {
-        let textField = self.textFieldFactory(withPlaceholder: "Введите название трекера")
+        let textField = self.textFieldFactory(
+            withPlaceholder: NSLocalizedString(
+                "createVC.nameTrackerTextField.text",
+                comment: ""
+            )
+        )
         return textField
     }()
 
     lazy var limitUILabel: UILabel = {
-        let limitUILabel = self.limitUILabelFactory(withText: "Ограничение 38 символов")
+        let limitUILabel = self.limitUILabelFactory(
+            withText: NSLocalizedString("createVC.limitUILabel.text", comment: "")
+        )
         return limitUILabel
     }()
 
@@ -216,7 +228,7 @@ extension CreateEventViewController: UITableViewDelegate, UITableViewDataSource 
         cell.detailTextLabel?.font = .systemFont(ofSize: 17)
         cell.detailTextLabel?.textColor = .lightGray
         cell.detailTextLabel?.text = detailTextLabel
-        cell.textLabel?.text = "Категория"
+        cell.textLabel?.text = NSLocalizedString("categoryVC.titleLabel.text", comment: "")
 
         return cell
     }
@@ -303,9 +315,9 @@ extension CreateEventViewController: UICollectionViewDataSource {
             label.font = UIFont.boldSystemFont(ofSize: 19)
 
             if indexPath.section == 0 {
-                label.text = "Emoji"
+                label.text = NSLocalizedString("createVC.cell.label.emoji.text", comment: "")
             } else {
-                label.text = "Цвет"
+                label.text = NSLocalizedString("createVC.cell.label.color.text", comment: "")
             }
 
             headerView.addSubview(label)
@@ -391,7 +403,6 @@ extension CreateEventViewController: UICollectionViewDelegateFlowLayout {
                 currentColor = color
                 selectedIndexPaths[1] = indexPath
             }
-
         }
     }
 }

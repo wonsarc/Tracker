@@ -10,6 +10,7 @@
 		411D83A52BF38FB90027B0F0 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411D83A42BF38FB90027B0F0 /* CoreDataManager.swift */; };
 		412EB1F32BFC806700F22FD7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 412EB1F12BFC806700F22FD7 /* Localizable.strings */; };
 		412EB1F72BFC868800F22FD7 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 412EB1F52BFC868800F22FD7 /* Localizable.stringsdict */; };
+		412EB2632BFE794A00F22FD7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 412EB2612BFE794A00F22FD7 /* InfoPlist.strings */; };
 		415B86812BD6B2B400A4BBFE /* TrackerModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 415B867F2BD6B2B400A4BBFE /* TrackerModel.xcdatamodeld */; };
 		4163DAC02BD057EF00D05B41 /* CreateEventAndHabbitFactoryExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4163DABF2BD057EF00D05B41 /* CreateEventAndHabbitFactoryExtensions.swift */; };
 		4163DAC22BD2832D00D05B41 /* CreateEventAndHabbitProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4163DAC12BD2832D00D05B41 /* CreateEventAndHabbitProtocol.swift */; };
@@ -53,6 +54,8 @@
 		412EB1F42BFC80D500F22FD7 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		412EB1F62BFC868800F22FD7 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ru; path = ru.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		412EB1F82BFC86D000F22FD7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		412EB2622BFE794A00F22FD7 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		412EB2642BFE796200F22FD7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		415B86802BD6B2B400A4BBFE /* TrackerModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TrackerModel.xcdatamodel; sourceTree = "<group>"; };
 		4163DABF2BD057EF00D05B41 /* CreateEventAndHabbitFactoryExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEventAndHabbitFactoryExtensions.swift; sourceTree = "<group>"; };
 		4163DAC12BD2832D00D05B41 /* CreateEventAndHabbitProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEventAndHabbitProtocol.swift; sourceTree = "<group>"; };
@@ -107,6 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				41F1C42A2B9A4B1200F7BC62 /* Assets.xcassets */,
+				412EB2612BFE794A00F22FD7 /* InfoPlist.strings */,
 				412EB1F12BFC806700F22FD7 /* Localizable.strings */,
 				412EB1F52BFC868800F22FD7 /* Localizable.stringsdict */,
 			);
@@ -221,11 +225,11 @@
 		419D2CF62BC310840092FB8D /* CreateEventAndHabbitViewController */ = {
 			isa = PBXGroup;
 			children = (
+				418602CE2BB9D7930085BF1A /* CreateHabbitViewController.swift */,
+				418602D02BBB47E90085BF1A /* CreateHabbitViewSettingsCell.swift */,
 				4163DAC12BD2832D00D05B41 /* CreateEventAndHabbitProtocol.swift */,
 				4163DABF2BD057EF00D05B41 /* CreateEventAndHabbitFactoryExtensions.swift */,
 				418602D22BBC985B0085BF1A /* CreateEventViewController.swift */,
-				418602CE2BB9D7930085BF1A /* CreateHabbitViewController.swift */,
-				418602D02BBB47E90085BF1A /* CreateHabbitViewSettingsCell.swift */,
 				4163DAC32BD569AC00D05B41 /* EmojiAndColorViewCell.swift */,
 			);
 			name = CreateEventAndHabbitViewController;
@@ -311,11 +315,12 @@
 				41F1C41A2B9A4B1100F7BC62 /* Sources */,
 				41F1C41B2B9A4B1100F7BC62 /* Frameworks */,
 				41F1C41C2B9A4B1100F7BC62 /* Resources */,
-				4168FFD02B9B81E5005EC9A4 /* ShellScript */,
+				4168FFD02B9B81E5005EC9A4 /* SwiftLint */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				412EB26D2BFF1D5900F22FD7 /* PBXTargetDependency */,
 			);
 			name = Tracker;
 			productName = Tracker;
@@ -347,6 +352,8 @@
 				ru,
 			);
 			mainGroup = 41F1C4152B9A4B1100F7BC62;
+			packageReferences = (
+			);
 			productRefGroup = 41F1C41F2B9A4B1100F7BC62 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -362,6 +369,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				41F1C42B2B9A4B1200F7BC62 /* Assets.xcassets in Resources */,
+				412EB2632BFE794A00F22FD7 /* InfoPlist.strings in Resources */,
 				412EB1F32BFC806700F22FD7 /* Localizable.strings in Resources */,
 				412EB1F72BFC868800F22FD7 /* Localizable.stringsdict in Resources */,
 			);
@@ -370,7 +378,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4168FFD02B9B81E5005EC9A4 /* ShellScript */ = {
+		4168FFD02B9B81E5005EC9A4 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -380,6 +388,7 @@
 			);
 			inputPaths = (
 			);
+			name = SwiftLint;
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -435,6 +444,13 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		412EB26D2BFF1D5900F22FD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 412EB26C2BFF1D5900F22FD7 /* SwiftGenPlugin */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		412EB1F12BFC806700F22FD7 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
@@ -452,6 +468,15 @@
 				412EB1F82BFC86D000F22FD7 /* en */,
 			);
 			name = Localizable.stringsdict;
+			sourceTree = "<group>";
+		};
+		412EB2612BFE794A00F22FD7 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				412EB2622BFE794A00F22FD7 /* ru */,
+				412EB2642BFE796200F22FD7 /* en */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -662,6 +687,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		412EB2652BFF18A900F22FD7 /* XCRemoteSwiftPackageReference "SwiftGenPlugin" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftGen/SwiftGenPlugin";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.6.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		412EB26C2BFF1D5900F22FD7 /* SwiftGenPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 412EB2652BFF18A900F22FD7 /* XCRemoteSwiftPackageReference "SwiftGenPlugin" */;
+			productName = "plugin:SwiftGenPlugin";
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		415B867F2BD6B2B400A4BBFE /* TrackerModel.xcdatamodeld */ = {

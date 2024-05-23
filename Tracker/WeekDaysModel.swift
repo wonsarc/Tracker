@@ -8,13 +8,26 @@
 import Foundation
 
 enum WeekDaysModel: String, Codable, CaseIterable {
-    case monday = "Пн"
-    case tuesday = "Вт"
-    case wednesday = "Cр"
-    case thursday = "Чт"
-    case friday = "Пт"
-    case saturday = "Сб"
-    case sunday = "Вс"
+
+    case monday
+    case tuesday
+    case wednesday
+    case thursday
+    case friday
+    case saturday
+    case sunday
+
+    var localizedString: String {
+        switch self {
+        case .monday: return NSLocalizedString("weekDaysModel.case.monday", comment: "")
+        case .tuesday: return NSLocalizedString("weekDaysModel.case.tuesday", comment: "")
+        case .wednesday: return NSLocalizedString("weekDaysModel.case.wednesday", comment: "")
+        case .thursday: return NSLocalizedString("weekDaysModel.case.thursday", comment: "")
+        case .friday: return NSLocalizedString("weekDaysModel.case.friday", comment: "")
+        case .saturday: return NSLocalizedString("weekDaysModel.case.saturday", comment: "")
+        case .sunday: return NSLocalizedString("weekDaysModel.case.sunday", comment: "")
+        }
+    }
 
     static func fromIndex(_ index: Int) -> WeekDaysModel? {
         switch index {
@@ -30,6 +43,6 @@ enum WeekDaysModel: String, Codable, CaseIterable {
     }
 
     static func fromRawValue(_ value: String) -> WeekDaysModel? {
-         return WeekDaysModel.allCases.first { $0.rawValue == value }
-     }
+        return WeekDaysModel.allCases.first { $0.rawValue == value }
+    }
 }

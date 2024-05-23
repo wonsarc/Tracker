@@ -93,7 +93,10 @@ extension UIViewController {
 
         canceledButton.translatesAutoresizingMaskIntoConstraints = false
         canceledButton.accessibilityIdentifier = "canceledButton"
-        canceledButton.setTitle("Отменить", for: .normal)
+        canceledButton.setTitle(
+            NSLocalizedString("extensionUIVC.canceledButton.title.text", comment: ""),
+            for: .normal
+        )
         canceledButton.layer.borderWidth = 1
         canceledButton.layer.borderColor = UIColor.red.cgColor
         canceledButton.tintColor = .red
@@ -113,7 +116,10 @@ extension UIViewController {
 
         createdButton.translatesAutoresizingMaskIntoConstraints = false
         createdButton.accessibilityIdentifier = "createdButton"
-        createdButton.setTitle("Создать", for: .normal)
+        createdButton.setTitle(
+            NSLocalizedString("extensionUIVC.createdButton.title.text", comment: ""),
+            for: .normal
+        )
         createdButton.tintColor = .white
         createdButton.titleLabel?.font = .systemFont(ofSize: 16)
         createdButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)

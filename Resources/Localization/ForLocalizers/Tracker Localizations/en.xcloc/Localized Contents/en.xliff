@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+  <file original="Resources/ru.lproj/InfoPlist.strings" source-language="ru" target-language="en" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="15.4" build-num="15F31d"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleDisplayName" xml:space="preserve">
+        <source>Трекер</source>
+        <target>Tracker</target>
+        <note>InfoPlist.strings
+  Tracker
+
+  Created by Artem Krasnov on 22.05.2024.</note>
+      </trans-unit>
+      <trans-unit id="CFBundleName" xml:space="preserve">
+        <source>Tracker</source>
+        <note>Bundle name</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="Resources/ru.lproj/Localizable.strings" source-language="ru" target-language="en" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="15.4" build-num="15F31d"/>
+    </header>
+    <body>
+      <trans-unit id="countDays" translate="no" xml:space="preserve">
+        <source>countDays</source>
+        <note>Count done days (Key in .stringsdict)</note>
+      </trans-unit>
+      <trans-unit id="tabBar.tab_stats" xml:space="preserve">
+        <source>Cтатистика</source>
+        <target>Statistics</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="trackersVC.emptyState.title" xml:space="preserve">
+        <source>Что будем отслеживать?</source>
+        <target>What are we going to track?</target>
+        <note>Localizable.strings
+  Tracker
+
+  Created by Artem Krasnov on 21.05.2024.</note>
+      </trans-unit>
+      <trans-unit id="trackersVC.navigationItem.title" xml:space="preserve">
+        <source>Трекеры</source>
+        <target>Trackers</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="trackersVC.searchController.searchBar.placeholder" xml:space="preserve">
+        <source>Поиск</source>
+        <target>Search</target>
+        <note/>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="Resources/ru.lproj/Localizable.stringsdict" source-language="ru" target-language="en" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="15.4" build-num="15F31d"/>
+    </header>
+    <body>
+      <trans-unit id="/countDays:dict/NSStringLocalizedFormatKey:dict/:string" xml:space="preserve">
+        <source>%#@days@</source>
+        <target>%#@days@</target>
+        <note>Count done days</note>
+      </trans-unit>
+      <trans-unit id="/countDays:dict/days:dict/one:dict/:string" xml:space="preserve">
+        <source>%d день</source>
+        <target>%d day</target>
+        <note>Count done days</note>
+      </trans-unit>
+      <trans-unit id="/countDays:dict/days:dict/other:dict/:string" xml:space="preserve">
+        <source>%d дней</source>
+        <target>%d days</target>
+        <note>Count done days</note>
+      </trans-unit>
+      <trans-unit id="/countDays:dict/days:dict/zero:dict/:string" xml:space="preserve">
+        <source>%d дней</source>
+        <target>%d days</target>
+        <note>Count done days</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

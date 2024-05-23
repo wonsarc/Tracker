@@ -23,7 +23,12 @@ final class CategoryViewController: UIViewController {
     private var viewModel: CategoryViewModel
 
     private lazy var titleLabel: UILabel = {
-        let titleLabel = self.titleLabelFactory(withText: "Категория")
+        let titleLabel = self.titleLabelFactory(
+            withText: NSLocalizedString(
+                "categoryVC.titleLabel.text",
+                comment: ""
+            )
+        )
         return titleLabel
     }()
 
@@ -37,7 +42,7 @@ final class CategoryViewController: UIViewController {
     private lazy var emptyTaskLabel: UILabel = {
         let emptyTaskLabel = UILabel()
         emptyTaskLabel.translatesAutoresizingMaskIntoConstraints = false
-        emptyTaskLabel.text = "Привычки и события можно\nобъединить по смыслу"
+        emptyTaskLabel.text = NSLocalizedString("categoryVC.emptyTaskLabel.text", comment: "")
         emptyTaskLabel.textColor = .black
         emptyTaskLabel.numberOfLines = 2
         emptyTaskLabel.font = .systemFont(ofSize: 12)
@@ -70,7 +75,13 @@ final class CategoryViewController: UIViewController {
 
         addCategoryButton.translatesAutoresizingMaskIntoConstraints = false
         addCategoryButton.accessibilityIdentifier = "addCategoryButton"
-        addCategoryButton.setTitle("Добавить категорию", for: .normal)
+        addCategoryButton.setTitle(
+            NSLocalizedString(
+                "categoryVC.addCategoryButton.text",
+                comment: ""
+            ),
+            for: .normal
+        )
         addCategoryButton.tintColor = .white
         addCategoryButton.titleLabel?.font = .systemFont(ofSize: 16)
         addCategoryButton.backgroundColor = .black

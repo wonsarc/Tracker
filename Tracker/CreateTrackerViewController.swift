@@ -14,7 +14,9 @@ final class CreateTrackerViewController: UIViewController {
     // MARK: - Private Properties
 
     private lazy var titleLabel: UILabel = {
-        let titleLabel = self.titleLabelFactory(withText: "Создание трекера")
+        let titleLabel = self.titleLabelFactory(
+            withText: NSLocalizedString("createTrackerVC.titleLabel.text", comment: "")
+        )
         return titleLabel
     }()
 
@@ -26,7 +28,10 @@ final class CreateTrackerViewController: UIViewController {
         )
 
         createHabbitButton.accessibilityIdentifier = "createHabbitButton"
-        createHabbitButton.setTitle("Привычка", for: .normal)
+        createHabbitButton.setTitle(
+            NSLocalizedString("createTrackerVC.createHabbitButton.text", comment: ""),
+            for: .normal
+        )
         setupButton(createHabbitButton)
 
         return createHabbitButton
@@ -40,7 +45,10 @@ final class CreateTrackerViewController: UIViewController {
         )
 
         createEventButton.accessibilityIdentifier = "createEventButton"
-        createEventButton.setTitle("Нерегулярное событие", for: .normal)
+        createEventButton.setTitle(
+            NSLocalizedString("createTrackerVC.createEventButton.text", comment: ""),
+            for: .normal
+        )
         setupButton(createEventButton)
 
         return createEventButton
