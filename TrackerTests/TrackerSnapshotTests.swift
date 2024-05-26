@@ -11,15 +11,32 @@ import SnapshotTesting
 
 final class TrackerSnapshotTests: XCTestCase {
 
-    func testCreateTrackerViewController() {
+    func testLightCreateTrackerViewController() {
         let сreateTrackerVC = CreateTrackerViewController()
 
-        assertSnapshot(of: сreateTrackerVC, as: .image)
+        assertSnapshot(
+            of: сreateTrackerVC,
+            as: .image(
+                on: .init(traits: UITraitCollection(userInterfaceStyle: .light))
+            )
+        )
     }
 
-    func testTrackerViewController() {
+    func testDarkCreateTrackerViewController() {
+        let сreateTrackerVC = CreateTrackerViewController()
+
+        assertSnapshot(of: сreateTrackerVC, as: .image(on: .init(traits: UITraitCollection(userInterfaceStyle: .dark))))
+    }
+
+    func testLightTrackerViewController() {
         let trackerVC = TrackersViewController()
 
-        assertSnapshot(of: trackerVC, as: .image)
+        assertSnapshot(of: trackerVC, as: .image(on: .init(traits: UITraitCollection(userInterfaceStyle: .light))))
+    }
+
+    func testDarkTrackerViewController() {
+        let trackerVC = TrackersViewController()
+
+        assertSnapshot(of: trackerVC, as: .image(on: .init(traits: UITraitCollection(userInterfaceStyle: .dark))))
     }
 }

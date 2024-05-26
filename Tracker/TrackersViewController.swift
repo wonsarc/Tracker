@@ -12,6 +12,7 @@ final class TrackersViewController: UIViewController {
     // MARK: - Private Properties
 
     private let trackerStore = TrackerStore()
+    private let colors = Colors.shared
     private var selectedDay: WeekDaysModel?
     private var currentDate: Date? = Date()
 
@@ -31,7 +32,7 @@ final class TrackersViewController: UIViewController {
             action: #selector(didTapAddTaskButton)
         )
         addTaskButton.translatesAutoresizingMaskIntoConstraints = false
-        addTaskButton.tintColor = .black
+        addTaskButton.tintColor = colors.buttonColor
         addTaskButton.accessibilityIdentifier = "addTaskButton"
 
         return addTaskButton
@@ -41,6 +42,10 @@ final class TrackersViewController: UIViewController {
         let datePicker = UIDatePicker()
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.datePickerMode = .date
+        datePicker.backgroundColor = colors.dataPickerColor
+        datePicker.layer.cornerRadius = 8
+        datePicker.layer.masksToBounds = true
+        datePicker.overrideUserInterfaceStyle = .light
         datePicker.preferredDatePickerStyle = .compact
         datePicker.accessibilityIdentifier = "datePicker"
 
@@ -51,7 +56,7 @@ final class TrackersViewController: UIViewController {
         let emptyTaskLabel = UILabel()
         emptyTaskLabel.translatesAutoresizingMaskIntoConstraints = false
         emptyTaskLabel.text = NSLocalizedString("trackersVC.emptyState.title", comment: "Text displayed on empty state")
-        emptyTaskLabel.textColor = UIColor(red: 26.0/255.0, green: 27.0/255.0, blue: 34.0/255.0, alpha: 1.0)
+        emptyTaskLabel.textColor = colors.textColor
         emptyTaskLabel.font = .systemFont(ofSize: 12)
         emptyTaskLabel.textAlignment = .center
         return emptyTaskLabel
@@ -68,7 +73,7 @@ final class TrackersViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = colors.viewBackgroundColor
 
         trackerStore.delegate = self
 

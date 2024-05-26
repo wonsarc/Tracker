@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		410F1A5B2C0365710073F6BC /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410F1A5A2C0365710073F6BC /* Colors.swift */; };
 		411D83A52BF38FB90027B0F0 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411D83A42BF38FB90027B0F0 /* CoreDataManager.swift */; };
 		412EB1F32BFC806700F22FD7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 412EB1F12BFC806700F22FD7 /* Localizable.strings */; };
 		412EB1F72BFC868800F22FD7 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 412EB1F52BFC868800F22FD7 /* Localizable.stringsdict */; };
@@ -62,6 +63,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		410F1A5A2C0365710073F6BC /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		411D83A42BF38FB90027B0F0 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		412EB1F22BFC806700F22FD7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		412EB1F42BFC80D500F22FD7 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -327,6 +329,7 @@
 			children = (
 				41F53F762BFA7326005E0BB5 /* AppSettings.swift */,
 				41F53F732BFA72BB005E0BB5 /* UserDefaultsWrapper.swift */,
+				410F1A5A2C0365710073F6BC /* Colors.swift */,
 			);
 			name = AppSettings;
 			sourceTree = "<group>";
@@ -482,6 +485,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4163DAC62BD56C3600D05B41 /* UIColorExtensions.swift in Sources */,
+				410F1A5B2C0365710073F6BC /* Colors.swift in Sources */,
 				419D2CF32BC30D0D0092FB8D /* CategoryViewCell.swift in Sources */,
 				419D2CEF2BC2FF600092FB8D /* CategoryViewController.swift in Sources */,
 				41BB958D2BE7D1C300A84D89 /* TrackerStore.swift in Sources */,
