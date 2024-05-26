@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		410F1A5B2C0365710073F6BC /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410F1A5A2C0365710073F6BC /* Colors.swift */; };
+		410F1A5D2C036F540073F6BC /* CreateTrackerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410F1A5C2C036F540073F6BC /* CreateTrackerViewModel.swift */; };
 		411D83A52BF38FB90027B0F0 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411D83A42BF38FB90027B0F0 /* CoreDataManager.swift */; };
 		412EB1F32BFC806700F22FD7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 412EB1F12BFC806700F22FD7 /* Localizable.strings */; };
 		412EB1F72BFC868800F22FD7 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 412EB1F52BFC868800F22FD7 /* Localizable.stringsdict */; };
@@ -64,6 +65,7 @@
 
 /* Begin PBXFileReference section */
 		410F1A5A2C0365710073F6BC /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		410F1A5C2C036F540073F6BC /* CreateTrackerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerViewModel.swift; sourceTree = "<group>"; };
 		411D83A42BF38FB90027B0F0 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		412EB1F22BFC806700F22FD7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		412EB1F42BFC80D500F22FD7 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 		412EB1F02BFC803B00F22FD7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				41F1C42F2B9A4B1200F7BC62 /* Info.plist */,
 				41F1C42A2B9A4B1200F7BC62 /* Assets.xcassets */,
 				412EB2612BFE794A00F22FD7 /* InfoPlist.strings */,
 				412EB1F12BFC806700F22FD7 /* Localizable.strings */,
@@ -294,7 +297,6 @@
 			isa = PBXGroup;
 			children = (
 				41F1C4202B9A4B1100F7BC62 /* Tracker */,
-				412EB1F02BFC803B00F22FD7 /* Resources */,
 				415264BF2C0262420026F1E9 /* TrackerTests */,
 				41F1C41F2B9A4B1100F7BC62 /* Products */,
 			);
@@ -312,14 +314,12 @@
 		41F1C4202B9A4B1100F7BC62 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
-				41F53F9A2BFB4CD1005E0BB5 /* ViewModel */,
 				41F53F752BFA730E005E0BB5 /* AppSettings */,
-				415B86852BD6B59700A4BBFE /* CoreData */,
-				419D2CF82BC3187A0092FB8D /* Services */,
 				41811A952BA358E200339440 /* Models */,
+				412EB1F02BFC803B00F22FD7 /* Resources */,
+				419D2CF82BC3187A0092FB8D /* Services */,
+				41F53F9A2BFB4CD1005E0BB5 /* ViewModel */,
 				4168FFCD2B9B7F04005EC9A4 /* ViewControllers */,
-				41F1C4212B9A4B1100F7BC62 /* AppDelegate.swift */,
-				41F1C42F2B9A4B1200F7BC62 /* Info.plist */,
 			);
 			path = Tracker;
 			sourceTree = "<group>";
@@ -327,6 +327,8 @@
 		41F53F752BFA730E005E0BB5 /* AppSettings */ = {
 			isa = PBXGroup;
 			children = (
+				415B86852BD6B59700A4BBFE /* CoreData */,
+				41F1C4212B9A4B1100F7BC62 /* AppDelegate.swift */,
 				41F53F762BFA7326005E0BB5 /* AppSettings.swift */,
 				41F53F732BFA72BB005E0BB5 /* UserDefaultsWrapper.swift */,
 				410F1A5A2C0365710073F6BC /* Colors.swift */,
@@ -338,6 +340,7 @@
 			isa = PBXGroup;
 			children = (
 				41F53F9B2BFB4CDF005E0BB5 /* CategoryViewModel.swift */,
+				410F1A5C2C036F540073F6BC /* CreateTrackerViewModel.swift */,
 			);
 			name = ViewModel;
 			sourceTree = "<group>";
@@ -520,6 +523,7 @@
 				4168FFD42B9B8860005EC9A4 /* StatisticViewController.swift in Sources */,
 				415B86812BD6B2B400A4BBFE /* TrackerModel.xcdatamodeld in Sources */,
 				418602D32BBC985B0085BF1A /* CreateEventViewController.swift in Sources */,
+				410F1A5D2C036F540073F6BC /* CreateTrackerViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -745,7 +749,7 @@
 				DEVELOPMENT_TEAM = CQNTWDSGK9;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Tracker/Info.plist;
+				INFOPLIST_FILE = Tracker/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
@@ -776,7 +780,7 @@
 				DEVELOPMENT_TEAM = CQNTWDSGK9;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Tracker/Info.plist;
+				INFOPLIST_FILE = Tracker/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
