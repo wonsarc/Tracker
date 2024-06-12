@@ -13,8 +13,8 @@ final class TrackersViewController: UIViewController {
 
     private let trackerStore = TrackerStore()
     private let colors = Colors.shared
-    private var selectedDay: WeekDaysModel?
-    private var currentDate: Date? = Date()
+    private var selectedDay: Date = Date()
+    private var currentFilter: FilterModel = .all
 
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -49,6 +49,8 @@ final class TrackersViewController: UIViewController {
         datePicker.preferredDatePickerStyle = .compact
         datePicker.accessibilityIdentifier = "datePicker"
 
+        datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
+
         return datePicker
     }()
 
@@ -69,6 +71,26 @@ final class TrackersViewController: UIViewController {
         return emptyTaskImageView
     }()
 
+    private lazy var filtersButton: UIButton = {
+
+        let filtersButton = UIButton.systemButton(
+            with: UIImage(),
+            target: target,
+            action: #selector(didTapFilterButton)
+        )
+
+        filtersButton.translatesAutoresizingMaskIntoConstraints = false
+
+        filtersButton.setTitle(NSLocalizedString("trackersVC.filterButton.title", comment: ""), for: .normal)
+        filtersButton.titleLabel?.font = .systemFont(ofSize: 17)
+        filtersButton.tintColor = .white
+        filtersButton.backgroundColor = colors.filterButton
+        filtersButton.layer.cornerRadius = 16
+
+        return filtersButton
+
+    }()
+
     // MARK: - Overrides Methods
 
     override func viewDidLoad() {
@@ -81,36 +103,30 @@ final class TrackersViewController: UIViewController {
         setupViewsForEmptyCategories()
         setupConstraintsForEmptyCategories()
         setupCollectionView()
+        setupFilterButton()
 
-        datePicker.addTarget(self, action: #selector(datePickerValueChanged), for: .valueChanged)
-
-        updateSelectedDate(date: Date())
+        trackerStore.day = selectedDay
     }
 
     // MARK: - Public Methods
 
-    private func updateSelectedDate (date selectedDate: Date) {
-        let customCalendar = Calendar(identifier: .gregorian)
-
-        var weekday = customCalendar.component(.weekday, from: selectedDate)
-        weekday = (weekday - 2 + 7) % 7
-
-        if let selectedDayOfWeek = WeekDaysModel.fromIndex(weekday) {
-            self.selectedDay = selectedDayOfWeek
-            trackerStore.day = selectedDay
-        }
-    }
-
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
-        let selectedDate = sender.date
-        currentDate = selectedDate
+        selectedDay = sender.date
+        trackerStore.day = selectedDay
 
-        if let currentDate = currentDate {
-            updateSelectedDate(date: currentDate)
+        if currentFilter == .today {
+            currentFilter = .all
+            trackerStore.globalFilter = .all
         }
     }
 
     // MARK: - Private Methods
+
+    @objc private func didTapFilterButton() {
+        let filterVC = FilterViewController(currentFilter: currentFilter)
+        filterVC.delegate = self
+        present(filterVC, animated: true)
+    }
 
     private func updateUI() {
 
@@ -119,6 +135,7 @@ final class TrackersViewController: UIViewController {
         emptyTaskLabel.isHidden = isHiddenEmptyLabel
         emptyTaskImageView.isHidden = isHiddenEmptyLabel
         collectionView.isHidden = !isHiddenEmptyLabel
+        filtersButton.isHidden = !isHiddenEmptyLabel
     }
 
     private func setupCollectionView() {
@@ -177,6 +194,18 @@ final class TrackersViewController: UIViewController {
             emptyTaskLabel.topAnchor.constraint(equalTo: emptyTaskImageView.bottomAnchor, constant: 8),
             emptyTaskLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
+    }
+
+    private func setupFilterButton() {
+        view.addSubview(filtersButton)
+
+        filtersButton.widthAnchor.constraint(equalToConstant: 114).isActive = true
+        filtersButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        filtersButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        filtersButton.bottomAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+            constant: -16
+        ).isActive = true
     }
 
     @objc private func didTapAddTaskButton() {
@@ -243,7 +272,7 @@ extension TrackersViewController: UICollectionViewDataSource {
         }
 
         if let tracker = trackerStore.object(at: indexPath) {
-            cell.configure(with: tracker, for: currentDate)
+            cell.configure(with: tracker, for: selectedDay)
         }
 
         cell.delegate = self
@@ -301,6 +330,34 @@ extension TrackersViewController: UISearchResultsUpdating {
             trackerStore.searchName = searchText
         } else {
             trackerStore.searchName = nil
+        }
+    }
+}
+
+// MARK: - FilterViewControllerDelegate
+
+extension TrackersViewController: FilterViewControllerDelegate {
+
+    func didSelectFilter(_ filter: FilterModel) {
+
+        switch filter {
+        case .all:
+            trackerStore.globalFilter = .all
+            currentFilter = filter
+
+        case .today:
+            trackerStore.globalFilter = .today
+            datePicker.date = Date()
+            datePickerValueChanged(datePicker)
+            currentFilter = filter
+
+        case .complete:
+            trackerStore.globalFilter = .complete
+            currentFilter = filter
+
+        case .uncomplete:
+            trackerStore.globalFilter = .uncomplete
+            currentFilter = filter
         }
     }
 }

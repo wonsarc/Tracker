@@ -9,6 +9,7 @@
 "trackersVC.emptyState.title" = "Что будем отслеживать?";
 "trackersVC.navigationItem.title" = "Трекеры";
 "trackersVC.searchController.searchBar.placeholder" = "Поиск";
+"trackersVC.filterButton.title" = "Фильтры";
 
 "tabBar.tab_stats" = "Cтатистика";
 
@@ -19,6 +20,11 @@
 "weekDaysModel.case.friday" = "Пт";
 "weekDaysModel.case.saturday" = "Сб";
 "weekDaysModel.case.sunday" = "Вс";
+
+"filtersModel.case.all" = "Все трекеры";
+"filtersModel.case.today" = "Трекеры на сегодня";
+"filtersModel.case.complete" = "Завершённые";
+"filtersModel.case.uncomplete" = "Незавершённые";
 
 "onboardingVC.firstScreen.textLabel.text" = "Отслеживайте только то, что хотите";
 "onboardingVC.secondScreen.textLabel.text" = "Даже если это не литры воды и йога";

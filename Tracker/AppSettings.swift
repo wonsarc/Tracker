@@ -15,6 +15,7 @@ class AppSettings {
 enum IdentityCellEnum: String {
 
     case categoryViewCell = "categoryCell"
+    case filterViewCell =  "filterViewCell"
     case schedulerTableViewCell = "schedulerCell"
     case createHabbitViewSettingsCell = "habbitCell"
     case trackerCollectionViewCell = "trackerCell"

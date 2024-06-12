@@ -9,6 +9,7 @@
 "trackersVC.emptyState.title" = "What are we going to track?";
 "trackersVC.navigationItem.title" = "Trackers";
 "trackersVC.searchController.searchBar.placeholder" = "Search";
+"trackersVC.filterButton.title" = "Filters";
 
 "tabBar.tab_stats" = "Statistics";
 
@@ -19,6 +20,11 @@
 "weekDaysModel.case.friday" = "Fri";
 "weekDaysModel.case.saturday" = "Sat";
 "weekDaysModel.case.sunday" = "Sun";
+
+"filtersModel.case.all" = "All trackers";
+"filtersModel.case.today" = "Trackers for today";
+"filtersModel.case.complete" = "Completed";
+"filtersModel.case.uncomplete" = "Uncomplete";
 
 "onboardingVC.firstScreen.textLabel.text" = "Track only what you want";
 "onboardingVC.SecondScreen.textLabel.text" = "Even if it's not liters of water and yoga";

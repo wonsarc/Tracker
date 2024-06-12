@@ -35,6 +35,8 @@ final class Colors {
 
     let dataPickerColor = UIColor(hex: 0xF0F0F0)
 
+    let filterButton =  UIColor(hex: 0x3772E7)
+
     let availableСolors: [UIColor] = [
          UIColor(hex: 0xFD4C49), UIColor(hex: 0xFF881E), UIColor(hex: 0x007BFA),
          UIColor(hex: 0x6E44FE), UIColor(hex: 0x33CF69), UIColor(hex: 0xE66DD4),
