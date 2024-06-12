@@ -19,6 +19,7 @@ final class TrackersViewController: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
         collectionView.dataSource = self
         collectionView.delegate = self
 

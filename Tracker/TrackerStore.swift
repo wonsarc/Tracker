@@ -122,24 +122,28 @@ final class TrackerStore: NSObject {
             }
         }
 
-//        if let globalFilter = globalFilter {
-//
-//            let fetchedObjects = try? context.fetch(fetchRequest)
-//            let trackerRecordStore = TrackerRecordStore()
-//            let filteredObjects = fetchedObjects?.filter { object in
-//                guard let id = object.id,
-//                      let day =  day else { return false }
-//
-//                return trackerRecordStore.isTrackerDone(with: id, for: day)
-//            }
-//
-//            if globalFilter == .complete {
-//                if let filteredObjects = filteredObjects {
-//                    let predicateDay = NSPredicate(format: "self in %@", filteredObjects)
-//                    predicates.append(predicateDay)
-//                }
-//            }
-//        }
+        if let globalFilter = globalFilter {
+
+            let fetchedObjects = try? context.fetch(fetchRequest)
+            let trackerRecordStore = TrackerRecordStore()
+            let filteredObjects = fetchedObjects?.filter { object in
+                guard let id = object.id,
+                      let day =  day else { return false }
+
+                return trackerRecordStore.isTrackerDone(with: id, for: day)
+            }
+
+            if let filteredObjects = filteredObjects {
+                if globalFilter == .complete {
+                    let predicateComplete = NSPredicate(format: "self in %@", filteredObjects)
+                    predicates.append(predicateComplete)
+                } else if globalFilter == .uncomplete {
+                    let predicateUncomplete = NSPredicate(format: "NOT (self IN %@)", filteredObjects)
+                    predicates.append(predicateUncomplete)
+
+                }
+            }
+        }
 
         fetchRequest.predicate =  NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
 
