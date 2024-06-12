@@ -194,7 +194,7 @@ extension TrackerCollectionViewCell: TrackerCollectionViewCellProtocol {
         doneButton.backgroundColor = tracker.color
 
         if let id = trackerModel?.id {
-            let days = trackerRecordStore.countFetchById(id: id)
+            let days = trackerRecordStore.countFetch(id)
             dateUILabel.text = String.localizedStringWithFormat(
                 NSLocalizedString("countDays", comment: "Count done days"),
                 days

@@ -46,18 +46,19 @@ final class TrackerRecordStore {
         }
     }
 
-    func countFetchById(id: UUID) -> Int {
+    func countFetch(_ id: UUID? = nil) -> Int {
         let fetchRequest: NSFetchRequest<TrackerRecordCoreData> = TrackerRecordCoreData.fetchRequest()
         fetchRequest.resultType = .countResultType
-        fetchRequest.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+
+        if let id = id {
+            fetchRequest.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+        }
 
         do {
             let count = try context.count(for: fetchRequest)
-            print("Количество записей для трекера с id \(id): \(count)")
             return count
-        } catch {
-            print("Ошибка при выполнении запроса: \(error.localizedDescription)")
-        }
+        } catch {}
+
         return 0
     }
 

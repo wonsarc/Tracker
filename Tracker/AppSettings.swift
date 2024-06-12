@@ -19,5 +19,6 @@ enum IdentityCellEnum: String {
     case createHabbitViewSettingsCell = "habbitCell"
     case trackerCollectionViewCell = "trackerCell"
     case emojiAndColorViewCell = "emojiAndColorCell"
+    case statsViewCell =  "statsViewCell"
     case headerViewIdentifier =  "headerViewIdentifier"
 }

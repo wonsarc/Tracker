@@ -284,7 +284,7 @@ extension CreateHabbitViewController: SchedulerViewControllerDelegate {
 
     func schedulerViewController(_ viewController: SchedulerViewController, didSelectDays days: [WeekDaysModel]) {
         currentSchedule = days
-        let weekdayStrings = days.map { $0.rawValue }
+        let weekdayStrings = days.map { $0.localizedString }
         selectedDays = weekdayStrings.joined(separator: ", ")
         settingsTableView.reloadData()
         canCreateTracker()

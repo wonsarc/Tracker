@@ -49,3 +49,6 @@
 
 "createEventVC.titleLabel.text" = "Новое нерегулярное событие";
 "createHabbitVC.titleLabel.text" = "Новая привычка";
+
+"statisticVC.emptyLabel.text" = "Анализировать пока нечего";
+"statsViewCell.nameCellLabel.text" = "Трекеров завершено";

@@ -48,3 +48,6 @@
 
 "createEventVC.titleLabel.text" = "New irregular event";
 "createHabbitVC.titleLabel.text" = "New habit";
+
+"statisticVC.emptyLabel.text" = "There is nothing to analyze yet";
+"statsViewCell.nameCellLabel.text" = "Trackers completed";
