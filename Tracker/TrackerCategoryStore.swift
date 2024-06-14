@@ -87,13 +87,6 @@ final class TrackerCategoryStore {
         try? context.save()
     }
 
-    func createPinCategory() throws {
-        let trackerCategoryCoreData = TrackerCategoryCoreData()
-        trackerCategoryCoreData.title = "Закрепленные"
-        trackerCategoryCoreData.trackers = []
-        try? context.save()
-    }
-
     // MARK: - Private Methods
 
     private func addTracker(title: String, tracker: TrackerCoreData) {

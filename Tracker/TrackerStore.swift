@@ -134,7 +134,7 @@ final class TrackerStore: NSObject {
         var predicates: [NSPredicate] = []
 
         fetchRequest.sortDescriptors = [
-            NSSortDescriptor(key: "category", ascending: false)
+            NSSortDescriptor(key: "category.title", ascending: false)
         ]
 
         if let searchName = searchName {

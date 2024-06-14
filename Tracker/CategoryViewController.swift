@@ -153,9 +153,11 @@ final class CategoryViewController: UIViewController {
 
     private func updateUI() {
 
-        emptyTaskLabel.isHidden = !categoryData.isEmpty
-        emptyTaskImageView.isHidden = !categoryData.isEmpty
-        categoryTableView.isHidden = categoryData.isEmpty
+        let isEmpty = categoryData.count < 2
+
+        emptyTaskLabel.isHidden = !isEmpty
+        emptyTaskImageView.isHidden = !isEmpty
+        categoryTableView.isHidden = isEmpty
 
         let height = getHeightTableView()
         setupHeightCategoryTableView(with: height)
