@@ -63,7 +63,41 @@ final class TrackerStore: NSObject {
         trackerCoreData.category = trackerCategory
 
         trackerCategory.addToTrackers(trackerCoreData)
-        CoreDataManager.shared.saveContext()
+       try context.save()
+    }
+
+    func getTracker(withId trackerId: UUID) throws -> TrackerCoreData? {
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", trackerId as CVarArg)
+        fetchRequest.fetchLimit = 1
+
+        do {
+            let result = try context.fetch(fetchRequest)
+            return result.first
+        } catch {
+            throw error
+        }
+    }
+
+    func deleteRecord(id: UUID?) {
+
+        guard let id = id else { return }
+
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+
+        fetchRequest.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+
+        do {
+            let records = try context.fetch(fetchRequest)
+
+            for record in records {
+                context.delete(record)
+                TrackerRecordStore().deleteTrackerRecord(id: id)
+            }
+
+            try context.save()
+
+        } catch {}
     }
 
     private func castInTrackerModel(for object: TrackerCoreData) -> TrackerModel? {

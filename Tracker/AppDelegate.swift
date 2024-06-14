@@ -21,6 +21,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = SplashViewController()
         window?.makeKeyAndVisible()
 
+        if AppSettings.isFirstOpen {
+            try? TrackerCategoryStore().createPinCategory()
+        }
+
         return true
     }
 

@@ -29,20 +29,27 @@ final class TrackerRecordStore {
         try context.save()
     }
 
-    func deleteTrackerRecord(id: UUID, date: Date) {
+    func deleteTrackerRecord(id: UUID, date: Date? = nil) {
         let fetchRequest: NSFetchRequest<TrackerRecordCoreData> = TrackerRecordCoreData.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "id == %@ AND date == %@",
-                                             id as CVarArg,
-                                             getDateWithoutTime(from: date) as CVarArg)
+
+        var predicates: [NSPredicate] = [NSPredicate(format: "id == %@", id as CVarArg)]
+
+        if let date = date {
+            predicates.append( NSPredicate(format: "date == %@",
+                                           getDateWithoutTime(from: date) as CVarArg)
+            )
+        }
+
+        fetchRequest.predicate =  NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
 
         do {
             let records = try context.fetch(fetchRequest)
+
             for record in records {
                 context.delete(record)
             }
 
             try context.save()
-            print("Запись с id \(id) и датой \(date) удалена успешно")
         } catch {
             print("Ошибка при удалении записи: \(error.localizedDescription)")
         }

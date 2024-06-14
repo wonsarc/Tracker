@@ -195,10 +195,8 @@ extension CreateEventViewController: UITableViewDelegate, UITableViewDataSource 
         label.translatesAutoresizingMaskIntoConstraints = false
         headerView.addSubview(label)
 
-        NSLayoutConstraint.activate([
-            label.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: headerView.centerYAnchor)
-        ])
+        label.centerXAnchor.constraint(equalTo: headerView.centerXAnchor).isActive = true
+        label.centerYAnchor.constraint(equalTo: headerView.centerYAnchor).isActive = true
 
         return headerView
     }

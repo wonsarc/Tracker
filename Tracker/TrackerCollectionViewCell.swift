@@ -35,6 +35,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         let colorUIView = UIView()
         colorUIView.translatesAutoresizingMaskIntoConstraints = false
         colorUIView.layer.cornerRadius = 16
+        colorUIView.addInteraction(UIContextMenuInteraction(delegate: self))
         return colorUIView
     }()
 
@@ -102,9 +103,9 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private func setupViews() {
         contentView.addSubview(cellUIView)
         contentView.addSubview(colorUIView)
-        contentView.addSubview(emojiColorUIView)
-        contentView.addSubview(emojiUILabel)
-        contentView.addSubview(descriptionUILabel)
+        colorUIView.addSubview(emojiColorUIView)
+        colorUIView.addSubview(emojiUILabel)
+        colorUIView.addSubview(descriptionUILabel)
         contentView.addSubview(dateUILabel)
         contentView.addSubview(doneButton)
     }
@@ -205,6 +206,33 @@ extension TrackerCollectionViewCell: TrackerCollectionViewCellProtocol {
            let date = currentDate {
             let isDone = trackerRecordStore.isTrackerDone(with: id, for: date)
             updateDoneButtonImage(isDone)
+        }
+    }
+}
+
+// MARK: - UIContextMenuInteractionDelegate
+
+extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        configurationForMenuAtLocation location: CGPoint
+    ) -> UIContextMenuConfiguration? {
+
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            let pinAction = UIAction(title: "Pin") { _ in
+                try? TrackerCategoryStore().togglePinTracker(self.trackerModel?.id)
+            }
+
+            let editAction = UIAction(title: "Edit") { _ in
+                print("Edit")
+
+            }
+
+            let deleteAction = UIAction(title: "Delete", attributes: .destructive) { _ in
+                TrackerStore().deleteRecord(id: self.trackerModel?.id)
+            }
+
+            return UIMenu(title: "", children: [pinAction, editAction, deleteAction])
         }
     }
 }

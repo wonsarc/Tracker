@@ -51,6 +51,49 @@ final class TrackerCategoryStore {
         }
     }
 
+    func togglePinTracker(_ trackerId: UUID?) throws {
+
+        guard let trackerId = trackerId else { return }
+
+        let store = TrackerStore()
+
+        guard let tracker = try store.getTracker(withId: trackerId) else {
+            throw NSError(
+                domain: "TrackerErrorDomain",
+                code: 404,
+                userInfo: [NSLocalizedDescriptionKey: "Tracker not found"]
+            )
+        }
+
+        let pinnedCategory = try getCategory(withName: "Закрепленные")
+
+        if tracker.category == pinnedCategory {
+            if let originalCategoryName = tracker.beforePin {
+                let originalCategory = try getCategory(withName: originalCategoryName)
+                tracker.category = originalCategory
+                tracker.beforePin = nil
+            } else {
+                throw NSError(
+                    domain: "CategoryErrorDomain",
+                    code: 404,
+                    userInfo: [NSLocalizedDescriptionKey: "Original category not found"]
+                )
+            }
+        } else {
+            tracker.beforePin = tracker.category?.title
+            tracker.category = pinnedCategory
+        }
+
+        try? context.save()
+    }
+
+    func createPinCategory() throws {
+        let trackerCategoryCoreData = TrackerCategoryCoreData()
+        trackerCategoryCoreData.title = "Закрепленные"
+        trackerCategoryCoreData.trackers = []
+        try? context.save()
+    }
+
     // MARK: - Private Methods
 
     private func addTracker(title: String, tracker: TrackerCoreData) {
