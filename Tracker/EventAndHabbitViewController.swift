@@ -244,6 +244,15 @@ final class EventAndHabbitViewController: UIViewController, EventAndHabbitViewCo
         }
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if action == .edit,
+           let editTrackerId = editTrackerId {
+            selectCeurrentEmojiAndColor(for: editTrackerId)
+        }
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateScrollViewContentSize()
@@ -646,17 +655,32 @@ extension EventAndHabbitViewController {
            let days = tracker.schedule as? [WeekDaysModel] {
             presenter?.updateSelectedDays(days: days)
         }
-
-        if let emoji = tracker.emoji,
-           let color = tracker.color as? UIColor {
-            findCurrentIndex(emoji: emoji, color: color)
-        }
     }
 
-    private func findCurrentIndex(emoji: String, color: UIColor) {
-        guard let aaa = emojiList.firstIndex(of: emoji),
-              let bbb = colorList.firstIndex(of: color) else { return }
+    private func selectCeurrentEmojiAndColor(for trackerId: UUID) {
+        let tracker = try? trackerStore.getTracker(withId: trackerId)
 
-//        emojiAndColorCollectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .top)
+        guard let tracker = tracker,
+              let emoji = tracker.emoji,
+              let color = tracker.color as? UIColor else { return }
+
+        guard let emojiIndexPath = emojiList.firstIndex(of: emoji),
+              let colorIndexPath = colorList.firstIndex(of: color) else { return }
+
+        presenter?.selectedIndexPaths[0] = IndexPath(index: emojiIndexPath)
+        presenter?.currentEmoji = emojiIndexPath
+        presenter?.selectedIndexPaths[1] = IndexPath(index: colorIndexPath)
+        presenter?.currentColor = colorIndexPath
+
+        DispatchQueue.main.async {
+            self.collectionView(
+                self.emojiAndColorCollectionView,
+                didSelectItemAt: IndexPath(row: emojiIndexPath, section: 0)
+            )
+            self.collectionView(
+                self.emojiAndColorCollectionView,
+                didSelectItemAt: IndexPath(row: colorIndexPath, section: 1)
+            )
+        }
     }
 }
