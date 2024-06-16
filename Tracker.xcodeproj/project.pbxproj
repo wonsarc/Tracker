@@ -10,6 +10,7 @@
 		410C12BF2C1CB36D00FF644C /* EventAndHabbitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410C12BE2C1CB36D00FF644C /* EventAndHabbitViewController.swift */; };
 		410C12C32C1CC79700FF644C /* EventAndHabbitPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410C12C22C1CC79700FF644C /* EventAndHabbitPresenter.swift */; };
 		410C12C52C1F1DFB00FF644C /* EventAndHabbitModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410C12C42C1F1DFB00FF644C /* EventAndHabbitModel.swift */; };
+		410C12C72C1F47E500FF644C /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 410C12C62C1F47E500FF644C /* README.md */; };
 		410F1A5B2C0365710073F6BC /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410F1A5A2C0365710073F6BC /* Colors.swift */; };
 		410F1A5D2C036F540073F6BC /* CreateTrackerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410F1A5C2C036F540073F6BC /* CreateTrackerViewModel.swift */; };
 		411D83A52BF38FB90027B0F0 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411D83A42BF38FB90027B0F0 /* CoreDataManager.swift */; };
@@ -70,6 +71,7 @@
 		410C12BE2C1CB36D00FF644C /* EventAndHabbitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAndHabbitViewController.swift; sourceTree = "<group>"; };
 		410C12C22C1CC79700FF644C /* EventAndHabbitPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAndHabbitPresenter.swift; sourceTree = "<group>"; };
 		410C12C42C1F1DFB00FF644C /* EventAndHabbitModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAndHabbitModel.swift; sourceTree = "<group>"; };
+		410C12C62C1F47E500FF644C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		410F1A5A2C0365710073F6BC /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		410F1A5C2C036F540073F6BC /* CreateTrackerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerViewModel.swift; sourceTree = "<group>"; };
 		411D83A42BF38FB90027B0F0 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -315,6 +317,7 @@
 			children = (
 				41F1C4202B9A4B1100F7BC62 /* Tracker */,
 				415264BF2C0262420026F1E9 /* TrackerTests */,
+				410C12C62C1F47E500FF644C /* README.md */,
 				41F1C41F2B9A4B1100F7BC62 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -462,6 +465,7 @@
 			files = (
 				41F1C42B2B9A4B1200F7BC62 /* Assets.xcassets in Resources */,
 				412EB2632BFE794A00F22FD7 /* InfoPlist.strings in Resources */,
+				410C12C72C1F47E500FF644C /* README.md in Resources */,
 				412EB1F32BFC806700F22FD7 /* Localizable.strings in Resources */,
 				412EB1F72BFC868800F22FD7 /* Localizable.stringsdict in Resources */,
 			);
