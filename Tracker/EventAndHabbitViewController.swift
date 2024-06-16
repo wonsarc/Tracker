@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Foundation
 
 protocol EventAndHabbitViewControllerProtocol: AnyObject {
     var presenter: EventAndHabbitPresenterProtocol? { get set }
@@ -13,6 +14,7 @@ protocol EventAndHabbitViewControllerProtocol: AnyObject {
     var colorList: [UIColor] { get }
     var trackerStore: TrackerStore { get }
     var typeScreen: EventAndHabbitType { get }
+    var editTrackerId: UUID? { get }
 }
 
 final class EventAndHabbitViewController: UIViewController, EventAndHabbitViewControllerProtocol {
@@ -20,6 +22,7 @@ final class EventAndHabbitViewController: UIViewController, EventAndHabbitViewCo
     // MARK: - Public Properties
 
     var presenter: EventAndHabbitPresenterProtocol?
+    let editTrackerId: UUID?
     let trackerStore: TrackerStore
     let typeScreen: EventAndHabbitType
     let action: EventAndHabbitAction
@@ -201,6 +204,15 @@ final class EventAndHabbitViewController: UIViewController, EventAndHabbitViewCo
 
     init(trackerStore: TrackerStore, typeScreen: EventAndHabbitType, action: EventAndHabbitAction) {
         self.trackerStore = trackerStore
+        self.editTrackerId = nil
+        self.typeScreen = typeScreen
+        self.action = action
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    init(trackerId: UUID?, typeScreen: EventAndHabbitType, action: EventAndHabbitAction) {
+        self.trackerStore = TrackerStore()
+        self.editTrackerId = trackerId
         self.typeScreen = typeScreen
         self.action = action
         super.init(nibName: nil, bundle: nil)
@@ -223,11 +235,17 @@ final class EventAndHabbitViewController: UIViewController, EventAndHabbitViewCo
         setupViews()
         setupConstraints()
         nameTrackerTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+
+        if action == .edit,
+           let editTrackerId = editTrackerId {
+            setFields(for: editTrackerId)
+            createdButton.setTitle("Сохранить", for: .normal)
+            titleLabel.text = "Редактирование привычки"
+        }
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
         updateScrollViewContentSize()
     }
 
@@ -262,7 +280,8 @@ final class EventAndHabbitViewController: UIViewController, EventAndHabbitViewCo
     @objc private func didTapCreateButton() {
         guard let presenter = presenter else { return }
 
-        presenter.createNewTracker()
+        if action == .create { presenter.createNewTracker() }
+        if action == .edit { presenter.editTracker() }
 
         if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let window = scene.windows.first,
@@ -608,3 +627,36 @@ extension EventAndHabbitViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - UICollectionViewDelegate
 
 extension EventAndHabbitViewController: UICollectionViewDelegate {}
+
+// MARK: - EditTrackerFlow
+
+extension EventAndHabbitViewController {
+
+    private func setFields(for trackerId: UUID) {
+        let tracker = try? trackerStore.getTracker(withId: trackerId)
+
+        guard let tracker = tracker else { return }
+
+        nameTrackerTextField.text = tracker.name
+        textFieldDidChange(nameTrackerTextField)
+
+        didSelectCategory(tracker.category?.title ?? "")
+
+        if typeScreen == .habbit,
+           let days = tracker.schedule as? [WeekDaysModel] {
+            presenter?.updateSelectedDays(days: days)
+        }
+
+        if let emoji = tracker.emoji,
+           let color = tracker.color as? UIColor {
+            findCurrentIndex(emoji: emoji, color: color)
+        }
+    }
+
+    private func findCurrentIndex(emoji: String, color: UIColor) {
+        guard let aaa = emojiList.firstIndex(of: emoji),
+              let bbb = colorList.firstIndex(of: color) else { return }
+
+//        emojiAndColorCollectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .top)
+    }
+}

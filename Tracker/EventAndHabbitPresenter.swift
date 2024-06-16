@@ -18,6 +18,7 @@ protocol EventAndHabbitPresenterProtocol: AnyObject {
 
     func validateTracker() -> Bool
     func createNewTracker()
+    func editTracker()
     func createCategoryVC() -> CategoryViewController
     func updateSelectedDays (days: [WeekDaysModel])
 }
@@ -76,6 +77,25 @@ final class EventAndHabbitPresenter: EventAndHabbitPresenterProtocol {
         )
 
         saveTracker(newTracker)
+    }
+
+    func editTracker() {
+        guard let view = view,
+              let id = view.editTrackerId,
+              let indexColor = currentColor,
+              let indexEmoji = currentEmoji else {
+                fatalError("Cannot create edit tracker without id")
+            }
+
+        if let newTracker = try? trackerStore.getTracker(withId: id),
+           let categoryName = categoryName {
+            newTracker.name = trackerName
+            newTracker.color = view.colorList[indexColor]
+            newTracker.emoji = view.emojiList[indexEmoji]
+            newTracker.schedule = currentSchedule as NSArray
+
+            trackerStore.editTracker(newTracker, categoryName: categoryName)
+        }
     }
 
     func createCategoryVC() -> CategoryViewController {

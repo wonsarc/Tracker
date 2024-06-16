@@ -79,6 +79,14 @@ final class TrackerStore: NSObject {
         }
     }
 
+    func editTracker(_ tracker: TrackerCoreData, categoryName: String) {
+        let trackerCategory = try? TrackerCategoryStore().getCategory(withName: categoryName)
+        tracker.category = trackerCategory
+        trackerCategory?.addToTrackers(tracker)
+
+        try? context.save()
+    }
+
     func deleteRecord(id: UUID?) {
 
         guard let id = id else { return }

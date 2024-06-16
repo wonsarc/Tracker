@@ -19,7 +19,7 @@ final class StatisticViewController: UIViewController {
         let mainTitleLabel = UILabel()
         mainTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         mainTitleLabel.text = NSLocalizedString("tabBar.tab_stats", comment: "")
-        mainTitleLabel.textColor = UIColor(red: 26.0/255.0, green: 27.0/255.0, blue: 34.0/255.0, alpha: 1.0)
+        mainTitleLabel.textColor = Colors.shared.buttonColor
         mainTitleLabel.font = .boldSystemFont(ofSize: 34)
 
         return mainTitleLabel
