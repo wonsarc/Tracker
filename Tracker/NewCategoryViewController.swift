@@ -12,23 +12,47 @@ final class NewCategoryViewController: UIViewController {
     // MARK: - Private Properties
 
     private lazy var titleLabel: UILabel = {
-        let titleLabel = self.titleLabelFactory(
-            withText: NSLocalizedString(
-                "newCategoryVC.titleLabel.text",
-                comment: ""
-            )
-        )
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.textColor = .black
+        titleLabel.font = .systemFont(ofSize: 16)
+        titleLabel.text = NSLocalizedString(
+            "newCategoryVC.titleLabel.text",
+            comment: "")
+
         return titleLabel
     }()
 
     private lazy var nameCategoryTextField: UITextField = {
-        let textField = self.textFieldFactory(
-            withPlaceholder: NSLocalizedString(
+        let nameCategoryTextField = UITextField()
+        nameCategoryTextField.translatesAutoresizingMaskIntoConstraints = false
+        nameCategoryTextField.textColor = .black
+        nameCategoryTextField.borderStyle = .none
+        nameCategoryTextField.layer.cornerRadius = 16
+        nameCategoryTextField.backgroundColor = .customGray
+        nameCategoryTextField.clearButtonMode = .always
+
+        let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 20))
+        nameCategoryTextField.leftView = leftView
+        nameCategoryTextField.leftViewMode = .always
+
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.firstLineHeadIndent = 10
+
+        let placeholderAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.gray,
+            .paragraphStyle: paragraphStyle
+        ]
+
+        let attributedPlaceholder = NSAttributedString(
+            string: NSLocalizedString(
                 "newCategoryVC.nameCategoryTextField.text",
-                comment: ""
-            )
+                comment: ""),
+            attributes: placeholderAttributes
         )
-        return textField
+        nameCategoryTextField.attributedPlaceholder = attributedPlaceholder
+
+        return nameCategoryTextField
     }()
 
     private lazy var doneButton: UIButton = {

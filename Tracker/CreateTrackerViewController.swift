@@ -14,9 +14,14 @@ final class CreateTrackerViewController: UIViewController {
     // MARK: - Private Properties
 
     private lazy var titleLabel: UILabel = {
-        let titleLabel = self.titleLabelFactory(
-            withText: NSLocalizedString("createTrackerVC.titleLabel.text", comment: "")
-        )
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.textColor = .black
+        titleLabel.font = .systemFont(ofSize: 16)
+        titleLabel.text = NSLocalizedString(
+            "createTrackerVC.titleLabel.text",
+            comment: "")
+
         return titleLabel
     }()
 
@@ -100,17 +105,23 @@ final class CreateTrackerViewController: UIViewController {
     }
 
     @objc private func didTapCreateHabbitButton() {
-        let viewController = CreateHabbitViewController()
         if let trackerStore = trackerStore {
-            viewController.trackerStore = trackerStore
+            let viewController = EventAndHabbitViewController(
+                trackerStore: trackerStore,
+                typeScreen: .habbit,
+                action: .create
+            )
             present(viewController, animated: true)
         }
     }
 
     @objc private func didTapCreateEventButton() {
-        let viewController = CreateEventViewController()
         if let trackerStore = trackerStore {
-            viewController.trackerStore = trackerStore
+            let viewController = EventAndHabbitViewController(
+                trackerStore: trackerStore,
+                typeScreen: .event,
+                action: .create
+            )
             present(viewController, animated: true)
         }
     }

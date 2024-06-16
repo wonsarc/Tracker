@@ -23,12 +23,14 @@ final class CategoryViewController: UIViewController {
     private var viewModel: CategoryViewModel
 
     private lazy var titleLabel: UILabel = {
-        let titleLabel = self.titleLabelFactory(
-            withText: NSLocalizedString(
-                "categoryVC.titleLabel.text",
-                comment: ""
-            )
-        )
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.textColor = .black
+        titleLabel.font = .systemFont(ofSize: 16)
+        titleLabel.text = NSLocalizedString(
+            "categoryVC.titleLabel.text",
+            comment: "")
+
         return titleLabel
     }()
 

@@ -18,10 +18,15 @@ final class FilterViewController: UIViewController {
     var currentFilter: FilterModel
     weak var delegate: FilterViewControllerDelegate?
 
-    lazy var titleLabel: UILabel = {
-        let titleLabel = self.titleLabelFactory(
-            withText: NSLocalizedString("trackersVC.filterButton.title", comment: "")
-        )
+    private lazy var titleLabel: UILabel = {
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.textColor = .black
+        titleLabel.font = .systemFont(ofSize: 16)
+        titleLabel.text = NSLocalizedString(
+            "trackersVC.filterButton.title",
+            comment: "")
+
         return titleLabel
     }()
 

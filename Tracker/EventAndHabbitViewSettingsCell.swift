@@ -1,5 +1,5 @@
 //
-//  CreateHabbitViewSettingsCell.swift
+//  EventAndHabbitViewSettingsCell.swift
 //  Tracker
 //
 //  Created by Artem Krasnov on 01.04.2024.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CreateHabbitViewSettingsCell: UITableViewCell {
+final class EventAndHabbitViewSettingsCell: UITableViewCell {
 
     // MARK: - Private Properties
 

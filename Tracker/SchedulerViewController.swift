@@ -22,12 +22,14 @@ final class SchedulerViewController: UIViewController {
     private var selectIndexSet: Set<Int> = []
 
     private lazy var titleLabel: UILabel = {
-        let titleLabel = self.titleLabelFactory(
-            withText: NSLocalizedString(
-                "schedulerVC.titleLabel.text",
-                comment: ""
-            )
-        )
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.textColor = .black
+        titleLabel.font = .systemFont(ofSize: 16)
+        titleLabel.text = NSLocalizedString(
+            "schedulerVC.titleLabel.text",
+            comment: "")
+
         return titleLabel
     }()
 
