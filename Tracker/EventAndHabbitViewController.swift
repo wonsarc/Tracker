@@ -51,6 +51,15 @@ final class EventAndHabbitViewController: UIViewController, EventAndHabbitViewCo
         return titleLabel
     }()
 
+    private lazy var countDateLabel: UILabel = {
+        let countDateLabel = UILabel()
+        countDateLabel.translatesAutoresizingMaskIntoConstraints = false
+        countDateLabel.textColor = .black
+        countDateLabel.font = .boldSystemFont(ofSize: 32)
+
+        return countDateLabel
+    }()
+
     private lazy var scrollUIView: UIScrollView = {
         let scrollUIView = UIScrollView()
         scrollUIView.translatesAutoresizingMaskIntoConstraints = false
@@ -241,6 +250,12 @@ final class EventAndHabbitViewController: UIViewController, EventAndHabbitViewCo
             setFields(for: editTrackerId)
             createdButton.setTitle("Сохранить", for: .normal)
             titleLabel.text = "Редактирование привычки"
+
+            let days = TrackerRecordStore().countFetch(editTrackerId)
+            countDateLabel.text = String.localizedStringWithFormat(
+                NSLocalizedString("countDays", comment: "Count done days"),
+                days
+            )
         }
     }
 
@@ -328,47 +343,72 @@ final class EventAndHabbitViewController: UIViewController, EventAndHabbitViewCo
         scrollUIView.addSubview(emojiAndColorCollectionView)
         scrollUIView.addSubview(canceledButton)
         scrollUIView.addSubview(createdButton)
+
+        if action == .edit {
+            view.addSubview(countDateLabel)
+        }
     }
 
     private func setupConstraints() {
 
         let topAnchor: CGFloat = !isHeaderVisible ? 0 : 24
 
-        NSLayoutConstraint.activate([
-            titleLabel.heightAnchor.constraint(equalToConstant: 22),
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 38),
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        titleLabel.heightAnchor.constraint(equalToConstant: 22).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 38).isActive = true
+        titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
 
-            scrollUIView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
-            scrollUIView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            scrollUIView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            scrollUIView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        if action == .edit {
+            countDateLabel.heightAnchor.constraint(equalToConstant: 38).isActive = true
+            countDateLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+            countDateLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38).isActive = true
+            scrollUIView.topAnchor.constraint(equalTo: countDateLabel.bottomAnchor, constant: 40).isActive = true
+        } else {
+            scrollUIView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38).isActive = true
+        }
 
-            nameTrackerTextField.topAnchor.constraint(equalTo: scrollUIView.topAnchor),
-            nameTrackerTextField.heightAnchor.constraint(equalToConstant: 75),
-            nameTrackerTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            nameTrackerTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+        scrollUIView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
+        scrollUIView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
+        scrollUIView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
 
-            settingsTableView.topAnchor.constraint(equalTo: nameTrackerTextField.bottomAnchor, constant: topAnchor),
-            settingsTableView.heightAnchor.constraint(equalToConstant: 200),
-            settingsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            settingsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+        nameTrackerTextField.topAnchor.constraint(equalTo: scrollUIView.topAnchor).isActive = true
+        nameTrackerTextField.heightAnchor.constraint(equalToConstant: 75).isActive = true
+        nameTrackerTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
+        nameTrackerTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
 
-            emojiAndColorCollectionView.topAnchor.constraint(equalTo: settingsTableView.bottomAnchor, constant: 8),
-            emojiAndColorCollectionView.heightAnchor.constraint(equalToConstant: 525),
-            emojiAndColorCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            emojiAndColorCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+        settingsTableView.topAnchor.constraint(
+            equalTo: nameTrackerTextField.bottomAnchor,
+            constant: topAnchor
+        ).isActive = true
+        settingsTableView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        settingsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
+        settingsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
 
-            canceledButton.widthAnchor.constraint(equalToConstant: 166),
-            canceledButton.heightAnchor.constraint(equalToConstant: 60),
-            canceledButton.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -4),
-            canceledButton.topAnchor.constraint(equalTo: emojiAndColorCollectionView.bottomAnchor, constant: -16),
+        emojiAndColorCollectionView.topAnchor.constraint(
+            equalTo: settingsTableView.bottomAnchor,
+            constant: 8
+        ).isActive = true
+        emojiAndColorCollectionView.heightAnchor.constraint(equalToConstant: 525).isActive = true
+        emojiAndColorCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
+        emojiAndColorCollectionView.trailingAnchor.constraint(
+            equalTo: view.trailingAnchor,
+            constant: -16
+        ).isActive = true
 
-            createdButton.widthAnchor.constraint(equalToConstant: 161),
-            createdButton.heightAnchor.constraint(equalToConstant: 60),
-            createdButton.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 4),
-            createdButton.topAnchor.constraint(equalTo: emojiAndColorCollectionView.bottomAnchor, constant: -16)
-        ])
+        canceledButton.widthAnchor.constraint(equalToConstant: 166).isActive = true
+        canceledButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        canceledButton.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -4).isActive = true
+        canceledButton.topAnchor.constraint(
+            equalTo: emojiAndColorCollectionView.bottomAnchor,
+            constant: -16
+        ).isActive = true
+
+        createdButton.widthAnchor.constraint(equalToConstant: 161).isActive = true
+        createdButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        createdButton.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 4).isActive = true
+        createdButton.topAnchor.constraint(
+            equalTo: emojiAndColorCollectionView.bottomAnchor,
+            constant: -16
+        ).isActive = true
     }
 }
 
