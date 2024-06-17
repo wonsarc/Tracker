@@ -269,13 +269,20 @@ extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
 
             guard let trackerId = self.trackerModel?.id else { return UIMenu()}
-            let isPin = self.isPin(trackerId: trackerId)
 
-            let pinAction = UIAction(title: isPin ? "Unpin" : "Pin") { _ in
+            let isPin = self.isPin(trackerId: trackerId)
+            let pinActionTitle = NSLocalizedString(
+                isPin ? "trackerCollectionViewCell.action.unpin" : "trackerCollectionViewCell.action.pin",
+                comment: ""
+            )
+
+            let pinAction = UIAction(title: pinActionTitle) { _ in
                 try? TrackerCategoryStore().togglePinTracker(trackerId)
             }
 
-            let editAction = UIAction(title: "Edit") { _ in
+            let editAction = UIAction(
+                title: NSLocalizedString("trackerCollectionViewCell.action.edit", comment: "")
+            ) { _ in
 
                 guard let parentViewController = self.findViewController(),
                       let schedule = try? TrackerStore().getTracker(withId: trackerId)?.schedule as? [WeekDaysModel]
@@ -291,7 +298,10 @@ extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
                 parentViewController.present(viewController, animated: true)
             }
 
-            let deleteAction = UIAction(title: "Delete", attributes: .destructive) { _ in
+            let deleteAction = UIAction(
+                title: NSLocalizedString("trackerCollectionViewCell.alert.delete.title", comment: ""),
+                attributes: .destructive
+            ) { _ in
                 self.showDeleteConfirmation(for: trackerId)
             }
 
@@ -304,15 +314,22 @@ extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
 
         let alertController = UIAlertController(
             title: nil,
-            message: "Уверены что хотите удалить трекер?",
+            message: NSLocalizedString("trackerCollectionViewCell.alert.message", comment: ""),
             preferredStyle: .actionSheet
         )
 
-        let deleteAction = UIAlertAction(title: "Удалить", style: .destructive) { _ in
+        let deleteAction = UIAlertAction(
+            title: NSLocalizedString("trackerCollectionViewCell.alert.delete.title", comment: ""),
+            style: .destructive
+        ) { _ in
             TrackerStore().deleteRecord(id: trackerId)
         }
 
-        let cancelAction = UIAlertAction(title: "Отменить", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(
+            title: NSLocalizedString("trackerCollectionViewCell.alert.cancel.title", comment: ""),
+            style: .cancel,
+            handler: nil
+        )
 
         alertController.addAction(deleteAction)
         alertController.addAction(cancelAction)

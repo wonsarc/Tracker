@@ -59,3 +59,10 @@
 
 "statisticVC.emptyLabel.text" = "Анализировать пока нечего";
 "statsViewCell.nameCellLabel.text" = "Трекеров завершено";
+
+"trackerCollectionViewCell.alert.message" = "Уверены что хотите удалить трекер?";
+"trackerCollectionViewCell.alert.delete.title" = "Удалить";
+"trackerCollectionViewCell.alert.cancel.title" = "Отменить";
+"trackerCollectionViewCell.action.edit" = "Редактировать";
+"trackerCollectionViewCell.action.pin" = "Закрепить";
+"trackerCollectionViewCell.action.unpin" = "Открепить";

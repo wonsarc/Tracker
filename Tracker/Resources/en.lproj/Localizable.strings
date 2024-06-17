@@ -58,3 +58,10 @@
 
 "statisticVC.emptyLabel.text" = "There is nothing to analyze yet";
 "statsViewCell.nameCellLabel.text" = "Trackers completed";
+
+"trackerCollectionViewCell.alert.message" = "Are you sure you want to delete the tracker?";
+"trackerCollectionViewCell.alert.delete.title" = "Delete";
+"trackerCollectionViewCell.alert.cancel.title" = "Cancel";
+"trackerCollectionViewCell.action.edit" = "Edit";
+"trackerCollectionViewCell.action.pin" = "Pin";
+"trackerCollectionViewCell.action.unpin" = "Unpin";
