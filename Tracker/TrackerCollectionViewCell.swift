@@ -24,6 +24,8 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     // MARK: - Private Properties
 
     private var trackerRecordStore = TrackerRecordStore()
+    private let analyticsService = AnalyticsService()
+    private let screenName = "Main"
 
     private lazy var cellUIView: UIView = {
         let cellUIView = UIView()
@@ -205,6 +207,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         }
 
         delegate?.didTapDoneButton(for: trackerModel )
+        analyticsService.eventClick(on: screenName, for: .track)
     }
 
     private func findViewController() -> UIViewController? {
@@ -296,6 +299,7 @@ extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
                     action: .edit
                 )
                 parentViewController.present(viewController, animated: true)
+                self.analyticsService.eventClick(on: self.screenName, for: .edit)
             }
 
             let deleteAction = UIAction(
@@ -303,6 +307,7 @@ extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
                 attributes: .destructive
             ) { _ in
                 self.showDeleteConfirmation(for: trackerId)
+                self.analyticsService.eventClick(on: self.screenName, for: .delete)
             }
 
             return UIMenu(title: "", children: [pinAction, editAction, deleteAction])

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import YandexMobileMetrica
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,8 +24,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         if AppSettings.isFirstOpen {
             TrackerCategoryStore().createRecord(with: AppSettings.pinCategoryName)
-
         }
+
+        guard let configuration = YMMYandexMetricaConfiguration(apiKey: "API_KEY") else {
+            return true
+        }
+
+        YMMYandexMetrica.activate(with: configuration)
 
         return true
     }

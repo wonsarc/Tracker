@@ -13,6 +13,7 @@
 		410C12C72C1F47E500FF644C /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 410C12C62C1F47E500FF644C /* README.md */; };
 		410F1A5B2C0365710073F6BC /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410F1A5A2C0365710073F6BC /* Colors.swift */; };
 		410F1A5D2C036F540073F6BC /* CreateTrackerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410F1A5C2C036F540073F6BC /* CreateTrackerViewModel.swift */; };
+		411C8BFF2C202D2700BBAE82 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411C8BFE2C202D2700BBAE82 /* AnalyticsService.swift */; };
 		411D83A52BF38FB90027B0F0 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411D83A42BF38FB90027B0F0 /* CoreDataManager.swift */; };
 		412EB1F32BFC806700F22FD7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 412EB1F12BFC806700F22FD7 /* Localizable.strings */; };
 		412EB1F72BFC868800F22FD7 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 412EB1F52BFC868800F22FD7 /* Localizable.stringsdict */; };
@@ -78,6 +79,7 @@
 		410C12C62C1F47E500FF644C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		410F1A5A2C0365710073F6BC /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		410F1A5C2C036F540073F6BC /* CreateTrackerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerViewModel.swift; sourceTree = "<group>"; };
+		411C8BFE2C202D2700BBAE82 /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
 		411D83A42BF38FB90027B0F0 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		412EB1F22BFC806700F22FD7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		412EB1F42BFC80D500F22FD7 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -159,6 +161,25 @@
 				355131E63C010CF165EDAF36 /* Pods_TrackerTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		411C8BFC2C202D1100BBAE82 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				411D83A42BF38FB90027B0F0 /* CoreDataManager.swift */,
+				41BB958E2BE7D1D400A84D89 /* TrackerCategoryStore.swift */,
+				41BB95902BE7D1F500A84D89 /* TrackerRecordStore.swift */,
+				41BB958C2BE7D1C300A84D89 /* TrackerStore.swift */,
+			);
+			name = CoreData;
+			sourceTree = "<group>";
+		};
+		411C8BFD2C202D1E00BBAE82 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				411C8BFE2C202D2700BBAE82 /* AnalyticsService.swift */,
+			);
+			name = Analytics;
 			sourceTree = "<group>";
 		};
 		412EB1F02BFC803B00F22FD7 /* Resources */ = {
@@ -303,10 +324,8 @@
 		419D2CF82BC3187A0092FB8D /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				411D83A42BF38FB90027B0F0 /* CoreDataManager.swift */,
-				41BB958E2BE7D1D400A84D89 /* TrackerCategoryStore.swift */,
-				41BB95902BE7D1F500A84D89 /* TrackerRecordStore.swift */,
-				41BB958C2BE7D1C300A84D89 /* TrackerStore.swift */,
+				411C8BFD2C202D1E00BBAE82 /* Analytics */,
+				411C8BFC2C202D1100BBAE82 /* CoreData */,
 				4163DAC52BD56C3600D05B41 /* UIColorExtensions.swift */,
 			);
 			name = Services;
@@ -620,6 +639,7 @@
 				4168FFD62B9B8BCA005EC9A4 /* TrackersViewController.swift in Sources */,
 				418602CA2BB950070085BF1A /* SupplementaryView.swift in Sources */,
 				4168FFD92B9C7A1B005EC9A4 /* SplashViewController.swift in Sources */,
+				411C8BFF2C202D2700BBAE82 /* AnalyticsService.swift in Sources */,
 				410C12C32C1CC79700FF644C /* EventAndHabbitPresenter.swift in Sources */,
 				418602D62BBCA0060085BF1A /* SchedulerViewController.swift in Sources */,
 				411D83A52BF38FB90027B0F0 /* CoreDataManager.swift in Sources */,
