@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
 
         if AppSettings.isFirstOpen {
-            TrackerCategoryStore().createRecord(with: "Закрепленные")
+            TrackerCategoryStore().createRecord(with: AppSettings.pinCategoryName)
 
         }
 

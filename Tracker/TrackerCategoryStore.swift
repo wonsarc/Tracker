@@ -65,7 +65,7 @@ final class TrackerCategoryStore {
             )
         }
 
-        let pinnedCategory = try getCategory(withName: "Закрепленные")
+        let pinnedCategory = try getCategory(withName: AppSettings.pinCategoryName)
 
         if tracker.category == pinnedCategory {
             if let originalCategoryName = tracker.beforePin {

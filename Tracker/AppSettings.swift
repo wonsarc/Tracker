@@ -10,6 +10,8 @@ import Foundation
 class AppSettings {
     @UserDefaultsWrapper(key: "isFirstOpen", defaultValue: true)
     static var isFirstOpen: Bool
+
+    static let pinCategoryName: String = NSLocalizedString("appSettings.pin.category.name", comment: "")
 }
 
 enum IdentityCellEnum: String {

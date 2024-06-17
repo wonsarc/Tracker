@@ -221,7 +221,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private func isPin(trackerId: UUID) -> Bool {
         guard let isPin = try? TrackerStore().getTracker(
             withId: trackerId
-        )?.category?.title == "Закрепленные" else { return false }
+        )?.category?.title == AppSettings.pinCategoryName else { return false }
 
         return isPin
     }
