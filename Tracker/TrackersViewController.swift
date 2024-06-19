@@ -15,7 +15,6 @@ final class TrackersViewController: UIViewController {
     private let colors = Colors.shared
     private var selectedDay: Date = Date()
     private var currentFilter: FilterModel = .all
-    private let analyticsService = AnalyticsService()
     private let screenName = "Main"
 
     private lazy var collectionView: UICollectionView = {
@@ -109,12 +108,12 @@ final class TrackersViewController: UIViewController {
         setupFilterButton()
 
         trackerStore.day = selectedDay
-        analyticsService.eventOpenScreen(screenName)
+        AnalyticsService.eventOpenScreen(screenName)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        analyticsService.eventCloseScreen(screenName)
+        AnalyticsService.eventCloseScreen(screenName)
     }
 
     // MARK: - Public Methods
@@ -135,7 +134,7 @@ final class TrackersViewController: UIViewController {
         let filterVC = FilterViewController(currentFilter: currentFilter)
         filterVC.delegate = self
         present(filterVC, animated: true)
-        analyticsService.eventClick(on: screenName, for: .filter)
+        AnalyticsService.eventClick(on: screenName, for: .filter)
     }
 
     private func updateUI() {
@@ -222,7 +221,7 @@ final class TrackersViewController: UIViewController {
         let viewController = CreateTrackerViewController()
         viewController.trackerStore = self.trackerStore
         present(viewController, animated: true)
-        analyticsService.eventClick(on: screenName, for: .addTrack)
+        AnalyticsService.eventClick(on: screenName, for: .addTrack)
     }
 }
 

@@ -12,7 +12,6 @@
 		410C12C52C1F1DFB00FF644C /* EventAndHabbitModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410C12C42C1F1DFB00FF644C /* EventAndHabbitModel.swift */; };
 		410C12C72C1F47E500FF644C /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 410C12C62C1F47E500FF644C /* README.md */; };
 		410F1A5B2C0365710073F6BC /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410F1A5A2C0365710073F6BC /* Colors.swift */; };
-		410F1A5D2C036F540073F6BC /* CreateTrackerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410F1A5C2C036F540073F6BC /* CreateTrackerViewModel.swift */; };
 		411C8BFF2C202D2700BBAE82 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411C8BFE2C202D2700BBAE82 /* AnalyticsService.swift */; };
 		411D83A52BF38FB90027B0F0 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 411D83A42BF38FB90027B0F0 /* CoreDataManager.swift */; };
 		412EB1F32BFC806700F22FD7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 412EB1F12BFC806700F22FD7 /* Localizable.strings */; };
@@ -78,7 +77,6 @@
 		410C12C42C1F1DFB00FF644C /* EventAndHabbitModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAndHabbitModel.swift; sourceTree = "<group>"; };
 		410C12C62C1F47E500FF644C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		410F1A5A2C0365710073F6BC /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
-		410F1A5C2C036F540073F6BC /* CreateTrackerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerViewModel.swift; sourceTree = "<group>"; };
 		411C8BFE2C202D2700BBAE82 /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
 		411D83A42BF38FB90027B0F0 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		412EB1F22BFC806700F22FD7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -400,7 +398,6 @@
 			isa = PBXGroup;
 			children = (
 				41F53F9B2BFB4CDF005E0BB5 /* CategoryViewModel.swift */,
-				410F1A5C2C036F540073F6BC /* CreateTrackerViewModel.swift */,
 			);
 			name = ViewModel;
 			sourceTree = "<group>";
@@ -663,7 +660,6 @@
 				4168FFD42B9B8860005EC9A4 /* StatisticViewController.swift in Sources */,
 				415B86812BD6B2B400A4BBFE /* TrackerModel.xcdatamodeld in Sources */,
 				410C12BF2C1CB36D00FF644C /* EventAndHabbitViewController.swift in Sources */,
-				410F1A5D2C036F540073F6BC /* CreateTrackerViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

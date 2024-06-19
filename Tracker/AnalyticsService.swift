@@ -10,17 +10,9 @@ import YandexMobileMetrica
 
 final class AnalyticsService {
 
-    // MARK: - Public Properties
-
-    // MARK: - Private Properties
-
-    // MARK: - Initializers
-
-    // MARK: - Overrides Methods
-
     // MARK: - Public Methods
 
-    func eventOpenScreen(_ screen: String) {
+   static func eventOpenScreen(_ screen: String) {
         let params = Event(
             eventType: .open,
             screen: screen,
@@ -30,7 +22,7 @@ final class AnalyticsService {
         sendEvent(for: params)
     }
 
-    func eventCloseScreen(_ screen: String) {
+    static func eventCloseScreen(_ screen: String) {
         let params = Event(
             eventType: .close,
             screen: screen,
@@ -40,7 +32,7 @@ final class AnalyticsService {
         sendEvent(for: params)
     }
 
-    func eventClick(on screen: String, for type: ItemType) {
+    static func eventClick(on screen: String, for type: ItemType) {
         let params = Event(
             eventType: .click,
             screen: screen,
@@ -52,7 +44,7 @@ final class AnalyticsService {
 
     // MARK: - Private Methods
 
-    private func sendEvent(for params: [AnyHashable: Any]) {
+    private static func sendEvent(for params: [AnyHashable: Any]) {
         YMMYandexMetrica.reportEvent("EVENT", parameters: params, onFailure: { error in
             print("REPORT ERROR: %@", error.localizedDescription)
         })

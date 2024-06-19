@@ -26,11 +26,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             TrackerCategoryStore().createRecord(with: AppSettings.pinCategoryName)
         }
 
-        guard let configuration = YMMYandexMetricaConfiguration(apiKey: "API_KEY") else {
-            return true
+        if let configuration = YMMYandexMetricaConfiguration(apiKey: "API_KEY") {
+            YMMYandexMetrica.activate(with: configuration)
         }
-
-        YMMYandexMetrica.activate(with: configuration)
 
         return true
     }
