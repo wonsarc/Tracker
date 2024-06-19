@@ -22,7 +22,12 @@ final class SchedulerViewController: UIViewController {
     private var selectIndexSet: Set<Int> = []
 
     private lazy var titleLabel: UILabel = {
-        let titleLabel = self.titleLabelFactory(withText: "Расписание")
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.textColor = .black
+        titleLabel.font = .systemFont(ofSize: 16)
+        titleLabel.text = L10n.Localizable.SchedulerVC.TitleLabel.text
+
         return titleLabel
     }()
 
@@ -53,7 +58,7 @@ final class SchedulerViewController: UIViewController {
 
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         doneButton.accessibilityIdentifier = "doneButton"
-        doneButton.setTitle("Готово", for: .normal)
+        doneButton.setTitle(L10n.Localizable.SchedulerVC.DoneButton.text, for: .normal)
         doneButton.tintColor = .white
         doneButton.titleLabel?.font = .systemFont(ofSize: 16)
         doneButton.backgroundColor = .black
@@ -135,7 +140,7 @@ extension SchedulerViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = cell else { return UITableViewCell()}
 
         var calendar = Calendar(identifier: .gregorian)
-        calendar.locale = Locale(identifier: "ru_RU")
+        calendar.locale = Locale.current
         let weekDays = calendar.weekdaySymbols
 
         let day = indexPath.row == weekDays.count - 1 ? weekDays[0] : weekDays[indexPath.row + 1]

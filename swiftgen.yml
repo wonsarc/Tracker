@@ -1,0 +1,10 @@
+strings:
+  inputs: Tracker/Resources/en.lproj
+  outputs:
+    - templateName: structured-swift5
+      output: Tracker/Generated/Strings.swift
+xcassets:
+  inputs: Tracker/Resources
+  outputs:
+    templateName: swift5
+    output: Tracker/Generated/Assets.swift

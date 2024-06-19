@@ -12,13 +12,43 @@ final class NewCategoryViewController: UIViewController {
     // MARK: - Private Properties
 
     private lazy var titleLabel: UILabel = {
-        let titleLabel = self.titleLabelFactory(withText: "Новая категория")
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.textColor = .black
+        titleLabel.font = .systemFont(ofSize: 16)
+        titleLabel.text = L10n.Localizable.NewCategoryVC.TitleLabel.text
+
         return titleLabel
     }()
 
     private lazy var nameCategoryTextField: UITextField = {
-        let textField = self.textFieldFactory(withPlaceholder: "Введите название категории")
-        return textField
+        let nameCategoryTextField = UITextField()
+        nameCategoryTextField.translatesAutoresizingMaskIntoConstraints = false
+        nameCategoryTextField.textColor = .black
+        nameCategoryTextField.borderStyle = .none
+        nameCategoryTextField.layer.cornerRadius = 16
+        nameCategoryTextField.backgroundColor = .customGray
+        nameCategoryTextField.clearButtonMode = .always
+
+        let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 20))
+        nameCategoryTextField.leftView = leftView
+        nameCategoryTextField.leftViewMode = .always
+
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.firstLineHeadIndent = 10
+
+        let placeholderAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.gray,
+            .paragraphStyle: paragraphStyle
+        ]
+
+        let attributedPlaceholder = NSAttributedString(
+            string: L10n.Localizable.NewCategoryVC.NameCategoryTextField.text,
+            attributes: placeholderAttributes
+        )
+        nameCategoryTextField.attributedPlaceholder = attributedPlaceholder
+
+        return nameCategoryTextField
     }()
 
     private lazy var doneButton: UIButton = {
@@ -30,7 +60,7 @@ final class NewCategoryViewController: UIViewController {
 
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         doneButton.accessibilityIdentifier = "doneButton"
-        doneButton.setTitle("Готово", for: .normal)
+        doneButton.setTitle(L10n.Localizable.SchedulerVC.DoneButton.text, for: .normal)
         doneButton.tintColor = .white
         doneButton.titleLabel?.font = .systemFont(ofSize: 16)
         doneButton.backgroundColor = .lightGray

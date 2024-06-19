@@ -14,7 +14,12 @@ final class CreateTrackerViewController: UIViewController {
     // MARK: - Private Properties
 
     private lazy var titleLabel: UILabel = {
-        let titleLabel = self.titleLabelFactory(withText: "Создание трекера")
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.textColor = .black
+        titleLabel.font = .systemFont(ofSize: 16)
+        titleLabel.text = L10n.Localizable.CreateTrackerVC.TitleLabel.text
+
         return titleLabel
     }()
 
@@ -26,7 +31,7 @@ final class CreateTrackerViewController: UIViewController {
         )
 
         createHabbitButton.accessibilityIdentifier = "createHabbitButton"
-        createHabbitButton.setTitle("Привычка", for: .normal)
+        createHabbitButton.setTitle(L10n.Localizable.CreateTrackerVC.CreateHabbitButton.text, for: .normal)
         setupButton(createHabbitButton)
 
         return createHabbitButton
@@ -40,7 +45,7 @@ final class CreateTrackerViewController: UIViewController {
         )
 
         createEventButton.accessibilityIdentifier = "createEventButton"
-        createEventButton.setTitle("Нерегулярное событие", for: .normal)
+        createEventButton.setTitle(L10n.Localizable.CreateTrackerVC.CreateEventButton.text, for: .normal)
         setupButton(createEventButton)
 
         return createEventButton
@@ -92,17 +97,23 @@ final class CreateTrackerViewController: UIViewController {
     }
 
     @objc private func didTapCreateHabbitButton() {
-        let viewController = CreateHabbitViewController()
         if let trackerStore = trackerStore {
-            viewController.trackerStore = trackerStore
+            let viewController = EventAndHabbitViewController(
+                trackerStore: trackerStore,
+                typeScreen: .habbit,
+                action: .create
+            )
             present(viewController, animated: true)
         }
     }
 
     @objc private func didTapCreateEventButton() {
-        let viewController = CreateEventViewController()
         if let trackerStore = trackerStore {
-            viewController.trackerStore = trackerStore
+            let viewController = EventAndHabbitViewController(
+                trackerStore: trackerStore,
+                typeScreen: .event,
+                action: .create
+            )
             present(viewController, animated: true)
         }
     }

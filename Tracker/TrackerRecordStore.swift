@@ -25,49 +25,67 @@ final class TrackerRecordStore {
     func addRecord(_ record: TrackerRecordModel) throws {
         let trackerRecordCoreData = TrackerRecordCoreData(context: context)
         trackerRecordCoreData.id = record.id
-        trackerRecordCoreData.date = record.date
+        trackerRecordCoreData.date = getDateWithoutTime(from: record.date)
         try context.save()
     }
 
-    func deleteTrackerRecord(id: UUID, date: Date) {
+    func deleteTrackerRecord(id: UUID, date: Date? = nil) {
         let fetchRequest: NSFetchRequest<TrackerRecordCoreData> = TrackerRecordCoreData.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "id == %@ AND date == %@", id as CVarArg, date as CVarArg)
+
+        var predicates: [NSPredicate] = [NSPredicate(format: "id == %@", id as CVarArg)]
+
+        if let date = date {
+            predicates.append( NSPredicate(format: "date == %@",
+                                           getDateWithoutTime(from: date) as CVarArg)
+            )
+        }
+
+        fetchRequest.predicate =  NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
 
         do {
             let records = try context.fetch(fetchRequest)
+
             for record in records {
                 context.delete(record)
             }
 
             try context.save()
-            print("Запись с id \(id) и датой \(date) удалена успешно")
         } catch {
             print("Ошибка при удалении записи: \(error.localizedDescription)")
         }
     }
 
-    func countFetchById(id: UUID) -> Int {
+    func countFetch(_ id: UUID? = nil) -> Int {
         let fetchRequest: NSFetchRequest<TrackerRecordCoreData> = TrackerRecordCoreData.fetchRequest()
         fetchRequest.resultType = .countResultType
-        fetchRequest.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+
+        if let id = id {
+            fetchRequest.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+        }
 
         do {
             let count = try context.count(for: fetchRequest)
-            print("Количество записей для трекера с id \(id): \(count)")
             return count
-        } catch {
-            print("Ошибка при выполнении запроса: \(error.localizedDescription)")
-        }
+        } catch {}
+
         return 0
     }
 
     func isTrackerDone(with id: UUID, for date: Date) -> Bool {
         let fetchRequest: NSFetchRequest<TrackerRecordCoreData> = TrackerRecordCoreData.fetchRequest()
 
-        fetchRequest.predicate = NSPredicate(format: "id == %@ AND date == %@", id as CVarArg, date as CVarArg)
+        fetchRequest.predicate = NSPredicate(format: "id == %@ AND date == %@",
+                                             id as CVarArg,
+                                             getDateWithoutTime(from: date) as CVarArg)
 
         let results = try? context.fetch(fetchRequest)
 
         return !(results?.isEmpty ?? true)
+    }
+
+    func getDateWithoutTime(from date: Date) -> Date {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month, .day], from: date)
+        return calendar.date(from: components) ?? date
     }
 }

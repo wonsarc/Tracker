@@ -24,6 +24,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     // MARK: - Private Properties
 
     private var trackerRecordStore = TrackerRecordStore()
+    private let screenName = "Main"
 
     private lazy var cellUIView: UIView = {
         let cellUIView = UIView()
@@ -35,6 +36,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         let colorUIView = UIView()
         colorUIView.translatesAutoresizingMaskIntoConstraints = false
         colorUIView.layer.cornerRadius = 16
+        colorUIView.addInteraction(UIContextMenuInteraction(delegate: self))
         return colorUIView
     }()
 
@@ -56,6 +58,20 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return emojiUILabel
     }()
 
+    private lazy var pinUIView: UIView = {
+        let pinUIView = UIView()
+        pinUIView.translatesAutoresizingMaskIntoConstraints = false
+        return pinUIView
+    }()
+
+    private lazy var pinUIImageView: UIImageView = {
+        let pinUIImageView = UIImageView()
+        pinUIImageView.translatesAutoresizingMaskIntoConstraints = false
+        pinUIImageView.image = Asset.pinSquare.image
+        pinUIImageView.tintColor = .white
+        return pinUIImageView
+    }()
+
     private lazy var descriptionUILabel: UILabel = {
         let descriptionUILabel = UILabel()
         descriptionUILabel.translatesAutoresizingMaskIntoConstraints = false
@@ -67,14 +83,14 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private lazy var dateUILabel: UILabel = {
         let dateUILabel = UILabel()
         dateUILabel.translatesAutoresizingMaskIntoConstraints = false
-        dateUILabel.textColor = .black
+        dateUILabel.textColor = Colors.shared.buttonColor
         dateUILabel.font = .systemFont(ofSize: 12)
         return dateUILabel
     }()
 
     private lazy var doneButton: UIButton = {
         let doneButton = UIButton.systemButton(
-            with: UIImage(named: "plus") ?? UIImage(),
+            with: Asset.plus.image,
             target: self,
             action: #selector(didTapDoneButton)
         )
@@ -102,9 +118,11 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private func setupViews() {
         contentView.addSubview(cellUIView)
         contentView.addSubview(colorUIView)
-        contentView.addSubview(emojiColorUIView)
-        contentView.addSubview(emojiUILabel)
-        contentView.addSubview(descriptionUILabel)
+        colorUIView.addSubview(emojiColorUIView)
+        colorUIView.addSubview(pinUIView)
+        colorUIView.addSubview(emojiUILabel)
+        colorUIView.addSubview(descriptionUILabel)
+        pinUIView.addSubview(pinUIImageView)
         contentView.addSubview(dateUILabel)
         contentView.addSubview(doneButton)
     }
@@ -125,6 +143,16 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             emojiColorUIView.heightAnchor.constraint(equalToConstant: 24),
             emojiColorUIView.topAnchor.constraint(equalTo: colorUIView.topAnchor, constant: 12),
             emojiColorUIView.leadingAnchor.constraint(equalTo: colorUIView.leadingAnchor, constant: 12),
+
+            pinUIView.widthAnchor.constraint(equalToConstant: 24),
+            pinUIView.heightAnchor.constraint(equalToConstant: 24),
+            pinUIView.topAnchor.constraint(equalTo: colorUIView.topAnchor, constant: 12),
+            pinUIView.trailingAnchor.constraint(equalTo: colorUIView.trailingAnchor, constant: -4),
+
+            pinUIImageView.widthAnchor.constraint(equalToConstant: 8),
+            pinUIImageView.heightAnchor.constraint(equalToConstant: 12),
+            pinUIImageView.topAnchor.constraint(equalTo: pinUIView.topAnchor, constant: 8),
+            pinUIImageView.leadingAnchor.constraint(equalTo: pinUIView.leadingAnchor, constant: 6),
 
             emojiUILabel.widthAnchor.constraint(equalToConstant: 16),
             emojiUILabel.heightAnchor.constraint(equalToConstant: 22),
@@ -147,23 +175,9 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             doneButton.trailingAnchor.constraint(equalTo: cellUIView.trailingAnchor, constant: -12)
         ])
     }
-        private func formateDate(day: Int) -> String {
-
-        switch day % 10 {
-        case 1:
-            return "\(day) день"
-        case 2, 3, 4:
-            return "\(day) дня"
-        case 5, 6, 7, 8, 9, 0:
-            return "\(day) дней"
-        default:
-            return "сегодня"
-        }
-    }
 
     private func updateDoneButtonImage(_ isDone: Bool) {
-        let imageName = isDone ? "done" : "plus"
-        let image = UIImage(named: imageName)?.withRenderingMode(.alwaysTemplate)
+        let image: UIImage = isDone ? Asset.done.image : Asset.plus.image
         doneButton.setImage(image, for: .normal)
     }
 
@@ -191,6 +205,26 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         }
 
         delegate?.didTapDoneButton(for: trackerModel )
+        AnalyticsService.eventClick(on: screenName, for: .track)
+    }
+
+    private func findViewController() -> UIViewController? {
+          var responder: UIResponder? = self
+          while responder != nil {
+              responder = responder?.next
+              if let viewController = responder as? UIViewController {
+                  return viewController
+              }
+          }
+          return nil
+      }
+
+    private func isPin(trackerId: UUID) -> Bool {
+        guard let isPin = try? TrackerStore().getTracker(
+            withId: trackerId
+        )?.category?.title == AppSettings.pinCategoryName else { return false }
+
+        return isPin
     }
 }
 
@@ -207,8 +241,10 @@ extension TrackerCollectionViewCell: TrackerCollectionViewCellProtocol {
         doneButton.backgroundColor = tracker.color
 
         if let id = trackerModel?.id {
-            let days = trackerRecordStore.countFetchById(id: id)
-            dateUILabel.text = formateDate(day: days)
+            let days = trackerRecordStore.countFetch(id)
+            dateUILabel.text = L10n.Localizable.countDays(days)
+
+            pinUIImageView.isHidden = !isPin(trackerId: id)
         }
 
         if let id = trackerModel?.id,
@@ -216,5 +252,85 @@ extension TrackerCollectionViewCell: TrackerCollectionViewCellProtocol {
             let isDone = trackerRecordStore.isTrackerDone(with: id, for: date)
             updateDoneButtonImage(isDone)
         }
+    }
+}
+
+// MARK: - UIContextMenuInteractionDelegate
+
+extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
+
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        configurationForMenuAtLocation location: CGPoint
+    ) -> UIContextMenuConfiguration? {
+
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+
+            guard let trackerId = self.trackerModel?.id else { return UIMenu()}
+
+            let isPin = self.isPin(trackerId: trackerId)
+            let pinActionTitle = isPin ?
+            L10n.Localizable.TrackerCollectionViewCell.Action.unpin :
+            L10n.Localizable.TrackerCollectionViewCell.Action.pin
+
+            let pinAction = UIAction(title: pinActionTitle) { _ in
+                try? TrackerCategoryStore().togglePinTracker(trackerId)
+            }
+
+            let editAction = UIAction( title: L10n.Localizable.TrackerCollectionViewCell.Action.edit) { _ in
+
+                guard let parentViewController = self.findViewController(),
+                      let schedule = try? TrackerStore().getTracker(withId: trackerId)?.schedule as? [WeekDaysModel]
+                else { return }
+
+                let type: EventAndHabbitType = schedule.isEmpty ? .event  : .habbit
+
+                let viewController = EventAndHabbitViewController(
+                    trackerId: trackerId,
+                    typeScreen: type,
+                    action: .edit
+                )
+                parentViewController.present(viewController, animated: true)
+                AnalyticsService.eventClick(on: self.screenName, for: .edit)
+            }
+
+            let deleteAction = UIAction(
+                title: L10n.Localizable.TrackerCollectionViewCell.Alert.Delete.title,
+                attributes: .destructive
+            ) { _ in
+                self.showDeleteConfirmation(for: trackerId)
+                AnalyticsService.eventClick(on: self.screenName, for: .delete)
+            }
+
+            return UIMenu(title: "", children: [pinAction, editAction, deleteAction])
+        }
+    }
+
+    private func showDeleteConfirmation(for trackerId: UUID) {
+        guard let parentViewController = self.findViewController() else { return }
+
+        let alertController = UIAlertController(
+            title: nil,
+            message: L10n.Localizable.TrackerCollectionViewCell.Alert.message,
+            preferredStyle: .actionSheet
+        )
+
+        let deleteAction = UIAlertAction(
+            title: L10n.Localizable.TrackerCollectionViewCell.Alert.Delete.title,
+            style: .destructive
+        ) { _ in
+            TrackerStore().deleteRecord(id: trackerId)
+        }
+
+        let cancelAction = UIAlertAction(
+            title: L10n.Localizable.TrackerCollectionViewCell.Alert.Cancel.title,
+            style: .cancel,
+            handler: nil
+        )
+
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
+
+        parentViewController.present(alertController, animated: true, completion: nil)
     }
 }

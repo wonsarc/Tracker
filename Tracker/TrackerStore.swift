@@ -16,9 +16,23 @@ final class TrackerStore: NSObject {
 
     weak var delegate: TrackerStoreDelegate?
 
-    var day: WeekDaysModel? {
+    var day: Date? {
         didSet {
             refreshFetchResults()
+        }
+    }
+
+    var searchName: String? {
+        didSet {
+            refreshFetchResults()
+        }
+    }
+
+    var globalFilter: FilterModel? {
+        didSet {
+            if globalFilter != .today {
+                refreshFetchResults()
+            }
         }
     }
 
@@ -49,7 +63,49 @@ final class TrackerStore: NSObject {
         trackerCoreData.category = trackerCategory
 
         trackerCategory.addToTrackers(trackerCoreData)
-        CoreDataManager.shared.saveContext()
+       try context.save()
+    }
+
+    func getTracker(withId trackerId: UUID) throws -> TrackerCoreData? {
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", trackerId as CVarArg)
+        fetchRequest.fetchLimit = 1
+
+        do {
+            let result = try context.fetch(fetchRequest)
+            return result.first
+        } catch {
+            throw error
+        }
+    }
+
+    func editTracker(_ tracker: TrackerCoreData, categoryName: String) {
+        let trackerCategory = try? TrackerCategoryStore().getCategory(withName: categoryName)
+        tracker.category = trackerCategory
+        trackerCategory?.addToTrackers(tracker)
+
+        try? context.save()
+    }
+
+    func deleteRecord(id: UUID?) {
+
+        guard let id = id else { return }
+
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+
+        fetchRequest.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+
+        do {
+            let records = try context.fetch(fetchRequest)
+
+            for record in records {
+                context.delete(record)
+                TrackerRecordStore().deleteTrackerRecord(id: id)
+            }
+
+            try context.save()
+
+        } catch {}
     }
 
     private func castInTrackerModel(for object: TrackerCoreData) -> TrackerModel? {
@@ -83,12 +139,18 @@ final class TrackerStore: NSObject {
     private func makeFetchRequest() -> NSFetchRequest<TrackerCoreData> {
 
         let fetchRequest = TrackerCoreData.fetchRequest()
+        var predicates: [NSPredicate] = []
 
         fetchRequest.sortDescriptors = [
-            NSSortDescriptor(key: "category", ascending: false)
+            NSSortDescriptor(key: "category.title", ascending: false)
         ]
 
-        if let day = day {
+        if let searchName = searchName {
+            let predicateSearchName = NSPredicate(format: "name contains[c] %@", searchName)
+            predicates.append(predicateSearchName)
+        }
+
+        if let day = convertDate(date: day ?? Date()) {
             let fetchedObjects = try? context.fetch(fetchRequest)
             let filteredObjects = fetchedObjects?.filter { object in
                 guard let schedule = object.schedule as? [WeekDaysModel] else { return false }
@@ -97,13 +159,46 @@ final class TrackerStore: NSObject {
             }
 
             if let filteredObjects = filteredObjects {
-                fetchRequest.predicate = NSPredicate(format: "self in %@", filteredObjects)
-            } else {
-                fetchRequest.predicate = nil
+                let predicateDay = NSPredicate(format: "self in %@", filteredObjects)
+                predicates.append(predicateDay)
             }
         }
 
+        if let globalFilter = globalFilter {
+
+            let fetchedObjects = try? context.fetch(fetchRequest)
+            let trackerRecordStore = TrackerRecordStore()
+            let filteredObjects = fetchedObjects?.filter { object in
+                guard let id = object.id,
+                      let day =  day else { return false }
+
+                return trackerRecordStore.isTrackerDone(with: id, for: day)
+            }
+
+            if let filteredObjects = filteredObjects {
+                if globalFilter == .complete {
+                    let predicateComplete = NSPredicate(format: "self in %@", filteredObjects)
+                    predicates.append(predicateComplete)
+                } else if globalFilter == .uncomplete {
+                    let predicateUncomplete = NSPredicate(format: "NOT (self IN %@)", filteredObjects)
+                    predicates.append(predicateUncomplete)
+
+                }
+            }
+        }
+
+        fetchRequest.predicate =  NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+
         return fetchRequest
+    }
+
+    private func convertDate(date selectedDate: Date) -> WeekDaysModel? {
+        let customCalendar = Calendar(identifier: .gregorian)
+
+        var weekday = customCalendar.component(.weekday, from: selectedDate)
+        weekday = (weekday - 2 + 7) % 7
+
+        return WeekDaysModel.fromIndex(weekday)
     }
 
     private func createFetchedResultsController(

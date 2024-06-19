@@ -1,0 +1,72 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Artem Krasnov on 21.05.2024.
+  
+*/
+
+"appSettings.pin.category.name" = "Закрепленные";
+"trackersVC.emptyState.title" = "Что будем отслеживать?";
+"trackersVC.emptyFilterResultTitle" = "Ничего не найдено";
+"trackersVC.navigationItem.title" = "Трекеры";
+"trackersVC.searchController.searchBar.placeholder" = "Поиск";
+"trackersVC.filterButton.title" = "Фильтры";
+
+"tabBar.tab_stats" = "Cтатистика";
+
+"weekDaysModel.case.monday" = "Пн";
+"weekDaysModel.case.tuesday" = "Вт";
+"weekDaysModel.case.wednesday" = "Cр";
+"weekDaysModel.case.thursday" = "Чт";
+"weekDaysModel.case.friday" = "Пт";
+"weekDaysModel.case.saturday" = "Сб";
+"weekDaysModel.case.sunday" = "Вс";
+
+"filtersModel.case.all" = "Все трекеры";
+"filtersModel.case.today" = "Трекеры на сегодня";
+"filtersModel.case.complete" = "Завершённые";
+"filtersModel.case.uncomplete" = "Незавершённые";
+
+"onboardingVC.firstScreen.textLabel.text" = "Отслеживайте только то, что хотите";
+"onboardingVC.secondScreen.textLabel.text" = "Даже если это не литры воды и йога";
+"onboardingVC.confirmButton.title" = "Вот это технологии!";
+
+
+"createTrackerVC.titleLabel.text" = "Создание трекера";
+"createTrackerVC.createHabbitButton.text" = "Привычка";
+"createTrackerVC.createEventButton.text" = "Нерегулярное событие";
+
+"schedulerVC.titleLabel.text" = "Расписание";
+"schedulerVC.doneButton.text" = "Готово";
+
+"newCategoryVC.titleLabel.text" = "Новая категория";
+"newCategoryVC.nameCategoryTextField.text" = "Введите название категории";
+
+"categoryVC.titleLabel.text" = "Категория";
+"categoryVC.emptyTaskLabel.text" = "Привычки и события можно\nобъединить по смыслу";
+"categoryVC.addCategoryButton.text" = "Добавить категорию";
+
+"extensionUIVC.canceledButton.title.text" = "Отменить";
+"extensionUIVC.createdButton.title.text" = "Создать";
+
+"createVC.nameTrackerTextField.text" = "Введите название трекера";
+"createVC.limitUILabel.text" = "Ограничение 38 символов";
+"createVC.cell.label.color.text" = "Цвет";
+"createVC.cell.label.emoji.text" = "Emoji";
+
+"createEventVC.titleLabel.text" = "Новое нерегулярное событие";
+"createHabbitVC.titleLabel.text" = "Новая привычка";
+
+"statisticVC.emptyLabel.text" = "Анализировать пока нечего";
+"statsViewCell.nameCellLabel.text" = "Трекеров завершено";
+
+"trackerCollectionViewCell.alert.message" = "Уверены что хотите удалить трекер?";
+"trackerCollectionViewCell.alert.delete.title" = "Удалить";
+"trackerCollectionViewCell.alert.cancel.title" = "Отменить";
+"trackerCollectionViewCell.action.edit" = "Редактировать";
+"trackerCollectionViewCell.action.pin" = "Закрепить";
+"trackerCollectionViewCell.action.unpin" = "Открепить";
+
+"eventAndHabbitVC.saveButtonTitle" = "Сохранить";
+"eventAndHabbitVC.mainEditTitle" = "Редактирование привычки";

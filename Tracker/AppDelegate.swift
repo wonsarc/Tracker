@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import YandexMobileMetrica
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,6 +21,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow()
         window?.rootViewController = SplashViewController()
         window?.makeKeyAndVisible()
+
+        if AppSettings.isFirstOpen {
+            TrackerCategoryStore().createRecord(with: AppSettings.pinCategoryName)
+        }
+
+        #warning("set actual api_key AppMetrica")
+        if let configuration = YMMYandexMetricaConfiguration(apiKey: "API_KEY") {
+            YMMYandexMetrica.activate(with: configuration)
+        }
 
         return true
     }

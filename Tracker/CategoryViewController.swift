@@ -23,21 +23,26 @@ final class CategoryViewController: UIViewController {
     private var viewModel: CategoryViewModel
 
     private lazy var titleLabel: UILabel = {
-        let titleLabel = self.titleLabelFactory(withText: "Категория")
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.textColor = .black
+        titleLabel.font = .systemFont(ofSize: 16)
+        titleLabel.text = L10n.Localizable.CategoryVC.TitleLabel.text
+
         return titleLabel
     }()
 
     private lazy var emptyTaskImageView: UIImageView = {
         let emptyTaskImageView = UIImageView()
         emptyTaskImageView.translatesAutoresizingMaskIntoConstraints = false
-        emptyTaskImageView.image = UIImage(named: "empty_tasks")
+        emptyTaskImageView.image = Asset.emptyTasks.image
         return emptyTaskImageView
     }()
 
     private lazy var emptyTaskLabel: UILabel = {
         let emptyTaskLabel = UILabel()
         emptyTaskLabel.translatesAutoresizingMaskIntoConstraints = false
-        emptyTaskLabel.text = "Привычки и события можно\nобъединить по смыслу"
+        emptyTaskLabel.text = L10n.Localizable.CategoryVC.EmptyTaskLabel.text
         emptyTaskLabel.textColor = .black
         emptyTaskLabel.numberOfLines = 2
         emptyTaskLabel.font = .systemFont(ofSize: 12)
@@ -70,7 +75,7 @@ final class CategoryViewController: UIViewController {
 
         addCategoryButton.translatesAutoresizingMaskIntoConstraints = false
         addCategoryButton.accessibilityIdentifier = "addCategoryButton"
-        addCategoryButton.setTitle("Добавить категорию", for: .normal)
+        addCategoryButton.setTitle(L10n.Localizable.CategoryVC.AddCategoryButton.text, for: .normal)
         addCategoryButton.tintColor = .white
         addCategoryButton.titleLabel?.font = .systemFont(ofSize: 16)
         addCategoryButton.backgroundColor = .black
@@ -112,6 +117,8 @@ final class CategoryViewController: UIViewController {
         updateUI()
     }
 
+    // MARK: - Private Methods
+
     private func bind() {
         viewModel.categories = { [weak self] categories in
             self?.categoryData = categories
@@ -140,9 +147,11 @@ final class CategoryViewController: UIViewController {
 
     private func updateUI() {
 
-        emptyTaskLabel.isHidden = !categoryData.isEmpty
-        emptyTaskImageView.isHidden = !categoryData.isEmpty
-        categoryTableView.isHidden = categoryData.isEmpty
+        let isEmpty = categoryData.count < 2
+
+        emptyTaskLabel.isHidden = !isEmpty
+        emptyTaskImageView.isHidden = !isEmpty
+        categoryTableView.isHidden = isEmpty
 
         let height = getHeightTableView()
         setupHeightCategoryTableView(with: height)
@@ -219,22 +228,33 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
 
         guard let cell = cell else { return UITableViewCell()}
 
-         let title = categoryData[indexPath.row]
+         let title = categoryData[indexPath.row + 1]
             cell.textLabel?.text = title
 
         return cell
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categoryData.count
+        return categoryData.count - 1
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row != tableView.numberOfRows(inSection: indexPath.section) - 1 {
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        } else {
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: tableView.bounds.size.width)
-        }
+
+        if indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1 {
+
+             let cornerRadius: CGFloat = 10.0
+             let maskPath = UIBezierPath(roundedRect: cell.bounds,
+                                         byRoundingCorners: [.bottomLeft, .bottomRight],
+                                         cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
+             let maskLayer = CAShapeLayer()
+             maskLayer.path = maskPath.cgPath
+             cell.layer.mask = maskLayer
+
+             cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: tableView.bounds.size.width)
+         } else {
+             cell.layer.mask = nil
+             cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+         }
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -244,7 +264,7 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
 
-        let selectedCategory = categoryData[indexPath.row]
+        let selectedCategory = categoryData[indexPath.row + 1]
         delegate?.didSelectCategory(selectedCategory)
         dismiss(animated: true, completion: nil)
     }

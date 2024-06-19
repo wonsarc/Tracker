@@ -9,17 +9,18 @@ import UIKit
 
 final class TrackersViewController: UIViewController {
 
-    // MARK: - Public Properties
-
-    let trackerStore = TrackerStore()
-    var selectedDay: WeekDaysModel?
-    var currentDate: Date? = Date()
-
     // MARK: - Private Properties
+
+    private let trackerStore = TrackerStore()
+    private let colors = Colors.shared
+    private var selectedDay: Date = Date()
+    private var currentFilter: FilterModel = .all
+    private let screenName = "Main"
 
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
         collectionView.dataSource = self
         collectionView.delegate = self
 
@@ -28,12 +29,12 @@ final class TrackersViewController: UIViewController {
 
     private lazy var addTaskButton: UIButton = {
         let addTaskButton = UIButton.systemButton(
-            with: UIImage(named: "plus") ?? UIImage(),
+            with: Asset.plus.image,
             target: self,
             action: #selector(didTapAddTaskButton)
         )
         addTaskButton.translatesAutoresizingMaskIntoConstraints = false
-        addTaskButton.tintColor = .black
+        addTaskButton.tintColor = colors.buttonColor
         addTaskButton.accessibilityIdentifier = "addTaskButton"
 
         return addTaskButton
@@ -43,8 +44,14 @@ final class TrackersViewController: UIViewController {
         let datePicker = UIDatePicker()
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.datePickerMode = .date
+        datePicker.backgroundColor = colors.dataPickerColor
+        datePicker.layer.cornerRadius = 8
+        datePicker.layer.masksToBounds = true
+        datePicker.overrideUserInterfaceStyle = .light
         datePicker.preferredDatePickerStyle = .compact
         datePicker.accessibilityIdentifier = "datePicker"
+
+        datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
 
         return datePicker
     }()
@@ -52,8 +59,8 @@ final class TrackersViewController: UIViewController {
     private lazy var emptyTaskLabel: UILabel = {
         let emptyTaskLabel = UILabel()
         emptyTaskLabel.translatesAutoresizingMaskIntoConstraints = false
-        emptyTaskLabel.text = "Что будем отслеживать?"
-        emptyTaskLabel.textColor = UIColor(red: 26.0/255.0, green: 27.0/255.0, blue: 34.0/255.0, alpha: 1.0)
+        emptyTaskLabel.text = L10n.Localizable.TrackersVC.EmptyState.title
+        emptyTaskLabel.textColor = colors.textColor
         emptyTaskLabel.font = .systemFont(ofSize: 12)
         emptyTaskLabel.textAlignment = .center
         return emptyTaskLabel
@@ -62,15 +69,35 @@ final class TrackersViewController: UIViewController {
     private lazy var emptyTaskImageView: UIImageView = {
         let emptyTaskImageView = UIImageView()
         emptyTaskImageView.translatesAutoresizingMaskIntoConstraints = false
-        emptyTaskImageView.image = UIImage(named: "empty_tasks")
+        emptyTaskImageView.image = Asset.emptyTasks.image
         return emptyTaskImageView
+    }()
+
+    private lazy var filtersButton: UIButton = {
+
+        let filtersButton = UIButton.systemButton(
+            with: UIImage(),
+            target: target,
+            action: #selector(didTapFilterButton)
+        )
+
+        filtersButton.translatesAutoresizingMaskIntoConstraints = false
+
+        filtersButton.setTitle(L10n.Localizable.TrackersVC.FilterButton.title, for: .normal)
+        filtersButton.titleLabel?.font = .systemFont(ofSize: 17)
+        filtersButton.tintColor = .white
+        filtersButton.backgroundColor = colors.filterButton
+        filtersButton.layer.cornerRadius = 16
+
+        return filtersButton
+
     }()
 
     // MARK: - Overrides Methods
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = colors.viewBackgroundColor
 
         trackerStore.delegate = self
 
@@ -78,38 +105,37 @@ final class TrackersViewController: UIViewController {
         setupViewsForEmptyCategories()
         setupConstraintsForEmptyCategories()
         setupCollectionView()
+        setupFilterButton()
 
-        datePicker.addTarget(self, action: #selector(datePickerValueChanged), for: .valueChanged)
+        trackerStore.day = selectedDay
+        AnalyticsService.eventOpenScreen(screenName)
+    }
 
-        updateSelectedDate(date: Date())
-
-        didUpdate()
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        AnalyticsService.eventCloseScreen(screenName)
     }
 
     // MARK: - Public Methods
 
-    private func updateSelectedDate (date selectedDate: Date) {
-        let customCalendar = Calendar(identifier: .gregorian)
-
-        var weekday = customCalendar.component(.weekday, from: selectedDate)
-        weekday = (weekday - 2 + 7) % 7
-
-        if let selectedDayOfWeek = WeekDaysModel.fromIndex(weekday) {
-            self.selectedDay = selectedDayOfWeek
-            trackerStore.day = selectedDay
-        }
-    }
-
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
-        let selectedDate = sender.date
-        currentDate = selectedDate
+        selectedDay = sender.date
+        trackerStore.day = selectedDay
 
-        if let currentDate = currentDate {
-            updateSelectedDate(date: currentDate)
+        if currentFilter == .today {
+            currentFilter = .all
+            trackerStore.globalFilter = .all
         }
     }
 
     // MARK: - Private Methods
+
+    @objc private func didTapFilterButton() {
+        let filterVC = FilterViewController(currentFilter: currentFilter)
+        filterVC.delegate = self
+        present(filterVC, animated: true)
+        AnalyticsService.eventClick(on: screenName, for: .filter)
+    }
 
     private func updateUI() {
 
@@ -118,6 +144,7 @@ final class TrackersViewController: UIViewController {
         emptyTaskLabel.isHidden = isHiddenEmptyLabel
         emptyTaskImageView.isHidden = isHiddenEmptyLabel
         collectionView.isHidden = !isHiddenEmptyLabel
+        filtersButton.isHidden = !isHiddenEmptyLabel
     }
 
     private func setupCollectionView() {
@@ -151,12 +178,13 @@ final class TrackersViewController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: addTaskButton)
         navigationItem.rightBarButtonItem =  UIBarButtonItem(customView: datePicker)
 
-        let searchController = UISearchController()
+        let searchController = UISearchController(searchResultsController: nil)
         searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchBar.placeholder = "Поиск"
+        searchController.searchBar.placeholder = L10n.Localizable.TrackersVC.SearchController.SearchBar.placeholder
+        searchController.searchResultsUpdater = self
         navigationItem.searchController = searchController
 
-        navigationItem.title = "Трекеры"
+        navigationItem.title = L10n.Localizable.TrackersVC.NavigationItem.title
         navigationController?.navigationBar.prefersLargeTitles = true
     }
 
@@ -174,10 +202,23 @@ final class TrackersViewController: UIViewController {
         ])
     }
 
+    private func setupFilterButton() {
+        view.addSubview(filtersButton)
+
+        filtersButton.widthAnchor.constraint(equalToConstant: 114).isActive = true
+        filtersButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        filtersButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        filtersButton.bottomAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+            constant: -16
+        ).isActive = true
+    }
+
     @objc private func didTapAddTaskButton() {
         let viewController = CreateTrackerViewController()
         viewController.trackerStore = self.trackerStore
         present(viewController, animated: true)
+        AnalyticsService.eventClick(on: screenName, for: .addTrack)
     }
 }
 
@@ -238,7 +279,7 @@ extension TrackersViewController: UICollectionViewDataSource {
         }
 
         if let tracker = trackerStore.object(at: indexPath) {
-            cell.configure(with: tracker, for: currentDate)
+            cell.configure(with: tracker, for: selectedDay)
         }
 
         cell.delegate = self
@@ -283,5 +324,59 @@ extension TrackersViewController: TrackerStoreDelegate {
     func didUpdate() {
         collectionView.reloadData()
         updateUI()
+    }
+}
+
+// MARK: - UISearchResultsUpdating
+
+extension TrackersViewController: UISearchResultsUpdating {
+
+   func updateSearchResults(for searchController: UISearchController) {
+
+        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
+            trackerStore.searchName = searchText
+            emptyTaskLabel.text = L10n.Localizable.TrackersVC.emptyFilterResultTitle
+            emptyTaskImageView.image = Asset.emptyFilter.image
+        } else {
+            trackerStore.searchName = nil
+            emptyTaskLabel.text = L10n.Localizable.TrackersVC.EmptyState.title
+            emptyTaskImageView.image = Asset.emptyTasks.image
+        }
+    }
+}
+
+// MARK: - FilterViewControllerDelegate
+
+extension TrackersViewController: FilterViewControllerDelegate {
+
+    func didSelectFilter(_ filter: FilterModel) {
+
+        switch filter {
+        case .all:
+            trackerStore.globalFilter = .all
+            currentFilter = filter
+            emptyTaskLabel.text = L10n.Localizable.TrackersVC.EmptyState.title
+            emptyTaskImageView.image = Asset.emptyTasks.image
+
+        case .today:
+            trackerStore.globalFilter = .today
+            datePicker.date = Date()
+            datePickerValueChanged(datePicker)
+            currentFilter = filter
+            emptyTaskLabel.text = L10n.Localizable.TrackersVC.emptyFilterResultTitle
+            emptyTaskImageView.image = Asset.emptyFilter.image
+
+        case .complete:
+            trackerStore.globalFilter = .complete
+            currentFilter = filter
+            emptyTaskLabel.text = L10n.Localizable.TrackersVC.emptyFilterResultTitle
+            emptyTaskImageView.image = Asset.emptyFilter.image
+
+        case .uncomplete:
+            trackerStore.globalFilter = .uncomplete
+            currentFilter = filter
+            emptyTaskLabel.text = L10n.Localizable.TrackersVC.emptyFilterResultTitle
+            emptyTaskImageView.image = Asset.emptyFilter.image
+        }
     }
 }

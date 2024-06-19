@@ -1,0 +1,71 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Artem Krasnov on 21.05.2024.
+  
+*/
+
+"appSettings.pin.category.name" = "Pinned";
+"trackersVC.emptyState.title" = "What are we going to track?";
+"trackersVC.emptyFilterResultTitle" = "Nothing found";
+"trackersVC.navigationItem.title" = "Trackers";
+"trackersVC.searchController.searchBar.placeholder" = "Search";
+"trackersVC.filterButton.title" = "Filters";
+
+"tabBar.tab_stats" = "Statistics";
+
+"weekDaysModel.case.monday" = "Mon";
+"weekDaysModel.case.tuesday" = "Tues";
+"weekDaysModel.case.wednesday" = "Wed";
+"weekDaysModel.case.thursday" = "Thurs";
+"weekDaysModel.case.friday" = "Fri";
+"weekDaysModel.case.saturday" = "Sat";
+"weekDaysModel.case.sunday" = "Sun";
+
+"filtersModel.case.all" = "All trackers";
+"filtersModel.case.today" = "Trackers for today";
+"filtersModel.case.complete" = "Completed";
+"filtersModel.case.uncomplete" = "Uncomplete";
+
+"onboardingVC.firstScreen.textLabel.text" = "Track only what you want";
+"onboardingVC.SecondScreen.textLabel.text" = "Even if it's not liters of water and yoga";
+"onboardingVC.confirmButton.title" = "This is technology!";
+
+"createTrackerVC.titleLabel.text" = "Creating a tracker";
+"createTrackerVC.createHabbitButton.text" = "Habit";
+"createTrackerVC.createEventButton.text" = "Irregular event";
+
+"schedulerVC.titleLabel.text" = "Schedule";
+"schedulerVC.doneButton.text" = "Done";
+
+"newCategoryVC.titleLabel.text" = "New category";
+"newCategoryVC.nameCategoryTextField.text" = "Enter the name of the category";
+
+"categoryVC.titleLabel.text" = "Category";
+"categoryVC.emptyTaskLabel.text" = "Habits and events can be combined in meaning";
+"categoryVC.addCategoryButton.text" = "Add a category";
+
+"extensionUIVC.canceledButton.title.text" = "Cancel";
+"extensionUIVC.createdButton.title.text" = "Create";
+
+"createVC.nameTrackerTextField.text" = "Enter the name of the tracker";
+"createVC.limitUILabel.text" = "38 characters limit";
+"createVC.cell.label.color.text" = "Color";
+"createVC.cell.label.emoji.text" = "Emoji";
+
+"createEventVC.titleLabel.text" = "New irregular event";
+"createHabbitVC.titleLabel.text" = "New habit";
+
+"statisticVC.emptyLabel.text" = "There is nothing to analyze yet";
+"statsViewCell.nameCellLabel.text" = "Trackers completed";
+
+"trackerCollectionViewCell.alert.message" = "Are you sure you want to delete the tracker?";
+"trackerCollectionViewCell.alert.delete.title" = "Delete";
+"trackerCollectionViewCell.alert.cancel.title" = "Cancel";
+"trackerCollectionViewCell.action.edit" = "Edit";
+"trackerCollectionViewCell.action.pin" = "Pin";
+"trackerCollectionViewCell.action.unpin" = "Unpin";
+
+"eventAndHabbitVC.saveButtonTitle" = "Save";
+"eventAndHabbitVC.mainEditTitle" = "Edit Tracker";

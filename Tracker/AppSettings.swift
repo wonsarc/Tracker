@@ -10,14 +10,18 @@ import Foundation
 class AppSettings {
     @UserDefaultsWrapper(key: "isFirstOpen", defaultValue: true)
     static var isFirstOpen: Bool
+
+    static let pinCategoryName: String = L10n.Localizable.AppSettings.Pin.Category.name
 }
 
 enum IdentityCellEnum: String {
 
     case categoryViewCell = "categoryCell"
+    case filterViewCell =  "filterViewCell"
     case schedulerTableViewCell = "schedulerCell"
     case createHabbitViewSettingsCell = "habbitCell"
     case trackerCollectionViewCell = "trackerCell"
     case emojiAndColorViewCell = "emojiAndColorCell"
+    case statsViewCell =  "statsViewCell"
     case headerViewIdentifier =  "headerViewIdentifier"
 }
