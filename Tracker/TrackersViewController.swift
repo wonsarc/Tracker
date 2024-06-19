@@ -335,8 +335,12 @@ extension TrackersViewController: UISearchResultsUpdating {
 
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
             trackerStore.searchName = searchText
+            emptyTaskLabel.text = L10n.Localizable.TrackersVC.emptyFilterResultTitle
+            emptyTaskImageView.image = Asset.emptyFilter.image
         } else {
             trackerStore.searchName = nil
+            emptyTaskLabel.text = L10n.Localizable.TrackersVC.EmptyState.title
+            emptyTaskImageView.image = Asset.emptyTasks.image
         }
     }
 }
@@ -351,20 +355,28 @@ extension TrackersViewController: FilterViewControllerDelegate {
         case .all:
             trackerStore.globalFilter = .all
             currentFilter = filter
+            emptyTaskLabel.text = L10n.Localizable.TrackersVC.EmptyState.title
+            emptyTaskImageView.image = Asset.emptyTasks.image
 
         case .today:
             trackerStore.globalFilter = .today
             datePicker.date = Date()
             datePickerValueChanged(datePicker)
             currentFilter = filter
+            emptyTaskLabel.text = L10n.Localizable.TrackersVC.emptyFilterResultTitle
+            emptyTaskImageView.image = Asset.emptyFilter.image
 
         case .complete:
             trackerStore.globalFilter = .complete
             currentFilter = filter
+            emptyTaskLabel.text = L10n.Localizable.TrackersVC.emptyFilterResultTitle
+            emptyTaskImageView.image = Asset.emptyFilter.image
 
         case .uncomplete:
             trackerStore.globalFilter = .uncomplete
             currentFilter = filter
+            emptyTaskLabel.text = L10n.Localizable.TrackersVC.emptyFilterResultTitle
+            emptyTaskImageView.image = Asset.emptyFilter.image
         }
     }
 }

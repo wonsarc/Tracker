@@ -8,6 +8,7 @@
 
 "appSettings.pin.category.name" = "Закрепленные";
 "trackersVC.emptyState.title" = "Что будем отслеживать?";
+"trackersVC.emptyFilterResultTitle" = "Ничего не найдено";
 "trackersVC.navigationItem.title" = "Трекеры";
 "trackersVC.searchController.searchBar.placeholder" = "Поиск";
 "trackersVC.filterButton.title" = "Фильтры";

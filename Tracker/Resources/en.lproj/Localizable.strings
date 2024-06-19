@@ -8,6 +8,7 @@
 
 "appSettings.pin.category.name" = "Pinned";
 "trackersVC.emptyState.title" = "What are we going to track?";
+"trackersVC.emptyFilterResultTitle" = "Nothing found";
 "trackersVC.navigationItem.title" = "Trackers";
 "trackersVC.searchController.searchBar.placeholder" = "Search";
 "trackersVC.filterButton.title" = "Filters";
