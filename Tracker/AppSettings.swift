@@ -11,7 +11,7 @@ class AppSettings {
     @UserDefaultsWrapper(key: "isFirstOpen", defaultValue: true)
     static var isFirstOpen: Bool
 
-    static let pinCategoryName: String = NSLocalizedString("appSettings.pin.category.name", comment: "")
+    static let pinCategoryName: String = L10n.Localizable.AppSettings.Pin.Category.name
 }
 
 enum IdentityCellEnum: String {

@@ -14,34 +14,28 @@ final class OnboardingViewController: UIPageViewController {
     private lazy var pages: [UIViewController] = {
 
         let first = UIViewController()
-        if let background = UIImage(named: "FirstBackground") {
-            let imageView = UIImageView()
-            imageView.image = background
-            imageView.translatesAutoresizingMaskIntoConstraints = false
-            first.view.addSubview(imageView)
 
-            NSLayoutConstraint.activate([
-                imageView.topAnchor.constraint(equalTo: first.view.topAnchor),
-                imageView.bottomAnchor.constraint(equalTo: first.view.bottomAnchor),
-                imageView.leadingAnchor.constraint(equalTo: first.view.leadingAnchor),
-                imageView.trailingAnchor.constraint(equalTo: first.view.trailingAnchor)
-            ])
-        }
+        let firstImageView = UIImageView()
+        firstImageView.image = Asset.firstBackground.image
+        firstImageView.translatesAutoresizingMaskIntoConstraints = false
+        first.view.addSubview(firstImageView)
+
+        firstImageView.topAnchor.constraint(equalTo: first.view.topAnchor).isActive = true
+        firstImageView.bottomAnchor.constraint(equalTo: first.view.bottomAnchor).isActive = true
+        firstImageView.leadingAnchor.constraint(equalTo: first.view.leadingAnchor).isActive = true
+        firstImageView.trailingAnchor.constraint(equalTo: first.view.trailingAnchor).isActive = true
 
         let second = UIViewController()
-        if let background = UIImage(named: "SecondBackground") {
-            let imageView = UIImageView()
-            imageView.image = background
-            imageView.translatesAutoresizingMaskIntoConstraints = false
-            second.view.addSubview(imageView)
 
-            NSLayoutConstraint.activate([
-                imageView.topAnchor.constraint(equalTo: second.view.topAnchor),
-                imageView.bottomAnchor.constraint(equalTo: second.view.bottomAnchor),
-                imageView.leadingAnchor.constraint(equalTo: second.view.leadingAnchor),
-                imageView.trailingAnchor.constraint(equalTo: second.view.trailingAnchor)
-            ])
-        }
+        let secondImageView = UIImageView()
+        secondImageView.image = Asset.secondBackground.image
+        secondImageView.translatesAutoresizingMaskIntoConstraints = false
+        second.view.addSubview(secondImageView)
+
+        secondImageView.topAnchor.constraint(equalTo: second.view.topAnchor).isActive = true
+        secondImageView.bottomAnchor.constraint(equalTo: second.view.bottomAnchor).isActive = true
+        secondImageView.leadingAnchor.constraint(equalTo: second.view.leadingAnchor).isActive = true
+        secondImageView.trailingAnchor.constraint(equalTo: second.view.trailingAnchor).isActive = true
 
         return [first, second]
     }()
@@ -67,13 +61,7 @@ final class OnboardingViewController: UIPageViewController {
         let confirmButton = UIButton(type: .system)
 
         confirmButton.backgroundColor = .black
-        confirmButton.setTitle(
-            NSLocalizedString(
-                "onboardingVC.confirmButton.title",
-                comment: ""
-            ),
-            for: .normal
-        )
+        confirmButton.setTitle(L10n.Localizable.OnboardingVC.ConfirmButton.title, for: .normal)
         confirmButton.titleLabel?.font = .systemFont(ofSize: 16)
         confirmButton.tintColor = .white
         confirmButton.layer.cornerRadius = 16
@@ -96,7 +84,7 @@ final class OnboardingViewController: UIPageViewController {
 
         let textLabel = UILabel()
 
-        textLabel.text = NSLocalizedString("onboardingVC.firstScreen.textLabel.text", comment: "")
+        textLabel.text = L10n.Localizable.OnboardingVC.FirstScreen.TextLabel.text
         textLabel.numberOfLines = 2
         textLabel.lineBreakMode = .byWordWrapping
         textLabel.textAlignment = .center
@@ -167,8 +155,8 @@ final class OnboardingViewController: UIPageViewController {
 
     private func setLabelText(for page: Int) {
         textLabel.text = page == 0 ?
-        NSLocalizedString("onboardingVC.firstScreen.textLabel.text", comment: "") :
-        NSLocalizedString("onboardingVC.secondScreen.textLabel.text", comment: "")
+        L10n.Localizable.OnboardingVC.FirstScreen.TextLabel.text :
+        L10n.Localizable.OnboardingVC.SecondScreen.TextLabel.text
     }
 
     @objc private func confirmButtonTapped() {

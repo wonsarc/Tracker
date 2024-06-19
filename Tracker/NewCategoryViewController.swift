@@ -16,9 +16,7 @@ final class NewCategoryViewController: UIViewController {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = .black
         titleLabel.font = .systemFont(ofSize: 16)
-        titleLabel.text = NSLocalizedString(
-            "newCategoryVC.titleLabel.text",
-            comment: "")
+        titleLabel.text = L10n.Localizable.NewCategoryVC.TitleLabel.text
 
         return titleLabel
     }()
@@ -45,9 +43,7 @@ final class NewCategoryViewController: UIViewController {
         ]
 
         let attributedPlaceholder = NSAttributedString(
-            string: NSLocalizedString(
-                "newCategoryVC.nameCategoryTextField.text",
-                comment: ""),
+            string: L10n.Localizable.NewCategoryVC.NameCategoryTextField.text,
             attributes: placeholderAttributes
         )
         nameCategoryTextField.attributedPlaceholder = attributedPlaceholder
@@ -64,13 +60,7 @@ final class NewCategoryViewController: UIViewController {
 
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         doneButton.accessibilityIdentifier = "doneButton"
-        doneButton.setTitle(
-            NSLocalizedString(
-                "schedulerVC.doneButton.text",
-                comment: ""
-            ),
-            for: .normal
-        )
+        doneButton.setTitle(L10n.Localizable.SchedulerVC.DoneButton.text, for: .normal)
         doneButton.tintColor = .white
         doneButton.titleLabel?.font = .systemFont(ofSize: 16)
         doneButton.backgroundColor = .lightGray

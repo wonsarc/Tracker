@@ -44,9 +44,8 @@ final class EventAndHabbitViewController: UIViewController, EventAndHabbitViewCo
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = .black
         titleLabel.font = .systemFont(ofSize: 16)
-        titleLabel.text = NSLocalizedString(
-            typeScreen == .habbit ? "createHabbitVC.titleLabel.text" : "createEventVC.titleLabel.text",
-            comment: "")
+        titleLabel.text =  typeScreen == .habbit ? L10n.Localizable.CreateHabbitVC.TitleLabel.text :
+        L10n.Localizable.CreateEventVC.TitleLabel.text
 
         return titleLabel
     }()
@@ -92,9 +91,7 @@ final class EventAndHabbitViewController: UIViewController, EventAndHabbitViewCo
         ]
 
         let attributedPlaceholder = NSAttributedString(
-            string: NSLocalizedString(
-                "createVC.nameTrackerTextField.text",
-                comment: ""),
+            string: L10n.Localizable.CreateVC.NameTrackerTextField.text,
             attributes: placeholderAttributes
         )
         nameTrackerTextField.attributedPlaceholder = attributedPlaceholder
@@ -108,10 +105,7 @@ final class EventAndHabbitViewController: UIViewController, EventAndHabbitViewCo
         limitUILabel.textColor = .red
         limitUILabel.font = .systemFont(ofSize: 17)
         limitUILabel.textAlignment = .center
-        limitUILabel.text = NSLocalizedString(
-            "createVC.nameTrackerTextField.text",
-            comment: ""
-        )
+        limitUILabel.text = L10n.Localizable.CreateVC.NameTrackerTextField.text
         limitUILabel.isHidden = true
 
         return limitUILabel
@@ -173,10 +167,7 @@ final class EventAndHabbitViewController: UIViewController, EventAndHabbitViewCo
 
         canceledButton.translatesAutoresizingMaskIntoConstraints = false
         canceledButton.accessibilityIdentifier = "canceledButton"
-        canceledButton.setTitle(
-            NSLocalizedString("extensionUIVC.canceledButton.title.text", comment: ""),
-            for: .normal
-        )
+        canceledButton.setTitle(L10n.Localizable.ExtensionUIVC.CanceledButton.Title.text, for: .normal)
         canceledButton.layer.borderWidth = 1
         canceledButton.layer.borderColor = UIColor.red.cgColor
         canceledButton.tintColor = .red
@@ -196,10 +187,7 @@ final class EventAndHabbitViewController: UIViewController, EventAndHabbitViewCo
 
         createdButton.translatesAutoresizingMaskIntoConstraints = false
         createdButton.accessibilityIdentifier = "createdButton"
-        createdButton.setTitle(
-            NSLocalizedString("extensionUIVC.createdButton.title.text", comment: ""),
-            for: .normal
-        )
+        createdButton.setTitle(L10n.Localizable.ExtensionUIVC.CreatedButton.Title.text, for: .normal)
         createdButton.tintColor = .white
         createdButton.titleLabel?.font = .systemFont(ofSize: 16)
         createdButton.backgroundColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
@@ -248,14 +236,11 @@ final class EventAndHabbitViewController: UIViewController, EventAndHabbitViewCo
         if action == .edit,
            let editTrackerId = editTrackerId {
             setFields(for: editTrackerId)
-            createdButton.setTitle("Сохранить", for: .normal)
-            titleLabel.text = "Редактирование привычки"
+            createdButton.setTitle(L10n.Localizable.EventAndHabbitVC.saveButtonTitle, for: .normal)
+            titleLabel.text = L10n.Localizable.EventAndHabbitVC.mainEditTitle
 
             let days = TrackerRecordStore().countFetch(editTrackerId)
-            countDateLabel.text = String.localizedStringWithFormat(
-                NSLocalizedString("countDays", comment: "Count done days"),
-                days
-            )
+            countDateLabel.text = L10n.Localizable.countDays(days)
         }
     }
 
@@ -450,11 +435,11 @@ extension EventAndHabbitViewController: UITableViewDataSource {
         cell.detailTextLabel?.textColor = .lightGray
 
         if indexPath.row == 0 {
-            cell.textLabel?.text = NSLocalizedString("categoryVC.titleLabel.text", comment: "")
+            cell.textLabel?.text = L10n.Localizable.CategoryVC.TitleLabel.text
             cell.detailTextLabel?.text = presenter?.categoryName
             cell.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         } else {
-            cell.textLabel?.text = NSLocalizedString("schedulerVC.titleLabel.text", comment: "")
+            cell.textLabel?.text = L10n.Localizable.SchedulerVC.TitleLabel.text
             cell.detailTextLabel?.text = presenter?.selectedDays
             cell.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         }
@@ -579,9 +564,9 @@ extension EventAndHabbitViewController: UICollectionViewDataSource {
             label.font = UIFont.boldSystemFont(ofSize: 19)
 
             if indexPath.section == 0 {
-                label.text = NSLocalizedString("createVC.cell.label.emoji.text", comment: "")
+                label.text = L10n.Localizable.CreateVC.Cell.Label.Emoji.text
             } else {
-                label.text = NSLocalizedString("createVC.cell.label.color.text", comment: "")
+                label.text = L10n.Localizable.CreateVC.Cell.Label.Color.text
             }
 
             headerView.addSubview(label)

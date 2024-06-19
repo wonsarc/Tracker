@@ -27,9 +27,7 @@ final class CategoryViewController: UIViewController {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = .black
         titleLabel.font = .systemFont(ofSize: 16)
-        titleLabel.text = NSLocalizedString(
-            "categoryVC.titleLabel.text",
-            comment: "")
+        titleLabel.text = L10n.Localizable.CategoryVC.TitleLabel.text
 
         return titleLabel
     }()
@@ -37,14 +35,14 @@ final class CategoryViewController: UIViewController {
     private lazy var emptyTaskImageView: UIImageView = {
         let emptyTaskImageView = UIImageView()
         emptyTaskImageView.translatesAutoresizingMaskIntoConstraints = false
-        emptyTaskImageView.image = UIImage(named: "empty_tasks")
+        emptyTaskImageView.image = Asset.emptyTasks.image
         return emptyTaskImageView
     }()
 
     private lazy var emptyTaskLabel: UILabel = {
         let emptyTaskLabel = UILabel()
         emptyTaskLabel.translatesAutoresizingMaskIntoConstraints = false
-        emptyTaskLabel.text = NSLocalizedString("categoryVC.emptyTaskLabel.text", comment: "")
+        emptyTaskLabel.text = L10n.Localizable.CategoryVC.EmptyTaskLabel.text
         emptyTaskLabel.textColor = .black
         emptyTaskLabel.numberOfLines = 2
         emptyTaskLabel.font = .systemFont(ofSize: 12)
@@ -77,13 +75,7 @@ final class CategoryViewController: UIViewController {
 
         addCategoryButton.translatesAutoresizingMaskIntoConstraints = false
         addCategoryButton.accessibilityIdentifier = "addCategoryButton"
-        addCategoryButton.setTitle(
-            NSLocalizedString(
-                "categoryVC.addCategoryButton.text",
-                comment: ""
-            ),
-            for: .normal
-        )
+        addCategoryButton.setTitle(L10n.Localizable.CategoryVC.AddCategoryButton.text, for: .normal)
         addCategoryButton.tintColor = .white
         addCategoryButton.titleLabel?.font = .systemFont(ofSize: 16)
         addCategoryButton.backgroundColor = .black

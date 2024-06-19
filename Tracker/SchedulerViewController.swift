@@ -26,9 +26,7 @@ final class SchedulerViewController: UIViewController {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = .black
         titleLabel.font = .systemFont(ofSize: 16)
-        titleLabel.text = NSLocalizedString(
-            "schedulerVC.titleLabel.text",
-            comment: "")
+        titleLabel.text = L10n.Localizable.SchedulerVC.TitleLabel.text
 
         return titleLabel
     }()
@@ -60,10 +58,7 @@ final class SchedulerViewController: UIViewController {
 
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         doneButton.accessibilityIdentifier = "doneButton"
-        doneButton.setTitle(NSLocalizedString(
-            "schedulerVC.doneButton.text",
-            comment: ""
-        ), for: .normal)
+        doneButton.setTitle(L10n.Localizable.SchedulerVC.DoneButton.text, for: .normal)
         doneButton.tintColor = .white
         doneButton.titleLabel?.font = .systemFont(ofSize: 16)
         doneButton.backgroundColor = .black

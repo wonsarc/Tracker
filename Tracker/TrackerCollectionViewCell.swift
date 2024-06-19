@@ -67,7 +67,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private lazy var pinUIImageView: UIImageView = {
         let pinUIImageView = UIImageView()
         pinUIImageView.translatesAutoresizingMaskIntoConstraints = false
-        pinUIImageView.image = UIImage(named: "pin.square")
+        pinUIImageView.image = Asset.pinSquare.image
         pinUIImageView.tintColor = .white
         return pinUIImageView
     }()
@@ -90,7 +90,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
 
     private lazy var doneButton: UIButton = {
         let doneButton = UIButton.systemButton(
-            with: UIImage(named: "plus") ?? UIImage(),
+            with: Asset.plus.image,
             target: self,
             action: #selector(didTapDoneButton)
         )
@@ -177,8 +177,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     }
 
     private func updateDoneButtonImage(_ isDone: Bool) {
-        let imageName = isDone ? "done" : "plus"
-        let image = UIImage(named: imageName)?.withRenderingMode(.alwaysTemplate)
+        let image: UIImage = isDone ? Asset.done.image : Asset.plus.image
         doneButton.setImage(image, for: .normal)
     }
 
@@ -243,10 +242,7 @@ extension TrackerCollectionViewCell: TrackerCollectionViewCellProtocol {
 
         if let id = trackerModel?.id {
             let days = trackerRecordStore.countFetch(id)
-            dateUILabel.text = String.localizedStringWithFormat(
-                NSLocalizedString("countDays", comment: "Count done days"),
-                days
-            )
+            dateUILabel.text = L10n.Localizable.countDays(days)
 
             pinUIImageView.isHidden = !isPin(trackerId: id)
         }
@@ -273,18 +269,15 @@ extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
             guard let trackerId = self.trackerModel?.id else { return UIMenu()}
 
             let isPin = self.isPin(trackerId: trackerId)
-            let pinActionTitle = NSLocalizedString(
-                isPin ? "trackerCollectionViewCell.action.unpin" : "trackerCollectionViewCell.action.pin",
-                comment: ""
-            )
+            let pinActionTitle = isPin ?
+            L10n.Localizable.TrackerCollectionViewCell.Action.unpin :
+            L10n.Localizable.TrackerCollectionViewCell.Action.pin
 
             let pinAction = UIAction(title: pinActionTitle) { _ in
                 try? TrackerCategoryStore().togglePinTracker(trackerId)
             }
 
-            let editAction = UIAction(
-                title: NSLocalizedString("trackerCollectionViewCell.action.edit", comment: "")
-            ) { _ in
+            let editAction = UIAction( title: L10n.Localizable.TrackerCollectionViewCell.Action.edit) { _ in
 
                 guard let parentViewController = self.findViewController(),
                       let schedule = try? TrackerStore().getTracker(withId: trackerId)?.schedule as? [WeekDaysModel]
@@ -302,7 +295,7 @@ extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
             }
 
             let deleteAction = UIAction(
-                title: NSLocalizedString("trackerCollectionViewCell.alert.delete.title", comment: ""),
+                title: L10n.Localizable.TrackerCollectionViewCell.Alert.Delete.title,
                 attributes: .destructive
             ) { _ in
                 self.showDeleteConfirmation(for: trackerId)
@@ -318,19 +311,19 @@ extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
 
         let alertController = UIAlertController(
             title: nil,
-            message: NSLocalizedString("trackerCollectionViewCell.alert.message", comment: ""),
+            message: L10n.Localizable.TrackerCollectionViewCell.Alert.message,
             preferredStyle: .actionSheet
         )
 
         let deleteAction = UIAlertAction(
-            title: NSLocalizedString("trackerCollectionViewCell.alert.delete.title", comment: ""),
+            title: L10n.Localizable.TrackerCollectionViewCell.Alert.Delete.title,
             style: .destructive
         ) { _ in
             TrackerStore().deleteRecord(id: trackerId)
         }
 
         let cancelAction = UIAlertAction(
-            title: NSLocalizedString("trackerCollectionViewCell.alert.cancel.title", comment: ""),
+            title: L10n.Localizable.TrackerCollectionViewCell.Alert.Cancel.title,
             style: .cancel,
             handler: nil
         )

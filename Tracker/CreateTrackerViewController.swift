@@ -18,9 +18,7 @@ final class CreateTrackerViewController: UIViewController {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = .black
         titleLabel.font = .systemFont(ofSize: 16)
-        titleLabel.text = NSLocalizedString(
-            "createTrackerVC.titleLabel.text",
-            comment: "")
+        titleLabel.text = L10n.Localizable.CreateTrackerVC.TitleLabel.text
 
         return titleLabel
     }()
@@ -33,10 +31,7 @@ final class CreateTrackerViewController: UIViewController {
         )
 
         createHabbitButton.accessibilityIdentifier = "createHabbitButton"
-        createHabbitButton.setTitle(
-            NSLocalizedString("createTrackerVC.createHabbitButton.text", comment: ""),
-            for: .normal
-        )
+        createHabbitButton.setTitle(L10n.Localizable.CreateTrackerVC.CreateHabbitButton.text, for: .normal)
         setupButton(createHabbitButton)
 
         return createHabbitButton
@@ -50,10 +45,7 @@ final class CreateTrackerViewController: UIViewController {
         )
 
         createEventButton.accessibilityIdentifier = "createEventButton"
-        createEventButton.setTitle(
-            NSLocalizedString("createTrackerVC.createEventButton.text", comment: ""),
-            for: .normal
-        )
+        createEventButton.setTitle(L10n.Localizable.CreateTrackerVC.CreateEventButton.text, for: .normal)
         setupButton(createEventButton)
 
         return createEventButton

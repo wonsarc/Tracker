@@ -16,7 +16,7 @@ final class StatsViewCell: UITableViewCell {
         nameCellLabel.translatesAutoresizingMaskIntoConstraints = false
 
         nameCellLabel.font = .systemFont(ofSize: 12)
-        nameCellLabel.text = NSLocalizedString("statsViewCell.nameCellLabel.text", comment: "")
+        nameCellLabel.text = L10n.Localizable.StatsViewCell.NameCellLabel.text
 
         return nameCellLabel
     }()

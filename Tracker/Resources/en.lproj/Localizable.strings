@@ -65,3 +65,6 @@
 "trackerCollectionViewCell.action.edit" = "Edit";
 "trackerCollectionViewCell.action.pin" = "Pin";
 "trackerCollectionViewCell.action.unpin" = "Unpin";
+
+"eventAndHabbitVC.saveButtonTitle" = "Save";
+"eventAndHabbitVC.mainEditTitle" = "Edit Tracker";

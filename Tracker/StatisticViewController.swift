@@ -18,7 +18,7 @@ final class StatisticViewController: UIViewController {
     private lazy var mainTitleLabel: UILabel = {
         let mainTitleLabel = UILabel()
         mainTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        mainTitleLabel.text = NSLocalizedString("tabBar.tab_stats", comment: "")
+        mainTitleLabel.text = L10n.Localizable.TabBar.tabStats
         mainTitleLabel.textColor = Colors.shared.buttonColor
         mainTitleLabel.font = .boldSystemFont(ofSize: 34)
 
@@ -28,7 +28,7 @@ final class StatisticViewController: UIViewController {
     private lazy var emptyImageView: UIImageView = {
         let emptyImageView = UIImageView()
         emptyImageView.translatesAutoresizingMaskIntoConstraints = false
-        emptyImageView.image = UIImage(named: "emptyImage")
+        emptyImageView.image = Asset.emptyImage.image
 
         return emptyImageView
     }()
@@ -37,7 +37,7 @@ final class StatisticViewController: UIViewController {
         let emptyLabel = UILabel()
         emptyLabel.translatesAutoresizingMaskIntoConstraints = false
         emptyLabel.font = .systemFont(ofSize: 12)
-        emptyLabel.text = NSLocalizedString("statisticVC.emptyLabel.text", comment: "")
+        emptyLabel.text = L10n.Localizable.StatisticVC.EmptyLabel.text
 
         return emptyLabel
     }()

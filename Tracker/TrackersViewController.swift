@@ -29,7 +29,7 @@ final class TrackersViewController: UIViewController {
 
     private lazy var addTaskButton: UIButton = {
         let addTaskButton = UIButton.systemButton(
-            with: UIImage(named: "plus") ?? UIImage(),
+            with: Asset.plus.image,
             target: self,
             action: #selector(didTapAddTaskButton)
         )
@@ -59,7 +59,7 @@ final class TrackersViewController: UIViewController {
     private lazy var emptyTaskLabel: UILabel = {
         let emptyTaskLabel = UILabel()
         emptyTaskLabel.translatesAutoresizingMaskIntoConstraints = false
-        emptyTaskLabel.text = NSLocalizedString("trackersVC.emptyState.title", comment: "Text displayed on empty state")
+        emptyTaskLabel.text = L10n.Localizable.TrackersVC.EmptyState.title
         emptyTaskLabel.textColor = colors.textColor
         emptyTaskLabel.font = .systemFont(ofSize: 12)
         emptyTaskLabel.textAlignment = .center
@@ -69,7 +69,7 @@ final class TrackersViewController: UIViewController {
     private lazy var emptyTaskImageView: UIImageView = {
         let emptyTaskImageView = UIImageView()
         emptyTaskImageView.translatesAutoresizingMaskIntoConstraints = false
-        emptyTaskImageView.image = UIImage(named: "empty_tasks")
+        emptyTaskImageView.image = Asset.emptyTasks.image
         return emptyTaskImageView
     }()
 
@@ -83,7 +83,7 @@ final class TrackersViewController: UIViewController {
 
         filtersButton.translatesAutoresizingMaskIntoConstraints = false
 
-        filtersButton.setTitle(NSLocalizedString("trackersVC.filterButton.title", comment: ""), for: .normal)
+        filtersButton.setTitle(L10n.Localizable.TrackersVC.FilterButton.title, for: .normal)
         filtersButton.titleLabel?.font = .systemFont(ofSize: 17)
         filtersButton.tintColor = .white
         filtersButton.backgroundColor = colors.filterButton
@@ -180,14 +180,11 @@ final class TrackersViewController: UIViewController {
 
         let searchController = UISearchController(searchResultsController: nil)
         searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchBar.placeholder = NSLocalizedString(
-            "trackersVC.searchController.searchBar.placeholder",
-            comment: ""
-        )
+        searchController.searchBar.placeholder = L10n.Localizable.TrackersVC.SearchController.SearchBar.placeholder
         searchController.searchResultsUpdater = self
         navigationItem.searchController = searchController
 
-        navigationItem.title = NSLocalizedString("trackersVC.navigationItem.title", comment: "")
+        navigationItem.title = L10n.Localizable.TrackersVC.NavigationItem.title
         navigationController?.navigationBar.prefersLargeTitles = true
     }
 

@@ -23,9 +23,7 @@ final class FilterViewController: UIViewController {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = .black
         titleLabel.font = .systemFont(ofSize: 16)
-        titleLabel.text = NSLocalizedString(
-            "trackersVC.filterButton.title",
-            comment: "")
+        titleLabel.text = L10n.Localizable.TrackersVC.FilterButton.title
 
         return titleLabel
     }()

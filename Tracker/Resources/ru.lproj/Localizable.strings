@@ -66,3 +66,6 @@
 "trackerCollectionViewCell.action.edit" = "Редактировать";
 "trackerCollectionViewCell.action.pin" = "Закрепить";
 "trackerCollectionViewCell.action.unpin" = "Открепить";
+
+"eventAndHabbitVC.saveButtonTitle" = "Сохранить";
+"eventAndHabbitVC.mainEditTitle" = "Редактирование привычки";

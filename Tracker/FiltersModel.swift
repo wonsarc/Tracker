@@ -16,10 +16,10 @@ enum FilterModel: String, Codable, CaseIterable {
 
     var localizedString: String {
         switch self {
-        case .all: return NSLocalizedString("filtersModel.case.all", comment: "")
-        case .today: return NSLocalizedString("filtersModel.case.today", comment: "")
-        case .complete: return NSLocalizedString("filtersModel.case.complete", comment: "")
-        case .uncomplete: return NSLocalizedString("filtersModel.case.uncomplete", comment: "")
+        case .all: return L10n.Localizable.FiltersModel.Case.all
+        case .today: return L10n.Localizable.FiltersModel.Case.today
+        case .complete: return L10n.Localizable.FiltersModel.Case.complete
+        case .uncomplete: return L10n.Localizable.FiltersModel.Case.uncomplete
         }
     }
 

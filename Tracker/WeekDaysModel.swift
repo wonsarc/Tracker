@@ -19,13 +19,13 @@ enum WeekDaysModel: String, Codable, CaseIterable {
 
     var localizedString: String {
         switch self {
-        case .monday: return NSLocalizedString("weekDaysModel.case.monday", comment: "")
-        case .tuesday: return NSLocalizedString("weekDaysModel.case.tuesday", comment: "")
-        case .wednesday: return NSLocalizedString("weekDaysModel.case.wednesday", comment: "")
-        case .thursday: return NSLocalizedString("weekDaysModel.case.thursday", comment: "")
-        case .friday: return NSLocalizedString("weekDaysModel.case.friday", comment: "")
-        case .saturday: return NSLocalizedString("weekDaysModel.case.saturday", comment: "")
-        case .sunday: return NSLocalizedString("weekDaysModel.case.sunday", comment: "")
+        case .monday: return L10n.Localizable.WeekDaysModel.Case.monday
+        case .tuesday: return L10n.Localizable.WeekDaysModel.Case.tuesday
+        case .wednesday: return L10n.Localizable.WeekDaysModel.Case.wednesday
+        case .thursday: return L10n.Localizable.WeekDaysModel.Case.thursday
+        case .friday: return L10n.Localizable.WeekDaysModel.Case.friday
+        case .saturday: return L10n.Localizable.WeekDaysModel.Case.saturday
+        case .sunday: return L10n.Localizable.WeekDaysModel.Case.sunday
         }
     }
 
